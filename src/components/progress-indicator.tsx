@@ -46,35 +46,35 @@ export function ProgressIndicator() {
 		vehicleData.vehicleUsage
 	])
 
-	const displayDataPage2 = useMemo(() => {
-		return [
-			{
-				id: 'Horse Power',
-				field: 'Horse Power',
-				name: vehicleData.horsePower
-			},
-			{
-				id: 'Tonnage',
-				field: 'Tonnage',
-				name: vehicleData.tonnage
-			},
-			{
-				id: 'Sum Insured',
-				field: 'Sum Insured',
-				name: vehicleData.sumInsured
-			},
-			{
-				id: 'Deductibles',
-				field: 'Deductibles',
-				name: vehicleData.deductibles
-			}
-		]
-	}, [
-		vehicleData.deductibles,
-		vehicleData.horsePower,
-		vehicleData.sumInsured,
-		vehicleData.tonnage
-	])
+	// const displayDataPage2 = useMemo(() => {
+	// 	return [
+	// 		{
+	// 			id: 'Horse Power',
+	// 			field: 'Horse Power',
+	// 			name: vehicleData.horsePower
+	// 		},
+	// 		{
+	// 			id: 'Tonnage',
+	// 			field: 'Tonnage',
+	// 			name: vehicleData.tonnage
+	// 		},
+	// 		{
+	// 			id: 'Sum Insured',
+	// 			field: 'Sum Insured',
+	// 			name: vehicleData.sumInsured
+	// 		},
+	// 		{
+	// 			id: 'Deductibles',
+	// 			field: 'Deductibles',
+	// 			name: vehicleData.deductibles
+	// 		}
+	// 	]
+	// }, [
+	// 	vehicleData.deductibles,
+	// 	vehicleData.horsePower,
+	// 	vehicleData.sumInsured,
+	// 	vehicleData.tonnage
+	// ])
 
 	const isPage1 = path === '/car-insurance/1'
 
@@ -94,28 +94,22 @@ export function ProgressIndicator() {
 				}
 			})
 			setCurrentPageRate(value)
-		} else {
-			displayDataPage2.forEach((data) => {
-				if (data.field === 'Sum Insured' && vehicleData.sumInsured === 0) {
-					value += 0
-				} else if (data.field === 'Deductibles' && vehicleData.deductibles === 0) {
-					value += 0
-				} else {
-					if (data.name !== '') {
-						value += 1
-					}
-				}
-			})
-			setCurrentPageRate(value)
 		}
-	}, [
-		displayDataPage1,
-		displayDataPage2,
-		path,
-		vehicleData.bodyType,
-		vehicleData.deductibles,
-		vehicleData.sumInsured
-	])
+		// else {
+		// 	displayDataPage2.forEach((data) => {
+		// 		if (data.field === 'Sum Insured' && vehicleData.sumInsured === 0) {
+		// 			value += 0
+		// 		} else if (data.field === 'Deductibles' && vehicleData.deductibles === 0) {
+		// 			value += 0
+		// 		} else {
+		// 			if (data.name !== '') {
+		// 				value += 1
+		// 			}
+		// 		}
+		// 	})
+		// 	setCurrentPageRate(value)
+		// }
+	}, [displayDataPage1, path, vehicleData.bodyType, vehicleData.sumInsured])
 
 	return (
 		<div className='sticky top-20 z-10 flex h-full w-full bg-white p-[26px] shadow-sm'>
@@ -155,7 +149,7 @@ export function ProgressIndicator() {
 					})}
 				</div>
 			)}
-			{!isPage1 && (
+			{/* {!isPage1 && (
 				<div className='flex w-full flex-row items-center justify-between lg:px-20'>
 					{displayDataPage2.map((item, index) => {
 						return (
@@ -190,7 +184,7 @@ export function ProgressIndicator() {
 						)
 					})}
 				</div>
-			)}
+			)} */}
 		</div>
 	)
 }
