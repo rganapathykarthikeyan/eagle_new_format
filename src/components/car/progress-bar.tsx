@@ -50,35 +50,35 @@ export function ProgressBar() {
 		vehicleData.vehicleUsage
 	])
 
-	const displayDataPage2 = useMemo(() => {
-		return [
-			{
-				id: 'Horse Power',
-				field: 'Horse Power',
-				name: vehicleData.horsePower
-			},
-			{
-				id: 'Tonnage',
-				field: 'Tonnage',
-				name: vehicleData.tonnage
-			},
-			{
-				id: 'Sum Insured',
-				field: 'Sum Insured',
-				name: vehicleData.sumInsured
-			},
-			{
-				id: 'Deductibles',
-				field: 'Deductibles',
-				name: vehicleData.deductibles
-			}
-		]
-	}, [
-		vehicleData.deductibles,
-		vehicleData.horsePower,
-		vehicleData.sumInsured,
-		vehicleData.tonnage
-	])
+	// const displayDataPage2 = useMemo(() => {
+	// 	return [
+	// 		{
+	// 			id: 'Horse Power',
+	// 			field: 'Horse Power',
+	// 			name: vehicleData.horsePower
+	// 		},
+	// 		{
+	// 			id: 'Tonnage',
+	// 			field: 'Tonnage',
+	// 			name: vehicleData.tonnage
+	// 		},
+	// 		{
+	// 			id: 'Sum Insured',
+	// 			field: 'Sum Insured',
+	// 			name: vehicleData.sumInsured
+	// 		},
+	// 		{
+	// 			id: 'Deductibles',
+	// 			field: 'Deductibles',
+	// 			name: vehicleData.deductibles
+	// 		}
+	// 	]
+	// }, [
+	// 	vehicleData.deductibles,
+	// 	vehicleData.horsePower,
+	// 	vehicleData.sumInsured,
+	// 	vehicleData.tonnage
+	// ])
 
 	useEffect(() => {
 		let value = 0
@@ -94,28 +94,22 @@ export function ProgressBar() {
 				}
 			})
 			setCurrentPageRate(value)
-		} else {
-			displayDataPage2.forEach((data) => {
-				if (data.field === 'Sum Insured' && vehicleData.sumInsured === 0) {
-					value += 0
-				} else if (data.field === 'Deductibles' && vehicleData.deductibles === 0) {
-					value += 0
-				} else {
-					if (data.name !== '') {
-						value += 25
-					}
-				}
-			})
-			setCurrentPageRate(value)
 		}
-	}, [
-		displayDataPage1,
-		displayDataPage2,
-		path,
-		vehicleData.bodyType.length,
-		vehicleData.deductibles,
-		vehicleData.sumInsured
-	])
+		// else {
+		// 	displayDataPage2.forEach((data) => {
+		// 		if (data.field === 'Sum Insured' && vehicleData.sumInsured === 0) {
+		// 			value += 0
+		// 		} else if (data.field === 'Deductibles' && vehicleData.deductibles === 0) {
+		// 			value += 0
+		// 		} else {
+		// 			if (data.name !== '') {
+		// 				value += 25
+		// 			}
+		// 		}
+		// 	})
+		// 	setCurrentPageRate(value)
+		// }
+	}, [displayDataPage1, path, vehicleData.bodyType.length, vehicleData.sumInsured])
 
 	return (
 		<div className='flex flex-col items-start'>
