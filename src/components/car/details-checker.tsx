@@ -28,15 +28,16 @@ export function DetailsChecker(props: PropsWithChildren) {
 				vehicleData.vehicleUsage === '')
 		) {
 			redirect('/car-insurance/1')
-		} else if (
-			currentPath === '/car-insurance/confirm' &&
-			(vehicleData.horsePower === '' ||
-				vehicleData.tonnage === '' ||
-				vehicleData.sumInsured === 0 ||
-				vehicleData.deductibles === 0)
-		) {
-			redirect('/car-insurance/2')
 		}
+		// else if (
+		// 	currentPath === '/car-insurance/confirm' &&
+		// 	(vehicleData.horsePower === '' ||
+		// 		vehicleData.tonnage === '' ||
+		// 		vehicleData.sumInsured === 0 ||
+		// 		vehicleData.deductibles === 0)
+		// ) {
+		// 	redirect('/car-insurance/2')
+		// }
 	})
 
 	return <Fragment>{props.children}</Fragment>

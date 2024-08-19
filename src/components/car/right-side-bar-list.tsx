@@ -40,36 +40,36 @@ export function RightSideBarList() {
 			id: 'Number of seats',
 			field: 'Number of seats',
 			name: vehicleData.seat
-		},
-		{
-			id: 'Tariff Zone',
-			field: 'Tariff Zone',
-			name: vehicleData.tariffZone
 		}
+		// {
+		// 	id: 'Tariff Zone',
+		// 	field: 'Tariff Zone',
+		// 	name: vehicleData.tariffZone
+		// }
 	]
 
-	const displayDataPage2 = [
-		{
-			id: 'Horse Power',
-			field: 'Horse Power',
-			name: vehicleData.horsePower
-		},
-		{
-			id: 'Tonnage',
-			field: 'Tonnage',
-			name: vehicleData.tonnage
-		},
-		{
-			id: 'Sum Insured',
-			field: 'Sum Insured',
-			name: vehicleData.sumInsured
-		},
-		{
-			id: 'Deductibles',
-			field: 'Deductibles',
-			name: vehicleData.deductibles
-		}
-	]
+	// const displayDataPage2 = [
+	// 	{
+	// 		id: 'Horse Power',
+	// 		field: 'Horse Power',
+	// 		name: vehicleData.horsePower
+	// 	},
+	// 	{
+	// 		id: 'Tonnage',
+	// 		field: 'Tonnage',
+	// 		name: vehicleData.tonnage
+	// 	},
+	// 	{
+	// 		id: 'Sum Insured',
+	// 		field: 'Sum Insured',
+	// 		name: vehicleData.sumInsured
+	// 	},
+	// 	{
+	// 		id: 'Deductibles',
+	// 		field: 'Deductibles',
+	// 		name: vehicleData.deductibles
+	// 	}
+	// ]
 
 	const isPage1 = path.endsWith('/car-insurance/1')
 	return (
@@ -91,11 +91,10 @@ export function RightSideBarList() {
 			</div>
 			<div className='flex flex-col gap-[9px]'>
 				<div className='flex flex-col gap-[9px]'>
-					{isPage1 ? (
-						<ShowList data={displayDataPage1} />
-					) : (
-						<ShowList data={displayDataPage2} />
-					)}
+					{
+						isPage1 && <ShowList data={displayDataPage1} />
+						// <ShowList data={displayDataPage2} />
+					}
 				</div>
 			</div>
 		</Fragment>
