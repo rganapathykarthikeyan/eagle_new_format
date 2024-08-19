@@ -1,14 +1,10 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateDeductibles } from '@/redux/slices'
+'use client'
+
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
 
 export function Deductibles() {
-	const vehicleData = useAppSelector((state) => state.carInsurance)
-
-	const dispatch = useAppDispatch()
-
 	useGSAP(() => {
 		gsap.from('.selectDebuctible', { y: 80, opacity: 0, duration: 1, delay: 2 })
 		gsap.to('.Debuctibletitle', { duration: 1, text: 'Debuctible' })
@@ -28,10 +24,6 @@ export function Deductibles() {
 				className='selectDebuctible w-1/2'
 				placeholder='Sum Insured'
 				type='number'
-				value={vehicleData.deductibles}
-				onChange={(e) => {
-					dispatch(updateDeductibles(e.target.value))
-				}}
 			/>
 		</div>
 	)
