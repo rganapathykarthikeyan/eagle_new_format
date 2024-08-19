@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateAdditionalVehicleInfomations } from '@/redux/slices'
+import { useAppSelector } from '@/redux/hooks'
+// import { updateAdditionalVehicleInfomations } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import gsap from 'gsap'
@@ -23,24 +23,16 @@ export function AdditionalValuesInfo() {
 		gsap.from('.selectVehicleValuesInfo', { y: 80, opacity: 0, duration: 0.5 })
 	})
 
-	const dispatch = useAppDispatch()
 	const form = useForm<z.infer<typeof additionalValuesSchema>>({
 		resolver: zodResolver(additionalValuesSchema),
 		defaultValues: {
-			claims: vehicleData.claims,
-			gpsTracking: vehicleData.gpsTracking,
-			tonnage: vehicleData.tonnage + ''
+			claims: '',
+			gpsTracking: '',
+			tonnage: ''
 		}
 	})
 
-	function onSubmit(values: z.infer<typeof additionalValuesSchema>) {
-		dispatch(
-			updateAdditionalVehicleInfomations({
-				claims: values.claims,
-				gpsTracking: values.gpsTracking,
-				tonnage: values.tonnage
-			})
-		)
+	function onSubmit() {
 		setIsSubmitted(true)
 	}
 
@@ -53,7 +45,7 @@ export function AdditionalValuesInfo() {
 						3
 					</div>
 				</div>
-				<h1 className='text-blue-825 text-center font-inter text-4xl font-bold'>
+				<h1 className='text-center font-inter text-4xl font-bold text-blue-825'>
 					Additional Vehicle Information
 				</h1>
 				<p className='w-4/5 text-center font-roboto text-sm text-gray-500'>
@@ -78,7 +70,7 @@ export function AdditionalValuesInfo() {
 												<Input
 													{...field}
 													autoComplete='name'
-													className='border border-gray-360 shadow-inputShadowDrop'
+													className='border-gray-360 border shadow-inputShadowDrop'
 													id='tonnage'
 													placeholder='Please Enter Tonnage'
 													type='number'
@@ -110,7 +102,7 @@ export function AdditionalValuesInfo() {
 											<div className='flex flex-row gap-2'>
 												<div
 													className={cn(
-														'rounded-lg border border-gray-360 bg-white px-8 py-2 shadow-inputShadowDrop',
+														'border-gray-360 rounded-lg border bg-white px-8 py-2 shadow-inputShadowDrop',
 														{
 															'bg-blue-300 text-white':
 																field.value === 'Yes'
@@ -124,7 +116,7 @@ export function AdditionalValuesInfo() {
 
 												<div
 													className={cn(
-														'rounded-lg border border-gray-360 bg-white px-8 py-2 shadow-inputShadowDrop',
+														'border-gray-360 rounded-lg border bg-white px-8 py-2 shadow-inputShadowDrop',
 														{
 															'bg-blue-300 text-white':
 																field.value === 'No'
@@ -151,7 +143,7 @@ export function AdditionalValuesInfo() {
 											<div className='flex flex-row gap-2'>
 												<div
 													className={cn(
-														'rounded-lg border border-gray-360 bg-white px-8 py-2 shadow-inputShadowDrop',
+														'border-gray-360 rounded-lg border bg-white px-8 py-2 shadow-inputShadowDrop',
 														{
 															'bg-blue-300 text-white':
 																field.value === 'Yes'
@@ -165,7 +157,7 @@ export function AdditionalValuesInfo() {
 
 												<div
 													className={cn(
-														'rounded-lg border border-gray-360 bg-white px-8 py-2 shadow-inputShadowDrop',
+														'border-gray-360 rounded-lg border bg-white px-8 py-2 shadow-inputShadowDrop',
 														{
 															'bg-blue-300 text-white':
 																field.value === 'No'

@@ -1,13 +1,10 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateTonnage } from '@/redux/slices'
+import { useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
 
 export function Tonnage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
-
-	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		gsap.from('.selectTonnage', { y: 80, opacity: 0, duration: 1, delay: 2 })
@@ -29,9 +26,6 @@ export function Tonnage() {
 				className='selectTonnage w-1/2'
 				placeholder='Horse Power'
 				value={vehicleData.tonnage}
-				onChange={(e) => {
-					dispatch(updateTonnage(e.target.value))
-				}}
 			/>
 		</div>
 	)
