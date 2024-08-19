@@ -1,14 +1,11 @@
 import { cn } from '@/lib'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { updateTariff } from '@/redux/slices'
 import gsap from 'gsap'
 
 export default function TariffZone() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
-
-	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.seat === 0) {
@@ -30,10 +27,7 @@ export default function TariffZone() {
 	})
 
 	return (
-		<div
-			className={cn('flex flex-col gap-7', {
-				'min-h-[65vh]': vehicleData.tariffZone === ''
-			})}>
+		<div className={cn('flex flex-col gap-7')}>
 			<div className='flex flex-row items-center gap-4'>
 				<div className='flex flex-col gap-2'>
 					<h1 className='tarifftitle font-jakarta text-xl font-bold text-blue-300'></h1>
@@ -41,11 +35,7 @@ export default function TariffZone() {
 				</div>
 			</div>
 			<div className='selectTariff flex w-full flex-row gap-10 lg:w-3/4'>
-				<Select
-					value={vehicleData.fuelType}
-					onValueChange={(e) => {
-						dispatch(updateTariff(e))
-					}}>
+				<Select value={vehicleData.fuelType}>
 					<SelectTrigger
 						className='w-3/4'
 						title='Tariff'
@@ -60,32 +50,6 @@ export default function TariffZone() {
 						<SelectItem value='Eastern'>Eastern</SelectItem>
 					</SelectContent>
 				</Select>
-			</div>
-			<div className='selectTariff grid grid-cols-3 gap-6 lg:grid-cols-5'>
-				<div
-					key={2}
-					className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-					onClick={() => {
-						dispatch(updateTariff('Northern'))
-					}}>
-					Northern
-				</div>
-				<div
-					key={4}
-					className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-					onClick={() => {
-						dispatch(updateTariff('Western'))
-					}}>
-					Western
-				</div>
-				<div
-					key={6}
-					className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-					onClick={() => {
-						dispatch(updateTariff('Southern'))
-					}}>
-					Southern
-				</div>
 			</div>
 		</div>
 	)

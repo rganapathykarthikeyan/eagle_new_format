@@ -1,14 +1,10 @@
 import { cn } from '@/lib'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
-import { Input } from '../ui'
-import { updateTariff } from '@/redux/slices'
 import gsap from 'gsap'
 
 export default function CylinderNumber() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
-
-	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.seat === 0) {
@@ -30,10 +26,7 @@ export default function CylinderNumber() {
 	})
 
 	return (
-		<div
-			className={cn('flex flex-col gap-7', {
-				'min-h-[65vh]': vehicleData.tariffZone === ''
-			})}>
+		<div className={cn('flex flex-col gap-7')}>
 			<div className='flex flex-row items-center gap-4'>
 				<div className='flex flex-col gap-2'>
 					<h1 className='cylindertitle font-jakarta text-xl font-bold text-blue-300'></h1>
@@ -41,16 +34,16 @@ export default function CylinderNumber() {
 				</div>
 			</div>
 			<div className='selectCylinder flex w-full flex-row gap-10 lg:w-3/4'>
-				<Input
+				{/* <Input
 					placeholder='Number of Seats'
 					type='number'
 					value={vehicleData.tariffZone === '' ? vehicleData.tariffZone : ''}
 					onChange={(e) => {
 						dispatch(updateTariff(e.target.value))
 					}}
-				/>
+				/> */}
 			</div>
-			<div className='selectCylinder grid grid-cols-3 gap-6 lg:grid-cols-5'>
+			{/* <div className='selectCylinder grid grid-cols-3 gap-6 lg:grid-cols-5'>
 				<div
 					key={2}
 					className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
@@ -75,7 +68,7 @@ export default function CylinderNumber() {
 					}}>
 					6
 				</div>
-			</div>
+			</div> */}
 		</div>
 	)
 }
