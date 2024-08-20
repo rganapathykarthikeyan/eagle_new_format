@@ -415,9 +415,9 @@ export function PremiumSideBar() {
 									</h4>
 								</div>
 								<div className='flex w-full flex-row items-center gap-2'>
-									<span className='rounded-lg border border-green-100 p-2 text-xs font-semibold'>
+									{/* <span className='rounded-lg border border-green-100 p-2 text-xs font-semibold'>
 										{vehicleData.seat} seats
-									</span>
+									</span> */}
 									<span className='text-xs font-bold text-green-75'>
 										{vehicleData.year} - {vehicleData.vehicleUsage}
 									</span>
@@ -435,12 +435,12 @@ export function PremiumSideBar() {
 							</span>
 							<span className='flex flex-col items-center text-sm font-bold text-green-75'>
 								Days Count
-								<span className='font-normal'>{vehicleData.policyDaysCount}</span>
+								<span className='font-normal'>365</span>
 							</span>
 						</div>
 						<div className='border-y-[0.5px] border-green-75 border-opacity-25 py-4'>
 							Your Insurance is protected by{' '}
-							<span className='font-bold'>Madison Insurance</span>
+							<span className='font-bold'>Eagle Insurance</span>
 						</div>
 						{isLoading ? (
 							<div className='flex w-full flex-col gap-4'>
