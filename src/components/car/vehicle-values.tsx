@@ -165,7 +165,7 @@ export function VehicleValues(props: VehcileValueDetails) {
 							name='model'
 							render={({ field }) => (
 								<FormItem className='w-full'>
-									<FormLabel className='text-blue-325'>Model</FormLabel>
+									<FormLabel className='text-blue-825'>Model</FormLabel>
 									<FormControl>
 										<Select
 											disabled={field.disabled || vehicleData.mark === ''}

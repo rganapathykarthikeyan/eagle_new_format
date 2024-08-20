@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 // import TariffZone from './tariff-zone'
 import { CustomerInfo } from './customer-info'
 import { VehcileBaseInfo } from './vehicle-base-info'
-import { VehcileValuesInfo } from './vehicle-values-info'
+// import { VehcileValuesInfo } from './vehicle-values-info'
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import { setGuestLoginDetails } from '@/redux/slices'
 import ClipLoader from 'react-spinners/ClipLoader'
@@ -117,8 +117,8 @@ export function DetailsPage() {
 						<VehcileBaseInfo goNext={goNext} />
 					</div>
 				)}
-				{vehicleData.mark !== '' && count > 1 && <VehcileValuesInfo goNext={goNext} />}
-				{vehicleData.fuelType !== '' && count > 2 && <CustomerInfo goNext={goNext} />}
+				{/* {vehicleData.mark !== '' && count > 1 && <VehcileValuesInfo goNext={goNext} />} */}
+				{vehicleData.mark !== '' && count > 1 && <CustomerInfo goNext={goNext} />}
 
 				{/* <div className='flex flex-row items-start justify-start gap-8'>
 					<Button

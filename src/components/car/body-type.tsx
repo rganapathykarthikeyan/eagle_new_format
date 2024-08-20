@@ -11,10 +11,13 @@ import { type UseFormReturn } from 'react-hook-form'
 type bodyTypeProps = {
 	form: UseFormReturn<
 		{
-			fuelType: string
+			motorUsage: string
 			bodyType: string
-			seatingCapacity: string
-			engineCapacity: string
+			make: string
+			model: string
+			manufactureyear: string
+			suminsured: string
+			isRenewal: boolean
 		},
 		unknown,
 		undefined
@@ -66,7 +69,7 @@ export function BodyType(props: bodyTypeProps) {
 			render={({ field }) => {
 				return (
 					<FormItem className='w-full'>
-						<FormLabel className='text-blue-325'>Body Type</FormLabel>
+						<FormLabel className='text-blue-825'>Body Type</FormLabel>
 						<FormControl>
 							<Select
 								disabled={field.disabled}

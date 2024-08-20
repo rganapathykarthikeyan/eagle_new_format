@@ -11,6 +11,7 @@ type vehicleUsageProps = {
 	form: UseFormReturn<
 		{
 			motorUsage: string
+			bodyType: string
 			make: string
 			model: string
 			manufactureyear: string
@@ -68,7 +69,7 @@ export function VehicleUsage(props: vehicleUsageProps) {
 			name='motorUsage'
 			render={({ field }) => (
 				<FormItem className='w-full'>
-					<FormLabel className='text-blue-325'>Motor Usage</FormLabel>
+					<FormLabel className='text-blue-825'>Motor Usage</FormLabel>
 					<FormControl>
 						<Select
 							disabled={field.disabled || model === ''}

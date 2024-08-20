@@ -14,10 +14,11 @@ import { SelectMark } from './select-mark'
 import { SelectModel } from './select-model'
 import { VehicleUsage } from './vehicle-usage'
 import { TextPlugin } from 'gsap/all'
+import { BodyType } from './body-type'
 
 const vehicleBaseSchema = z.object({
 	motorUsage: z.string().min(1, { message: 'Required' }),
-	// bodyType: z.string().min(1, { message: 'Required' }),
+	bodyType: z.string().min(1, { message: 'Required' }),
 	make: z.string().min(1, { message: 'Required' }),
 	model: z.string().min(1, { message: 'Required' }),
 	manufactureyear: z.string().min(4, { message: 'Required' }),
@@ -59,7 +60,7 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 		resolver: zodResolver(vehicleBaseSchema),
 		defaultValues: {
 			motorUsage: vehicleData.vehicleUsageID,
-			// bodyType: vehicleData.bodyType,
+			bodyType: vehicleData.bodyType,
 			make: vehicleData.makeID,
 			model: vehicleData.modelID,
 			manufactureyear: vehicleData.year + '',
@@ -72,7 +73,8 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 		dispatch(
 			updateVehicleBasicInfo({
 				suminsured: values.suminsured,
-				isRenewal: values.isRenewal
+				isRenewal: values.isRenewal,
+				manufactureyear: values.manufactureyear
 			})
 		)
 		setIsSubmitted(true)
@@ -103,61 +105,23 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
-							<SelectMark
+							<BodyType
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
 							/>
-							<SelectModel
+							<SelectMark
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
 							/>
 						</div>
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
-							<VehicleUsage
+							<SelectModel
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
 							/>
-							<FormField
-								control={form.control}
-								name='manufactureyear'
-								render={({ field }) => (
-									<FormItem className='w-full'>
-										<FormLabel className='text-blue-825'>
-											Manufacture Year
-										</FormLabel>
-										<FormControl>
-											<Select
-												disabled={field.disabled}
-												name={field.name}
-												value={field.value}
-												onValueChange={(e) => {
-													field.onChange(e)
-
-													if (isSubmitted) {
-														setIsSubmitted(false)
-													}
-												}}>
-												<SelectTrigger
-													ref={field.ref}
-													className='border-gray-360 border shadow-inputShadowDrop'>
-													<SelectValue placeholder='Manufacture Year' />
-												</SelectTrigger>
-												<SelectContent>
-													{years.map((year) => {
-														return (
-															<SelectItem
-																key={year}
-																value={year}>
-																{year}
-															</SelectItem>
-														)
-													})}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
+							<VehicleUsage
+								form={form}
+								setSubmittedStatus={setSubmittedStatus}
 							/>
 							{/* <FormField
 								control={form.control}
@@ -204,6 +168,48 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
 							<FormField
 								control={form.control}
+								name='manufactureyear'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Manufacture Year
+										</FormLabel>
+										<FormControl>
+											<Select
+												disabled={field.disabled}
+												name={field.name}
+												value={field.value}
+												onValueChange={(e) => {
+													field.onChange(e)
+
+													if (isSubmitted) {
+														setIsSubmitted(false)
+													}
+												}}>
+												<SelectTrigger
+													ref={field.ref}
+													className='border-gray-360 border shadow-inputShadowDrop'>
+													<SelectValue placeholder='Manufacture Year' />
+												</SelectTrigger>
+												<SelectContent>
+													{years.map((year) => {
+														return (
+															<SelectItem
+																key={year}
+																value={year}>
+																{year}
+															</SelectItem>
+														)
+													})}
+												</SelectContent>
+											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
 								name='suminsured'
 								render={({ field }) => (
 									<FormItem className='w-full'>
@@ -223,6 +229,8 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 									</FormItem>
 								)}
 							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
 							<FormField
 								control={form.control}
 								name='isRenewal'

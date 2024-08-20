@@ -11,6 +11,7 @@ type selectModelProps = {
 	form: UseFormReturn<
 		{
 			motorUsage: string
+			bodyType: string
 			make: string
 			model: string
 			manufactureyear: string
@@ -36,7 +37,8 @@ export function SelectModel(props: selectModelProps) {
 			const request = {
 				InsuranceId: appsData.insuranceID,
 				BranchCode: appsData.branchCode,
-				MakeId: vehicleData.makeID
+				MakeId: vehicleData.makeID,
+				BodyId: vehicleData.bodyTypeID
 			}
 			const tempArr: { value: string; label: string }[] = []
 			const res = getModel(request)
@@ -77,10 +79,10 @@ export function SelectModel(props: selectModelProps) {
 			name='model'
 			render={({ field }) => (
 				<FormItem className='w-full'>
-					<FormLabel className='text-blue-325'>Model</FormLabel>
+					<FormLabel className='text-blue-825'>Model</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled}
+							disabled={field.disabled || vehicleData.mark === ''}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {

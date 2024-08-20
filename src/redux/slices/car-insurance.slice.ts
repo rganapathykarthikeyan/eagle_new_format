@@ -1,3 +1,4 @@
+import { formatDateDDMMYYYY, formatDateDDMMYYYYNextYear } from '@/lib'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: CarDetails = {
@@ -12,8 +13,8 @@ const initialState: CarDetails = {
 	bodyType: '',
 	year: 0,
 	description: '',
-	policyStartDate: '',
-	policyEndDate: '',
+	policyStartDate: formatDateDDMMYYYY(new Date()),
+	policyEndDate: formatDateDDMMYYYYNextYear(new Date()),
 	currency: 'ZMW',
 	insuranceClass: 'Comprehensive',
 	sumInsured: null,
@@ -268,10 +269,12 @@ export const carInsuranceSlice = createSlice({
 			action: PayloadAction<{
 				suminsured: string
 				isRenewal: boolean
+				manufactureyear: string
 			}>
 		) {
 			state.sumInsured = action.payload.suminsured
 			state.isRenewal = action.payload.isRenewal
+			state.year = +action.payload.manufactureyear
 		},
 		updateVehicleValues(
 			state: CarDetails,

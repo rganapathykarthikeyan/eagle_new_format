@@ -12,6 +12,7 @@ type selectMarkProps = {
 	form: UseFormReturn<
 		{
 			motorUsage: string
+			bodyType: string
 			make: string
 			model: string
 			manufactureyear: string
@@ -69,7 +70,8 @@ export function SelectMark(props: selectMarkProps) {
 		if (vehicleData.bodyTypeID !== '') {
 			const request = {
 				InsuranceId: appsData.insuranceID,
-				BranchCode: appsData.branchCode
+				BranchCode: appsData.branchCode,
+				BodyId: vehicleData.bodyTypeID
 			}
 			const tempArr: { value: string; label: string }[] = []
 			const res = MotorMakeList(request)
@@ -99,10 +101,10 @@ export function SelectMark(props: selectMarkProps) {
 			name='make'
 			render={({ field }) => (
 				<FormItem className='w-full'>
-					<FormLabel className='text-blue-325'>Make</FormLabel>
+					<FormLabel className='text-blue-825'>Make</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled}
+							disabled={field.disabled || vehicleData.bodyTypeID === ''}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {

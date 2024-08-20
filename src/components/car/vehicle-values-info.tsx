@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { updateVehicleValueInfo } from '@/redux/slices'
-import { BodyType } from './body-type'
+// import { BodyType } from './body-type'
 import { FuelType } from './fuel-type'
 
 const vehicleValueInfoSchema = z.object({
@@ -81,10 +81,6 @@ export function VehcileValuesInfo(props: VehcileValuesInfoProps) {
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
-							<BodyType
-								form={form}
-								setSubmittedStatus={setSubmittedStatus}
-							/>
 							<FormField
 								control={form.control}
 								name='seatingCapacity'

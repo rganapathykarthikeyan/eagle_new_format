@@ -13,10 +13,18 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { updateCustomerDetails } from '@/redux/slices'
+import {
+	updateCoversList,
+	updateCustomerDetails,
+	updateDetails,
+	updatePremium
+} from '@/redux/slices'
 import { Label } from '../ui/label'
 import { useState } from 'react'
-// import { useRouter } from 'next/navigation'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import { useToast } from '../ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 const customerInfoSchema = z.object({
 	name: z.string().min(3, { message: 'name should be atleast 3 characters' }).max(50),
@@ -29,11 +37,15 @@ type CustomerInfoProps = {
 
 export function CustomerInfo(props: CustomerInfoProps) {
 	const customerData = useAppSelector((state) => state.customerDetails)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
-	// const router = useRouter()
+	const router = useRouter()
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+
+	const { toast } = useToast()
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5 })
@@ -44,6 +56,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 		// 	delay: 0.5
 		// })
 	})
+
+	const [saveMotor] = useSaveMotorDetailsMutation()
 
 	const form = useForm<z.infer<typeof customerInfoSchema>>({
 		resolver: zodResolver(customerInfoSchema),
@@ -56,13 +70,109 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	function onSubmit(values: z.infer<typeof customerInfoSchema>) {
 		dispatch(updateCustomerDetails({ name: values.name, mobile: values.mobile + '' }))
 		setIsSubmitted(true)
-		goToConfirm()
+		goToConfirm(values)
 		props.goNext()
 	}
 
-	function goToConfirm() {
-		// router.push('/car-insurance/confirm')
+	function goToConfirm(values: z.infer<typeof customerInfoSchema>) {
 		setIsLoading(true)
+		doSaveMotorDetails(values)
+	}
+
+	function doSaveMotorDetails(values: z.infer<typeof customerInfoSchema>) {
+		const req: SaveMotorDetailRequest = {
+			CustomerName: values.name,
+			LoginId: appData.loginId,
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
+			RequestReferenceNo: null,
+			VehicleId: '1',
+			CreatedBy: appData.loginId,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: '104',
+			AgencyCode: appData.agencyCode,
+			ProductId: appData.productId,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: values.mobile,
+			Chassisnumber: '',
+			Insurancetype: ['104', '103'],
+			ClaimType: '11',
+			InsuranceClass: '1',
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: vehicleData.modelID,
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
+			Gpstrackinginstalled: 'N',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.sumInsured !== null ? +vehicleData.sumInsured : 0,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
+			HavePromoCode: 'N',
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
+			Status: 'Y'
+		}
+		const res = saveMotor(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				dispatch(updatePremium(true))
+
+				if (value.data.data.Result.length === 1) {
+					dispatch(updateDetails(value.data.data.Result[0]))
+				} else {
+					dispatch(updateCoversList(value.data.data.Result))
+				}
+
+				router.push('/car-insurance/premium')
+				setIsLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+		})
 	}
 
 	return (
@@ -71,7 +181,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				<div className='flex flex-row -space-x-7'>
 					<div className='h-10 w-10 rounded-full bg-black'></div>
 					<div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-lg font-medium text-white'>
-						3
+						2
 					</div>
 				</div>
 				<h1 className='text-center font-inter text-4xl font-bold text-blue-825'>
