@@ -1,4 +1,11 @@
-import { DM_Sans, Inter, Plus_Jakarta_Sans, Roboto, Manrope } from 'next/font/google'
+import {
+	DM_Sans,
+	Inter,
+	Plus_Jakarta_Sans,
+	Roboto,
+	Manrope,
+	DM_Serif_Display
+} from 'next/font/google'
 
 const roboto = Roboto({
 	weight: ['300', '400', '500', '700'],
@@ -40,4 +47,12 @@ const manrope = Manrope({
 	variable: '--font-manrope'
 })
 
-export const fonts = [roboto, inter, jakarta, dmsan, manrope]
+const dmserif = DM_Serif_Display({
+	weight: ['400'],
+	style: ['normal'],
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-dmserif'
+})
+
+export const fonts = [roboto, inter, jakarta, dmsan, manrope, dmserif]

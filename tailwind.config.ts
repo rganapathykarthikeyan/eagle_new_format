@@ -33,6 +33,7 @@ const config = {
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
 					800: '#818181', // mediumGray
+					825: '#E1E4E8',
 					850: '#908E8E',
 					900: '#AFAFAF',
 					920: '#EFF0F6',
@@ -49,7 +50,6 @@ const config = {
 					450: '#1849D6',
 					475: '#2E8ED3',
 					500: '#5452F6', // indigo
-					525: '#283671',
 					600: '#1E293B', // gunmetal
 					625: '#020246',
 					700: '#4285F4', // vibrantBlue
@@ -58,6 +58,8 @@ const config = {
 					775: '#17CEF5',
 					800: '#EDEEFF', // paleBlue
 					825: '#283671',
+					850: '#170F49',
+					875: '#2B67F6',
 					900: '#337ab7', // Moderate blue
 					925: '#2498DBB2'
 				},
@@ -134,14 +136,17 @@ const config = {
 			boxShadow: {
 				confirmContainerShadow: '0px 4px 16px 0px rgba(17, 34, 17, 0.05)',
 				detailsContainerShadow: '0px 1.5px 2px 0px rgba(16, 24, 40, 0.1)',
-				inputShadowDrop: '0px 2px 6px 0px rgba(19, 18, 66, 0.07)'
+				inputShadowDrop: '0px 2px 6px 0px rgba(19, 18, 66, 0.07)',
+				containerShadow1: '0px 1px 1px 1px rgba(0, 0, 0, 0.1)',
+				premiumContainerShadow: '0px 0px 16px 0px rgba(0, 0, 0, 0.06)'
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],
 				roboto: ['var(--font-roboto)'],
 				jakarta: ['var(--font-jakarta)'],
 				dmsan: ['var(--font-dmsan)'],
-				manrope: ['var(--font-manrope)']
+				manrope: ['var(--font-manrope)'],
+				dmserif: ['var(--font-dmserif)']
 			},
 			lineHeight: {
 				'11': '2.75rem',

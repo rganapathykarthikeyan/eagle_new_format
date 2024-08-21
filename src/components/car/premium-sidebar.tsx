@@ -212,61 +212,6 @@ export function PremiumSideBar() {
 		setNeedUpdatedData(true)
 	}, [vehicleData])
 
-	// useEffect(() => {
-	// 	if (motorData.RequestReferenceNo !== '') {
-	// 		if (motorData.AllCoverList.length === 0) {
-	// 			const req = {
-	// 				InsuranceId: appData.insuranceID,
-	// 				BranchCode: appData.branchCode,
-	// 				AgencyCode: appData.agencyCode,
-	// 				SectionId: vehicleData.classID,
-	// 				ProductId: appData.productId,
-	// 				MSRefNo: motorData.MSRefNo,
-	// 				VehicleId: motorData.VehicleId,
-	// 				CdRefNo: motorData.CdRefNo,
-	// 				DdRefNo: motorData.DdRefNo,
-	// 				VdRefNo: motorData.VdRefNo,
-	// 				CreatedBy: motorData.CreatedBy,
-	// 				productId: motorData.ProductId,
-	// 				RequestReferenceNo: motorData.RequestReferenceNo,
-	// 				EffectiveDate: vehicleData.policyStartDate,
-	// 				PolicyEndDate: vehicleData.policyEndDate,
-	// 				CoverModification: 'N'
-	// 			}
-	// 			setIsLoading(true)
-	// 			const res = premiumCalculator(req)
-	// 			res.then(() => {
-	// 				ViewPremiumData()
-	// 			})
-	// 		} else {
-	// 			console.log(motorData.AllCoverList)
-	// 			motorData.AllCoverList.map((cover) => {
-	// 				const req = {
-	// 					InsuranceId: appData.insuranceID,
-	// 					BranchCode: appData.branchCode,
-	// 					AgencyCode: appData.agencyCode,
-	// 					SectionId: '104',
-	// 					ProductId: appData.productId,
-	// 					MSRefNo: cover.MSRefNo,
-	// 					VehicleId: cover.VehicleId,
-	// 					CdRefNo: cover.CdRefNo,
-	// 					DdRefNo: cover.DdRefNo,
-	// 					VdRefNo: cover.VdRefNo,
-	// 					CreatedBy: cover.CreatedBy,
-	// 					productId: cover.ProductId,
-	// 					RequestReferenceNo: cover.RequestReferenceNo,
-	// 					EffectiveDate: vehicleData.policyStartDate,
-	// 					PolicyEndDate: vehicleData.policyEndDate,
-	// 					CoverModification: 'N'
-	// 				}
-	// 				setIsLoading(true)
-	// 				premiumCalculator(req)
-	// 			})
-	// 			ViewPremiumData()
-	// 		}
-	// 	}
-	// }, [])
-
 	function ViewPremiumData() {
 		const req = {
 			ProductId:
@@ -377,6 +322,60 @@ export function PremiumSideBar() {
 		setTotal(total.toFixed(2))
 	}, [accessories.PremiumIncludedTax, basicDetails.PremiumIncludedTax])
 
+	// useEffect(() => {
+	// 	if (motorData.RequestReferenceNo !== '') {
+	// 		if (motorData.AllCoverList.length === 0) {
+	// 			const req = {
+	// 				InsuranceId: appData.insuranceID,
+	// 				BranchCode: appData.branchCode,
+	// 				AgencyCode: appData.agencyCode,
+	// 				SectionId: vehicleData.classID,
+	// 				ProductId: appData.productId,
+	// 				MSRefNo: motorData.MSRefNo,
+	// 				VehicleId: motorData.VehicleId,
+	// 				CdRefNo: motorData.CdRefNo,
+	// 				DdRefNo: motorData.DdRefNo,
+	// 				VdRefNo: motorData.VdRefNo,
+	// 				CreatedBy: motorData.CreatedBy,
+	// 				productId: motorData.ProductId,
+	// 				RequestReferenceNo: motorData.RequestReferenceNo,
+	// 				EffectiveDate: vehicleData.policyStartDate,
+	// 				PolicyEndDate: vehicleData.policyEndDate,
+	// 				CoverModification: 'N'
+	// 			}
+	// 			setIsLoading(true)
+	// 			const res = premiumCalculator(req)
+	// 			res.then(() => {
+	// 				ViewPremiumData()
+	// 			})
+	// 		} else {
+	// 			console.log(motorData.AllCoverList)
+	// 			motorData.AllCoverList.map((cover) => {
+	// 				const req = {
+	// 					InsuranceId: appData.insuranceID,
+	// 					BranchCode: appData.branchCode,
+	// 					AgencyCode: appData.agencyCode,
+	// 					SectionId: '104',
+	// 					ProductId: appData.productId,
+	// 					MSRefNo: cover.MSRefNo,
+	// 					VehicleId: cover.VehicleId,
+	// 					CdRefNo: cover.CdRefNo,
+	// 					DdRefNo: cover.DdRefNo,
+	// 					VdRefNo: cover.VdRefNo,
+	// 					CreatedBy: cover.CreatedBy,
+	// 					productId: cover.ProductId,
+	// 					RequestReferenceNo: cover.RequestReferenceNo,
+	// 					EffectiveDate: vehicleData.policyStartDate,
+	// 					PolicyEndDate: vehicleData.policyEndDate,
+	// 					CoverModification: 'N'
+	// 				}
+	// 				setIsLoading(true)
+	// 				premiumCalculator(req)
+	// 			})
+	// 			ViewPremiumData()
+	// 		}
+	// 	}
+	// }, [])
 	return (
 		<div className='flex h-full w-full flex-col gap-4 font-roboto'>
 			{customerData.premium && (

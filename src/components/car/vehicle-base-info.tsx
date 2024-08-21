@@ -60,7 +60,7 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 		resolver: zodResolver(vehicleBaseSchema),
 		defaultValues: {
 			motorUsage: vehicleData.vehicleUsageID,
-			bodyType: vehicleData.bodyType,
+			bodyType: vehicleData.bodyTypeID,
 			make: vehicleData.makeID,
 			model: vehicleData.modelID,
 			manufactureyear: vehicleData.year + '',

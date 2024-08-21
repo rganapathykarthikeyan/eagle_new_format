@@ -5,7 +5,9 @@ export const assets = {
 		carIcon: '/icons/ion-car-sport.svg',
 		between: '/icons/between.svg',
 		google: '/icons/google-icon.svg',
-		apple: '/icons/apple-icon.svg'
+		apple: '/icons/apple-icon.svg',
+		view: '/icons/view.svg',
+		shield: '/icons/shield.svg'
 	},
 	images: {
 		bike: '/images/bike.png',
