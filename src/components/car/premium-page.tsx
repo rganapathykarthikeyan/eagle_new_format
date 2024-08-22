@@ -15,6 +15,7 @@ import {
 } from '@/redux/api/commonApi'
 import {
 	setCoversDetails,
+	setSelectedCoversDetails,
 	storePremiumData,
 	updateCoversList,
 	updateDetails,
@@ -22,6 +23,7 @@ import {
 } from '@/redux/slices'
 import { Button } from '../ui'
 import { Skeleton } from '../ui/skeleton'
+import { OTPDialogBox } from './otp-dialog-box'
 
 export type CoverList = {
 	CalcType: string
@@ -32,6 +34,7 @@ export type CoverList = {
 	Currency: string
 	SumInsured: string
 	Rate: string
+	SubCoverId: string
 	PremiumBeforeTax: string
 	PremiumAfterTax: string
 	CoverageType: string
@@ -42,6 +45,27 @@ export type CoverList = {
 		TaxID: string
 	}[]
 }[]
+
+export type Cover = {
+	CalcType: string
+	isSelected: string
+	CoverName: string
+	CoverDesc: string
+	CoverID: string
+	Currency: string
+	SumInsured: string
+	Rate: string
+	SubCoverId: string
+	PremiumBeforeTax: string
+	PremiumAfterTax: string
+	CoverageType: string
+	Taxes: {
+		TaxDesc: string
+		TaxAmount: string
+		TaxRate: string
+		TaxID: string
+	}[]
+}
 
 export function PremiumPage() {
 	const customerData = useAppSelector((state) => state.customerDetails)
@@ -65,6 +89,68 @@ export function PremiumPage() {
 	const [mainCoverList, setMainCoverList] = useState<CoverList>([])
 	const [benefitCoverList, setBenefitCoverList] = useState<CoverList>([])
 	const [optionalCoverList, setOptionalCoverList] = useState<CoverList>([])
+
+	const [selectedCoverList, setSelectedCoverList] = useState<CoverList>([])
+
+	const [otpOpen, setOtpOpen] = useState<boolean>(false)
+
+	function getOtpDialogOpen() {
+		const coverList: {
+			CoverId: string
+			SubCoverId: string | null
+			SubCoverYn: string
+		}[] = []
+
+		selectedCoverList.map((covers) => {
+			coverList.push({
+				CoverId: covers.CoverID,
+				SubCoverId: covers.SubCoverId,
+				SubCoverYn: 'N'
+			})
+		})
+
+		benefitCoverList.map((covers) => {
+			coverList.push({
+				CoverId: covers.CoverID,
+				SubCoverId: covers.SubCoverId,
+				SubCoverYn: 'N'
+			})
+		})
+
+		dispatch(setSelectedCoversDetails(coverList))
+
+		setOtpOpen(true)
+	}
+
+	useEffect(() => {
+		const alreadySelectedCovers = allCoverList.filter((cover) => {
+			return appData.selectedCovers.some((selCover) => {
+				return selCover.CoverId === cover.CoverID
+			})
+		})
+
+		const selectedWithoutBenefits = alreadySelectedCovers.filter((cover) => {
+			return !benefitCoverList.some((selCover) => {
+				return selCover.CoverID === cover.CoverID
+			})
+		})
+
+		setSelectedCoverList(selectedWithoutBenefits)
+	}, [allCoverList, appData.selectedCovers])
+
+	function closeOTPDialog() {
+		setOtpOpen(false)
+	}
+
+	function addCover(cover: Cover) {
+		setSelectedCoverList((prev) => [...prev, cover])
+	}
+
+	function removeCover(cover: Cover) {
+		setSelectedCoverList((prev) => {
+			return prev.filter((value) => value.CoverID !== cover.CoverID)
+		})
+	}
 
 	function doSaveMotorDetails() {
 		setIsMotorLoading(true)
@@ -283,6 +369,7 @@ export function PremiumPage() {
 						CoverID: covers.CoverId,
 						Currency: covers.Currency,
 						SumInsured: covers.SumInsured + '',
+						SubCoverId: covers.SubCoverId != null ? covers.SubCoverId : '',
 						Rate: covers.Rate + '',
 						PremiumBeforeTax: covers.PremiumExcluedTax + '',
 						PremiumAfterTax: covers.PremiumIncludedTax + '',
@@ -342,6 +429,10 @@ export function PremiumPage() {
 			setMainCoverList(mainCovers)
 			setBenefitCoverList(benefitCovers)
 			setOptionalCoverList(optionalCovers)
+
+			if (appData.selectedCovers.length === 0) {
+				setSelectedCoverList(mainCovers)
+			}
 		}
 	}, [allCoverList])
 
@@ -370,8 +461,11 @@ export function PremiumPage() {
 						<Skeleton className='h-[50vh] w-full' />
 					) : (
 						<AddonDetailsDisplay
+							addCover={addCover}
 							benefitCoverList={benefitCoverList}
 							optionalCoverList={optionalCoverList}
+							removeCover={removeCover}
+							selectedCoverList={selectedCoverList}
 						/>
 					)}
 					<div className='flex min-h-10 min-w-10 flex-row items-center justify-center self-center rounded-full bg-green-600'>
@@ -380,9 +474,20 @@ export function PremiumPage() {
 							size={32}
 						/>
 					</div>
-					{isLoading ? <Skeleton className='h-[50vh] w-full' /> : <TotalPremiumDisplay />}
+					{isLoading ? (
+						<Skeleton className='h-[50vh] w-full' />
+					) : (
+						<TotalPremiumDisplay
+							getOtpDialogOpen={getOtpDialogOpen}
+							selectedCoverList={selectedCoverList}
+						/>
+					)}
 				</section>
 			)}
+			<OTPDialogBox
+				closeDialog={closeOTPDialog}
+				otpOpen={otpOpen}
+			/>
 		</>
 	)
 }

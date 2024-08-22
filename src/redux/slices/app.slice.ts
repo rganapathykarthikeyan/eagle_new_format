@@ -13,7 +13,8 @@ const initialState: AppDetails = {
 	userType: '',
 	subUserType: '',
 	agencyCode: '',
-	covers: []
+	covers: [],
+	selectedCovers: []
 }
 
 export type AppDetails = {
@@ -30,6 +31,11 @@ export type AppDetails = {
 	subUserType: string
 	agencyCode: string
 	covers: {
+		CoverId: string
+		SubCoverId: string | null
+		SubCoverYn: string
+	}[]
+	selectedCovers: {
 		CoverId: string
 		SubCoverId: string | null
 		SubCoverYn: string
@@ -83,11 +89,29 @@ export const appSlice = createSlice({
 			>
 		) {
 			state.covers = action.payload
+		},
+		setSelectedCoversDetails(
+			state: AppDetails,
+			action: PayloadAction<
+				{
+					CoverId: string
+					SubCoverId: string | null
+					SubCoverYn: string
+				}[]
+			>
+		) {
+			state.selectedCovers = action.payload
 		}
 	}
 })
 
-export const { setScrollTo, setGuestLoginDetails, setOTPToken, setCoversDetails } = appSlice.actions
+export const {
+	setScrollTo,
+	setGuestLoginDetails,
+	setOTPToken,
+	setCoversDetails,
+	setSelectedCoversDetails
+} = appSlice.actions
 
 export function selectCurrentToken(state: AppDetails) {
 	return state.token

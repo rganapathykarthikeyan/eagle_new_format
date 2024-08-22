@@ -116,6 +116,13 @@ export const motorSlice = createSlice({
 			>
 		) {
 			state.AllCoverList = action.payload
+			state.RequestReferenceNo = action.payload[0].RequestReferenceNo
+			state.CustomerReferenceNo = action.payload[0].CustomerReferenceNo
+			state.CreatedBy = action.payload[0].CreatedBy
+			state.InsuranceId = action.payload[0].InsuranceId
+			state.ProductId = action.payload[0].ProductId
+			state.SectionId = action.payload[0].SectionId
+			state.VehicleId = action.payload[0].VehicleId
 		}
 	}
 })
