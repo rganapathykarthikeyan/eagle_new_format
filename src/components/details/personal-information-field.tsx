@@ -1,205 +1,412 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import {
+	Button,
+	Input,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from '../ui'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { type CustomerFormType } from './customer-details-form'
+import { useGetOccupationListMutation, useTitleTypeMutation } from '@/redux/api/commonApi'
+import { useAppSelector } from '@/redux/hooks'
+import { Skeleton } from '../ui/skeleton'
+import { Calendar } from '../ui/calendar'
+import { CalendarDays } from 'lucide-react'
+import { format } from 'date-fns'
 import { cn } from '@/lib'
-import { Button, Input } from '../ui'
-import { Label } from '../ui/label'
-import { FormFieldLayout } from './form-field-layout'
-import { useState } from 'react'
 
 type personalInformationFieldProps = {
-	current: number
-	pos: number
-	goNext: () => void
-	goSpecific: (num: number) => void
+	customer: string
+	form: CustomerFormType
 }
 
 export function PersonalInformationField(props: personalInformationFieldProps) {
-	const [customerType, setCustomerType] = useState<string>('Personal')
-	const [customerOrInsured, setCustomerOrInsured] = useState<string>('Customer')
+	const [getTitleTypes] = useTitleTypeMutation()
+	const [titleList, setTitleList] = useState<{ value: string; label: string }[]>([])
+	const [OccupationList, setOccupation] = useState<{ value: string; label: string }[]>([])
+	const branchCode = useAppSelector((state) => state.apps.branchCode)
+
+	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
+	const [getOccupation] = useGetOccupationListMutation()
+
+	const years18 = new Date()
+
+	years18.setFullYear(years18.getFullYear() - 18)
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: insuranceID,
+			ItemType: 'NAME_TITLE',
+			BranchCode: '99999',
+			ItemCode: 'null',
+			TitleType: props.customer === 'Personal' ? 'I' : 'C'
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = getTitleTypes(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setTitleList(tempArr)
+			}
+		})
+	}, [props.customer])
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: insuranceID,
+			BranchCode: branchCode,
+			ProductId: '',
+			TitleType: ''
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = getOccupation(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setOccupation(tempArr)
+			}
+		})
+	}, [])
 
 	return (
-		<FormFieldLayout
-			current={props.current}
-			done={props.current > 1}
-			goSpecific={props.goSpecific}
-			pos={props.pos}
-			show={props.current === 1}
-			subTitle='Additional information around Step 1'
-			title='Step 1 - Personal Information'>
-			<>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='flex flex-grow flex-col'>
-						<span>Account Type</span>
-						<div className='glex-row flex flex-grow gap-8'>
-							<div
-								className={cn(
-									'cursor-pointer rounded-md border px-8 py-2 font-semibold',
-									{
-										'bg-blue-300 text-white': customerType === 'Personal'
-									}
-								)}
-								onClick={() => {
-									setCustomerType('Personal')
-								}}>
-								Personal
-							</div>
-							<div
-								className={cn(
-									'cursor-pointer rounded-md border px-8 py-2 font-semibold',
-									{
-										'bg-blue-300 text-white': customerType === 'Corporate'
-									}
-								)}
-								onClick={() => {
-									setCustomerType('Corporate')
-								}}>
-								Corporate
-							</div>
-						</div>
-					</div>
-					<div className='flex flex-grow flex-col'>
-						<span>Customer or Insured</span>
-						<div className='glex-row flex flex-grow gap-8'>
-							<div
-								className={cn(
-									'cursor-pointer rounded-md border px-8 py-2 font-semibold',
-									{
-										'bg-blue-300 text-white': customerOrInsured === 'Customer'
-									}
-								)}
-								onClick={() => {
-									setCustomerOrInsured('Customer')
-								}}>
-								Customer
-							</div>
-							<div
-								className={cn(
-									'cursor-pointer rounded-md border px-8 py-2 font-semibold',
-									{
-										'bg-blue-300 text-white': customerOrInsured === 'Insured'
-									}
-								)}
-								onClick={() => {
-									setCustomerOrInsured('Insured')
-								}}>
-								Insured
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='max-w-20'>
-						<Label htmlFor='title'>Title</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='title'
-							placeholder='Title'
-						/>
-					</div>
-					{customerType === 'Personal' ? (
-						<>
-							<div className='flex-grow'>
-								<Label htmlFor='firstname'>First Name</Label>
+		<>
+			<FormField
+				control={props.form.control}
+				name='title'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Title<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							{titleList.length === 0 ? (
+								<Skeleton className='h-10 w-full' />
+							) : (
+								<div className='w-20'>
+									<Select
+										disabled={field.disabled}
+										name={field.name}
+										value={field.value}
+										onValueChange={(e) => {
+											field.onChange(e)
+										}}>
+										<SelectTrigger
+											ref={field.ref}
+											className='bg-gray-975 border border-gray-375'>
+											<SelectValue placeholder='Title' />
+										</SelectTrigger>
+										<SelectContent>
+											{titleList.map((title, index) => {
+												return (
+													<SelectItem
+														key={index}
+														value={title.value}>
+														{title.label}
+													</SelectItem>
+												)
+											})}
+										</SelectContent>
+									</Select>
+								</div>
+							)}
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			{props.customer === 'Personal' ? (
+				<>
+					<FormField
+						control={props.form.control}
+						name='firstname'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
+									First Name<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='bg-gray-975 border border-gray-375'
+										id='firstname'
+										placeholder='First Name'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={props.form.control}
+						name='lastname'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
+									Last Name<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='bg-gray-975 border border-gray-375'
+										id='lastname'
+										placeholder='Last Name'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</>
+			) : (
+				<FormField
+					control={props.form.control}
+					name='firstname'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Customer Name<span className='text-red-500'>*</span>
+							</FormLabel>
+							<FormControl>
 								<Input
-									className='border-2 border-blue-925'
+									{...field}
+									className='bg-gray-975 border border-gray-375'
 									id='firstname'
-									placeholder='First Name'
+									placeholder='Customer Name'
 								/>
-							</div>
-							<div className='flex-grow'>
-								<Label htmlFor='lastname'>Last Name</Label>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			)}
+			{props.customer === 'Personal' ? (
+				<FormField
+					control={props.form.control}
+					name='SocioCategory'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Socio-professional category<span className='text-red-500'>*</span>
+							</FormLabel>
+							<FormControl>
 								<Input
-									className='border-2 border-blue-925'
-									id='lastname'
-									placeholder='Last Name'
+									{...field}
+									className='bg-gray-975 border border-gray-375'
+									id='socio'
+									placeholder='Socio-professional category'
 								/>
-							</div>
-						</>
-					) : (
-						<div className='flex-grow'>
-							<Label htmlFor='company'>Company Name</Label>
-							<Input
-								className='border-2 border-blue-925'
-								id='company'
-								placeholder='Company Name'
-							/>
-						</div>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
 					)}
-				</div>
-				<div className='flex w-full flex-row gap-8'>
-					{customerType === 'Personal' ? (
-						<div className='flex-grow'>
-							<Label htmlFor='category'>Socio-professional category</Label>
-							<Input
-								className='border-2 border-blue-925'
-								id='category'
-								placeholder='Socio-professional category'
-							/>
-						</div>
-					) : (
-						<div className='flex-grow'>
-							<Label htmlFor='activites'>Activites</Label>
-							<Input
-								className='border-2 border-blue-925'
-								id='activites'
-								placeholder='Activites'
-							/>
-						</div>
+				/>
+			) : (
+				<FormField
+					control={props.form.control}
+					name='SocioCategory'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Activities<span className='text-red-500'>*</span>
+							</FormLabel>
+							<FormControl>
+								<Input
+									{...field}
+									className='bg-gray-975 border border-gray-375'
+									id='Activities'
+									placeholder='Activities'
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
 					)}
-					<div className='flex-grow'>
-						<Label htmlFor='occupation'>Occupation</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='occupation'
-							placeholder='Occupation'
-						/>
-					</div>
+				/>
+			)}
+			<FormField
+				control={props.form.control}
+				name='occupation'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Occupation<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							{OccupationList.length === 0 ? (
+								<Skeleton className='h-10 w-full' />
+							) : (
+								<Select
+									disabled={field.disabled}
+									name={field.name}
+									value={field.value}
+									onValueChange={field.onChange}>
+									<SelectTrigger
+										ref={field.ref}
+										className='bg-gray-975 border border-gray-375'>
+										<SelectValue placeholder='Occupation' />
+									</SelectTrigger>
+									<SelectContent>
+										{OccupationList.map((occupation, index) => {
+											return (
+												<SelectItem
+													key={index}
+													value={occupation.value}>
+													{occupation.label}
+												</SelectItem>
+											)
+										})}
+									</SelectContent>
+								</Select>
+							)}
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			{props.customer === 'Personal' && (
+				<div className='min-w-32'>
+					<FormField
+						control={props.form.control}
+						name='gender'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
+									Gender<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Select
+										disabled={field.disabled}
+										name={field.name}
+										value={field.value}
+										onValueChange={(e) => {
+											field.onChange(e)
+										}}>
+										<SelectTrigger
+											ref={field.ref}
+											className='bg-gray-975 border border-gray-375'>
+											<SelectValue placeholder='Gender' />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem
+												key={1}
+												value='M'>
+												Male
+											</SelectItem>
+											<SelectItem
+												key={2}
+												value='F'>
+												Female
+											</SelectItem>
+										</SelectContent>
+									</Select>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
 				</div>
-				<div className='flex w-full flex-row gap-8'>
-					{customerType === 'Personal' && (
-						<div className='flex-grow'>
-							<Label htmlFor='gender'>Gender</Label>
+			)}
+			<FormField
+				control={props.form.control}
+				name='civility'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Civility<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
 							<Input
-								className='border-2 border-blue-925'
-								id='gender'
-								placeholder='Gender'
+								{...field}
+								className='bg-gray-975 border border-gray-375'
+								id='civility'
+								placeholder='Civility'
 							/>
-						</div>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			{props.customer === 'Personal' && (
+				<FormField
+					control={props.form.control}
+					name='dob'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Date of Birth
+								<span className='text-red-500'>*</span>
+							</FormLabel>
+							<Popover>
+								<PopoverTrigger asChild>
+									<FormControl>
+										<Button
+											id='start'
+											variant='outline'
+											className={cn(
+												'bg-gray-975 w-full border border-gray-375 pl-3 text-left font-normal text-black',
+												!field.value && 'text-muted-foreground'
+											)}>
+											{field.value ? (
+												format(field.value, 'PPP')
+											) : (
+												<span>Pick a date</span>
+											)}
+											<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
+										</Button>
+									</FormControl>
+								</PopoverTrigger>
+								<PopoverContent
+									align='start'
+									className='w-auto p-0'>
+									<>
+										<Calendar
+											initialFocus
+											captionLayout='dropdown-buttons'
+											className='p-0'
+											fromYear={1900}
+											id='DOB'
+											mode='single'
+											selected={field.value}
+											toMonth={years18}
+											toYear={years18.getFullYear()}
+											classNames={{
+												day_hidden: 'invisible',
+												dropdown:
+													'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+												caption_dropdowns: 'flex gap-3',
+												vhidden: 'hidden',
+												caption_label: 'hidden'
+											}}
+											disabled={(date) =>
+												date > years18 || date < new Date('1900-01-01')
+											}
+											onSelect={(e) => {
+												field.onChange(e)
+											}}
+										/>
+									</>
+								</PopoverContent>
+							</Popover>
+						</FormItem>
 					)}
-					<div className='flex-grow'>
-						<Label htmlFor='Civility'>Civility</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='Civility'
-							placeholder='Civility'
-						/>
-					</div>
-				</div>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='flex-grow'>
-						<Label htmlFor='DOB'>DOB</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='DOB'
-							placeholder='Date of Birth'
-						/>
-					</div>
-					<div className='flex-grow'>
-						<Label htmlFor='Nationality'>Nationality</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='Nationality'
-							placeholder='Nationality'
-						/>
-					</div>
-				</div>
-				<Button
-					className='w-32'
-					variant='greenbtn'
-					onClick={props.goNext}>
-					Continue
-				</Button>
-			</>
-		</FormFieldLayout>
+				/>
+			)}
+		</>
 	)
 }

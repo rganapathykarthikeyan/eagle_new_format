@@ -1,68 +1,157 @@
-import { Button, Input } from '../ui'
-import { Label } from '../ui/label'
-import { FormFieldLayout } from './form-field-layout'
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { type CustomerFormType } from './customer-details-form'
 
 type identificationDetailsFieldProps = {
-	current: number
-	pos: number
-	goNext: () => void
-	goSpecific: (num: number) => void
+	form: CustomerFormType
 }
 
 export function IdentificationDetailsField(props: identificationDetailsFieldProps) {
 	return (
-		<FormFieldLayout
-			current={props.current}
-			done={props.current > 2}
-			goSpecific={props.goSpecific}
-			pos={props.pos}
-			show={props.current === 2}
-			subTitle='Additional information around Step 2'
-			title='Step 2 - Identification Details'>
-			<>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='flex-grow'>
-						<Label htmlFor='type'>ID Type</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='type'
-							placeholder='ID Type'
-						/>
-					</div>
-				</div>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='flex-grow'>
-						<Label htmlFor='number'>ID Number</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='number'
-							placeholder='Enter ID Number'
-						/>
-					</div>
-					<div className='flex-grow'>
-						<Label htmlFor='registrationDate'>Registration Date</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='registrationDate'
-							placeholder='DD/MM/YY'
-						/>
-					</div>
-					<div className='flex-grow'>
-						<Label htmlFor='expdate'>ID Expiration Date</Label>
-						<Input
-							className='border-2 border-blue-925'
-							id='expdate'
-							placeholder='DD/MM/YY'
-						/>
-					</div>
-				</div>
-				<Button
-					className='w-32'
-					variant='greenbtn'
-					onClick={props.goNext}>
-					Continue
-				</Button>
-			</>
-		</FormFieldLayout>
+		<>
+			<FormField
+				control={props.form.control}
+				name='idType'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							ID Type<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							<Input
+								{...field}
+								className='bg-gray-975 border border-gray-375'
+								id='idType'
+								placeholder='Id Type'
+							/>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			<FormField
+				control={props.form.control}
+				name='idNumber'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							ID Number<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							<Input
+								{...field}
+								className='bg-gray-975 border border-gray-375'
+								id='idNumber'
+								placeholder='Id Number'
+							/>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			<FormField
+				control={props.form.control}
+				name='preferredNotification'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Preferred Notification<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							<Input
+								{...field}
+								className='bg-gray-975 border border-gray-375'
+								id='notify'
+								placeholder='Preferred Notification'
+							/>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			<FormField
+				control={props.form.control}
+				name='taxExempted'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Tax Exempted<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							<Select
+								disabled={field.disabled}
+								name={field.name}
+								value={field.value ? 'Yes' : 'No'}
+								onValueChange={(e) => {
+									field.onChange(e === 'Yes' ? true : false)
+								}}>
+								<SelectTrigger
+									ref={field.ref}
+									className='bg-gray-975 border border-gray-375'>
+									<SelectValue placeholder='Tax Exempted' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem
+										key={1}
+										value='Yes'>
+										Yes
+									</SelectItem>
+									<SelectItem
+										key={2}
+										value='No'>
+										No
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			<FormField
+				control={props.form.control}
+				name='status'
+				render={({ field }) => (
+					<FormItem>
+						<FormLabel>
+							Status<span className='text-red-500'>*</span>
+						</FormLabel>
+						<FormControl>
+							<Select
+								disabled={field.disabled}
+								name={field.name}
+								value={field.value ? 'Yes' : 'No'}
+								onValueChange={(e) => {
+									field.onChange(e === 'Yes' ? true : false)
+								}}>
+								<SelectTrigger
+									ref={field.ref}
+									className='bg-gray-975 border border-gray-375'>
+									<SelectValue placeholder='Status' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem
+										key={1}
+										value='Active'>
+										Active
+									</SelectItem>
+									<SelectItem
+										key={2}
+										value='Deactive'>
+										Deactive
+									</SelectItem>
+									<SelectItem
+										key={2}
+										value='Pending'>
+										Pending
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+		</>
 	)
 }

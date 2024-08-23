@@ -1,48 +1,93 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { MotorDetailsField } from './motor-details-field'
-import { ValuationDetailsField } from './valuation-details-field'
-import { EnergySpecificationField } from './energy-specification-field'
-import { AdditionalVehicleInfo } from './additional-vehicle-info'
 import { Button } from '../ui'
+import { CustomerDetailsTab } from './customer-details-tab'
+import { Form } from '../ui/form'
+import { z } from 'zod'
+import { useForm, type UseFormReturn } from 'react-hook-form'
+import { useAppSelector } from '@/redux/hooks'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const formSchema = z.object({
+	regNo: z.string().min(1, {
+		message: 'Registration Number is Required'
+	}),
+	chassisNo: z.string().min(2, {
+		message: 'Please enter Chassis number'
+	}),
+	engineNo: z.string().min(2, {
+		message: 'Please enter Engine Number'
+	}),
+	engineCapacity: z.string(),
+	color: z.string().optional(),
+	seats: z.string().min(1, { message: 'Required' }),
+	tareweight: z.string().min(1, { message: 'Required' })
+})
+
+export type vehicleFormType = UseFormReturn<
+	{
+		regNo: string
+		chassisNo: string
+		engineNo: string
+		engineCapacity: string
+		seats: string
+		color?: string | undefined
+		tareweight: string
+	},
+	unknown,
+	undefined
+>
 
 export function VehicleDetailsForm() {
-	const [current, setCurrent] = useState(1)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const route = useRouter()
 
-	function goNext() {
-		setCurrent((pre) => pre + 1)
-	}
-
-	function goSpecific(num: number) {
-		setCurrent(num)
-	}
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			regNo: vehicleData.registrationNumber,
+			chassisNo: vehicleData.chassisNumber,
+			engineNo: vehicleData.engineNumber,
+			engineCapacity: vehicleData.engineCapacity,
+			color: vehicleData.color,
+			seats: vehicleData.seat + ''
+		}
+	})
 
 	function navigateToPay() {
 		route.push('/car-insurance/payment')
 	}
 
+	function onSubmit() {
+		// dispatch(
+		// 	updateVehicleDetails({
+		// 		registrationNumber: values.regNo,
+		// 		chassisNumber: values.chassisNo,
+		// 		engineNumber: values.engineNo,
+		// 		engineCapacity: values.engineCapacity,
+		// 		color: values.color ? values.color : '',
+		// 		seat: values.seats,
+		// 	})
+		// )
+		navigateToPay()
+	}
+
 	return (
-		<section className='flex h-full w-full flex-col gap-10'>
-			<div className='flex flex-col gap-5'>
-				<h1 className='font-roboto text-5xl font-semibold text-blue-300'>
-					Vehicle Details
-				</h1>
-				<h5 className='font-roboto text-sm text-gray-550'>
-					Hello, please fill in the forms below
-				</h5>
-			</div>
-			<section className='flex flex-col gap-10 border-l border-dashed border-blue-925'>
-				<MotorDetailsField
-					current={current}
-					goNext={goNext}
-					goSpecific={goSpecific}
-					pos={1}
-				/>
-				<ValuationDetailsField
+		<section className='flex h-full w-full flex-col items-center gap-10 py-10'>
+			<CustomerDetailsTab />
+			<Form {...form}>
+				<form
+					className='w-4/5 space-y-8'
+					onSubmit={form.handleSubmit(onSubmit)}>
+					<section className='flex flex-col justify-between gap-5'>
+						<div className='grid w-full grid-cols-4 gap-5'>
+							<MotorDetailsField form={form} />
+						</div>
+					</section>
+					{/* <ValuationDetailsField
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
@@ -59,15 +104,16 @@ export function VehicleDetailsForm() {
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={4}
-				/>
-			</section>
-			{current === 4 && (
-				<Button
-					variant='greenbtn'
-					onClick={navigateToPay}>
-					Submit
-				</Button>
-			)}
+				/> */}
+					<div className='flex w-full items-center justify-center'>
+						<Button
+							className='w-1/4'
+							variant='greenbtn'>
+							Submit
+						</Button>
+					</div>
+				</form>
+			</Form>
 		</section>
 	)
 }

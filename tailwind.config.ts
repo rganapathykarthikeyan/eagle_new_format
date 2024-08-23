@@ -35,9 +35,11 @@ const config = {
 					800: '#818181', // mediumGray
 					825: '#E1E4E8',
 					850: '#908E8E',
+					875: '#6C737F',
 					900: '#AFAFAF',
 					920: '#EFF0F6',
-					950: '#FDFEFB'
+					950: '#FDFEFB',
+					975: '#F9F9FC'
 				},
 				blue: {
 					100: '#D8E4FC', // lightBlue
@@ -61,7 +63,9 @@ const config = {
 					850: '#170F49',
 					875: '#2B67F6',
 					900: '#337ab7', // Moderate blue
-					925: '#2498DBB2'
+					925: '#2498DBB2',
+					950: '#5789FF',
+					975: '#345299'
 				},
 				green: {
 					50: '#11221150', // translucentDarkGreen
