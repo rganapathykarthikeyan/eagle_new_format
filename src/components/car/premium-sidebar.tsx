@@ -307,7 +307,8 @@ export function PremiumSideBar() {
 							value.data.data.Result[0].CoverList.length === 2
 								? value.data.data.Result[0].CoverList[1].PremiumIncludedTaxLC
 								: 0,
-						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : []
+						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : [],
+						TotalPremium: value.data.data.Result[0].CoverList[1].PremiumIncludedTax
 					})
 				)
 			}
