@@ -82,7 +82,7 @@ export function FuelType(props: FuelTypeProps) {
 								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='FuelType' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='max-h-[40vh]'>
 								{fuelTypeList.map((type, index) => {
 									return (
 										<SelectItem

@@ -117,7 +117,7 @@ export function SelectMark(props: selectMarkProps) {
 								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Select Make' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='max-h-[40vh]'>
 								{motorListArr.map((brand, index) => {
 									return (
 										<SelectItem

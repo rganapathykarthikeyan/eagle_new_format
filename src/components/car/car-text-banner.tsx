@@ -43,6 +43,17 @@ export function CarTextBanner() {
 				text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
 				delay: 0.5
 			})
+		} else if (path === '/car-insurance/premium') {
+			gsap.from('.photoAnimation', { x: -80, opacity: 0, duration: 0.5 })
+			gsap.to('.bannerTitle', {
+				duration: 0.5,
+				text: 'Select the Premium that fits your needs'
+			})
+			gsap.to('.bannerSubTitle', {
+				duration: 0.5,
+				text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
+				delay: 0.5
+			})
 		}
 	})
 

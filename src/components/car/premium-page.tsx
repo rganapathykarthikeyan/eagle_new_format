@@ -401,7 +401,8 @@ export function PremiumPage() {
 							value.data.data.Result[0].CoverList.length === 2
 								? value.data.data.Result[0].CoverList[1].PremiumIncludedTaxLC
 								: 0,
-						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : []
+						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : [],
+						TotalPremium: value.data.data.Result[0].CoverList[1].PremiumIncludedTax
 					})
 				)
 			}
@@ -439,8 +440,10 @@ export function PremiumPage() {
 	return (
 		<>
 			{needUpdatedData ? (
-				<div>
-					<Button onClick={doSaveMotorDetails}>
+				<div className='flex h-full w-full items-center justify-center'>
+					<Button
+						variant='greenbtn'
+						onClick={doSaveMotorDetails}>
 						{isMotorLoading ? 'Loading...' : 'Refresh'}
 					</Button>
 				</div>

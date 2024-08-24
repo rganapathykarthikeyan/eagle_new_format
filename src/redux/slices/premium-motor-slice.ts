@@ -8,7 +8,8 @@ const initialState: PremiumMotorDetails = {
 	EABase: 0,
 	EATax: [],
 	EAPremiumIncluedTax: 0,
-	EAPremiumIncluedTaxLC: 0
+	EAPremiumIncluedTaxLC: 0,
+	TotalPremium: 0
 }
 
 export type PremiumMotorDetails = {
@@ -20,6 +21,7 @@ export type PremiumMotorDetails = {
 	EATax: { name: string; amount: number; rate: number }[]
 	EAPremiumIncluedTax: number
 	EAPremiumIncluedTaxLC: number
+	TotalPremium: number
 }
 
 export const premiumMotorSlice = createSlice({
@@ -35,8 +37,11 @@ export const premiumMotorSlice = createSlice({
 			state.EATax = action.payload.EATax
 			state.EAPremiumIncluedTax = action.payload.EAPremiumIncluedTax
 			state.EAPremiumIncluedTaxLC = action.payload.EAPremiumIncluedTaxLC
+		},
+		setTotal(state: PremiumMotorDetails, action: PayloadAction<number>) {
+			state.TotalPremium = action.payload
 		}
 	}
 })
 
-export const { storePremiumData } = premiumMotorSlice.actions
+export const { storePremiumData, setTotal } = premiumMotorSlice.actions

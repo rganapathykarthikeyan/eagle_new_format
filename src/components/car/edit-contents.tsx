@@ -120,7 +120,7 @@ export function EditContents(props: EditContentsProps) {
 											className='border-gray-360 border shadow-inputShadowDrop'>
 											<SelectValue placeholder='Manufacture Year' />
 										</SelectTrigger>
-										<SelectContent>
+										<SelectContent className='max-h-[40vh]'>
 											{years.map((year) => {
 												return (
 													<SelectItem

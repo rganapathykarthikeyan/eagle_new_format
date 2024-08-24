@@ -6,9 +6,9 @@ export function PaymentTypes() {
 	return (
 		<div className='flex h-full w-3/4'>
 			<Tabs
-				className='w-full'
+				className='flex w-full flex-col items-center'
 				defaultValue='card'>
-				<TabsList className='flex w-full'>
+				<TabsList className='flex w-1/2'>
 					<TabsTrigger
 						className='flex-grow'
 						value='card'>
@@ -25,7 +25,9 @@ export function PaymentTypes() {
 						QR Code
 					</TabsTrigger>
 				</TabsList>
-				<TabsContent value='card'>
+				<TabsContent
+					className='w-1/2'
+					value='card'>
 					<CardDetails />
 				</TabsContent>
 				<TabsContent value='bank'>

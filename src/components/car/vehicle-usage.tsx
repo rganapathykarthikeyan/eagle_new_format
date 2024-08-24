@@ -85,7 +85,7 @@ export function VehicleUsage(props: vehicleUsageProps) {
 								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Usage' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='max-h-[40vh]'>
 								{vehicleUsageList.map((title, index) => {
 									return (
 										<SelectItem

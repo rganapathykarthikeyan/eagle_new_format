@@ -24,16 +24,18 @@ export function EditCurrentValues() {
 					setIsEditMode(true)
 				}}>
 				<div className='flex w-full flex-row items-center justify-between'>
-					<span>Edit Vehicle Details</span>
-					<PencilLine size={16} />
+					<span>Vehicle Details</span>
+					<span className='flex flex-row items-center gap-2'>
+						Edit <PencilLine size={16} />
+					</span>
 				</div>
 			</Button>
 			{isEditMode ? (
-				<div className='shadow-containerShadow1 flex w-full flex-col gap-8 rounded-xl px-4 py-8'>
+				<div className='flex w-full flex-col gap-8 rounded-xl px-4 py-8 shadow-containerShadow1'>
 					<EditContents exitEdit={exitEditMode} />
 				</div>
 			) : (
-				<div className='shadow-containerShadow1 flex w-full flex-col gap-8 rounded-xl px-4 py-8'>
+				<div className='flex w-full flex-col gap-8 rounded-xl px-4 py-8 shadow-containerShadow1'>
 					<div className='flex flex-col gap-2'>
 						<Label className='text-blue-850'>Body Type</Label>
 						<div className='border border-gray-920 p-2 shadow-inputShadowDrop'>

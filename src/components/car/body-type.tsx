@@ -85,7 +85,7 @@ export function BodyType(props: bodyTypeProps) {
 									className='border-gray-360 border shadow-inputShadowDrop'>
 									<SelectValue placeholder='Select Body Type' />
 								</SelectTrigger>
-								<SelectContent>
+								<SelectContent className='max-h-[40vh]'>
 									{bodyTypeList.map((bodyType, index) => {
 										return (
 											<SelectItem

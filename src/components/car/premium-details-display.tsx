@@ -1,5 +1,4 @@
 import { type CoverList } from './premium-page'
-import { Button } from '../ui'
 
 type PremiumDetailsDisplayProps = {
 	mainCoverList: CoverList
@@ -10,7 +9,7 @@ export function PremiumDetailsDisplay(props: PremiumDetailsDisplayProps) {
 		<section className='flex w-full flex-col gap-4'>
 			<div className='flex flex-col items-center justify-between gap-2'>
 				<div className='font-dmserif text-xl'>Premium Details</div>
-				<div className='border-blue-875 w-3/4 border-2'></div>
+				<div className='w-3/4 border-2 border-blue-875'></div>
 			</div>
 
 			{props.mainCoverList.length !== 0 &&
@@ -18,8 +17,8 @@ export function PremiumDetailsDisplay(props: PremiumDetailsDisplayProps) {
 					return (
 						<div
 							key={cover.CoverID}
-							className='border-gray-825 shadow-premiumContainerShadow flex flex-col gap-3 rounded-2xl border p-5'>
-							<div className='bg-blue-875 flex flex-row items-center justify-between gap-6 rounded-2xl p-3 text-white'>
+							className='flex flex-col gap-3 rounded-2xl border border-gray-825 p-5 shadow-premiumContainerShadow'>
+							<div className='flex flex-row items-center justify-between gap-6 rounded-2xl bg-green-600 p-3 text-white'>
 								{/* <div className='flex h-14 w-14 flex-row items-center justify-center overflow-hidden rounded-full'>
 									<Image
 										alt='car'
@@ -42,7 +41,10 @@ export function PremiumDetailsDisplay(props: PremiumDetailsDisplayProps) {
 								</div>
 							</div>
 							<div className='flex flex-col gap-2'>
-								<h2 className='font-dmserif text-xl'>{cover.CoverName}</h2>
+								<div className='flex flex-row items-center justify-between'>
+									<h2 className='font-dmserif text-xl'>{cover.CoverName}</h2>
+									<span className='font-dmsan text-xs'>in MUR</span>
+								</div>
 								{cover.Taxes.map((tax) => {
 									return (
 										<div
@@ -59,13 +61,6 @@ export function PremiumDetailsDisplay(props: PremiumDetailsDisplayProps) {
 									<h1>Grand Total</h1>
 									<h1>{cover.PremiumAfterTax}</h1>
 								</div>
-							</div>
-							<div className='flex w-full justify-center'>
-								<Button
-									className='w-3/4'
-									variant='greenbtn'>
-									Selected
-								</Button>
 							</div>
 						</div>
 					)

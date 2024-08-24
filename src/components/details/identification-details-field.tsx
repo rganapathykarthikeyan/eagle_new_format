@@ -1,4 +1,4 @@
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { Input } from '../ui'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { type CustomerFormType } from './customer-details-form'
 
@@ -20,7 +20,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='idType'
 								placeholder='Id Type'
 							/>
@@ -40,7 +40,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='idNumber'
 								placeholder='Id Number'
 							/>
@@ -49,27 +49,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 					</FormItem>
 				)}
 			/>
-			<FormField
-				control={props.form.control}
-				name='preferredNotification'
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>
-							Preferred Notification<span className='text-red-500'>*</span>
-						</FormLabel>
-						<FormControl>
-							<Input
-								{...field}
-								className='bg-gray-975 border border-gray-375'
-								id='notify'
-								placeholder='Preferred Notification'
-							/>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
-			<FormField
+			{/* <FormField
 				control={props.form.control}
 				name='taxExempted'
 				render={({ field }) => (
@@ -107,51 +87,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 						<FormMessage />
 					</FormItem>
 				)}
-			/>
-			<FormField
-				control={props.form.control}
-				name='status'
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>
-							Status<span className='text-red-500'>*</span>
-						</FormLabel>
-						<FormControl>
-							<Select
-								disabled={field.disabled}
-								name={field.name}
-								value={field.value ? 'Yes' : 'No'}
-								onValueChange={(e) => {
-									field.onChange(e === 'Yes' ? true : false)
-								}}>
-								<SelectTrigger
-									ref={field.ref}
-									className='bg-gray-975 border border-gray-375'>
-									<SelectValue placeholder='Status' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem
-										key={1}
-										value='Active'>
-										Active
-									</SelectItem>
-									<SelectItem
-										key={2}
-										value='Deactive'>
-										Deactive
-									</SelectItem>
-									<SelectItem
-										key={2}
-										value='Pending'>
-										Pending
-									</SelectItem>
-								</SelectContent>
-							</Select>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
+			/> */}
 		</>
 	)
 }

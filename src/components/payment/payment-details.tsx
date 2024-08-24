@@ -1,26 +1,17 @@
-import { ChevronLeft } from 'lucide-react'
 import { PaymentTypes } from './payment-types'
 
 export function PaymentDetails() {
 	return (
-		<section className='flex w-full flex-col gap-10'>
-			<div className='flex flex-col gap-4 font-jakarta'>
-				<div className='flex flex-row gap-2 font-roboto'>
-					<ChevronLeft
-						height={20}
-						width={20}
-					/>
-					<span>Back</span>
-				</div>
-				<h1 className='text-[40px] font-semibold'>Add a payment method</h1>
-				<h3 className=''>
-					Let&apos;s get you all st up so you can access your personal account.
-				</h3>
-			</div>
-			<div className='flex flex-col gap-2'>
-				<div className='font-inter text-lg font-semibold'>
-					<span>Pay With:</span>
-				</div>
+		<section className='flex w-full flex-col items-center justify-center gap-10'>
+			{/* <div className='flex w-full flex-col items-center gap-2'>
+				<h1 className='text-center font-inter text-4xl font-bold text-blue-825'>
+					Add a Payment Method
+				</h1>
+				<p className='w-4/5 text-center font-roboto text-sm text-gray-500'>
+					Let&apos;s get you all set up so you can access your personal account
+				</p>
+			</div> */}
+			<div className='flex w-full flex-col items-center justify-center gap-2'>
 				<PaymentTypes />
 			</div>
 		</section>

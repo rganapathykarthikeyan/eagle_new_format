@@ -109,7 +109,7 @@ export function VehicleDetailsForm() {
 						<Button
 							className='w-1/4'
 							variant='greenbtn'>
-							Submit
+							Next
 						</Button>
 					</div>
 				</form>

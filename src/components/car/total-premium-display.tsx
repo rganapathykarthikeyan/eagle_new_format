@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { type CoverList } from './premium-page'
 import { useEffect, useState } from 'react'
 import { Button } from '../ui'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setTotal } from '@/redux/slices'
 
 type TotalPremiumDisplayProps = {
 	selectedCoverList: CoverList
@@ -12,12 +14,18 @@ type TotalPremiumDisplayProps = {
 export function TotalPremiumDisplay(props: TotalPremiumDisplayProps) {
 	const [totalAmount, setTotalAmount] = useState<number>()
 
+	const dispatch = useAppDispatch()
+
+	const requestRef = useAppSelector((state) => state.motor.RequestReferenceNo)
+	const endDate = useAppSelector((state) => state.carInsurance.policyEndDate)
+
 	useEffect(() => {
 		let total = 0
 		props.selectedCoverList.forEach((cover) => {
 			total += +cover.PremiumAfterTax
 		})
 		setTotalAmount(total)
+		dispatch(setTotal(total))
 	}, [props.selectedCoverList])
 
 	function confirmBuy() {
@@ -36,13 +44,7 @@ export function TotalPremiumDisplay(props: TotalPremiumDisplayProps) {
 						<div className='flex flex-col font-dmsan'>
 							<h3 className='text-xs text-white'>Premium Amount</h3>
 							<div className='flex flex-row gap-2'>
-								<h2 className='text-xl font-bold'>{totalAmount}</h2>
-								<Image
-									alt='view'
-									height={30}
-									src={assets.icons.view}
-									width={30}
-								/>
+								<h2 className='text-3xl font-bold'>{totalAmount} MUR</h2>
 							</div>
 						</div>
 						<Image
@@ -52,17 +54,20 @@ export function TotalPremiumDisplay(props: TotalPremiumDisplayProps) {
 							width={30}
 						/>
 					</div>
-					<h1 className='font-dmsan text-xl font-bold'>Quote no: 2208 1996 2019 3013</h1>
+					<h1 className='font-dmsan text-lg font-bold'>{requestRef}</h1>
 					<div className='flex w-full flex-row items-center justify-between font-dmsan'>
 						<div className='flex flex-col'>
 							<h3 className='text-xs'>VALID THRU</h3>
-							<h2 className='text-lg font-bold'>11/24</h2>
+							<h2 className='text-lg font-bold'>{endDate}</h2>
 						</div>
 						<span className='text-12'>Secured by Eagle</span>
 					</div>
 				</div>
 				<div className='flex w-full flex-col items-start gap-3'>
-					<h2 className='font-dmserif text-xl'>Covers Details</h2>
+					<div className='flex w-full flex-row items-center justify-between'>
+						<h2 className='font-dmserif text-xl'>Covers Details</h2>
+						<h2 className='font-dmsan text-xs'>in MUR</h2>
+					</div>
 					{props.selectedCoverList.map((cover) => {
 						return (
 							<div

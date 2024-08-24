@@ -110,7 +110,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 										}}>
 										<SelectTrigger
 											ref={field.ref}
-											className='bg-gray-975 border border-gray-375'>
+											className='border border-gray-375 bg-gray-975'>
 											<SelectValue placeholder='Title' />
 										</SelectTrigger>
 										<SelectContent>
@@ -145,7 +145,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								<FormControl>
 									<Input
 										{...field}
-										className='bg-gray-975 border border-gray-375'
+										className='border border-gray-375 bg-gray-975'
 										id='firstname'
 										placeholder='First Name'
 									/>
@@ -165,7 +165,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								<FormControl>
 									<Input
 										{...field}
-										className='bg-gray-975 border border-gray-375'
+										className='border border-gray-375 bg-gray-975'
 										id='lastname'
 										placeholder='Last Name'
 									/>
@@ -187,52 +187,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							<FormControl>
 								<Input
 									{...field}
-									className='bg-gray-975 border border-gray-375'
+									className='border border-gray-375 bg-gray-975'
 									id='firstname'
 									placeholder='Customer Name'
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-			)}
-			{props.customer === 'Personal' ? (
-				<FormField
-					control={props.form.control}
-					name='SocioCategory'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Socio-professional category<span className='text-red-500'>*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									{...field}
-									className='bg-gray-975 border border-gray-375'
-									id='socio'
-									placeholder='Socio-professional category'
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-			) : (
-				<FormField
-					control={props.form.control}
-					name='SocioCategory'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Activities<span className='text-red-500'>*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									{...field}
-									className='bg-gray-975 border border-gray-375'
-									id='Activities'
-									placeholder='Activities'
 								/>
 							</FormControl>
 							<FormMessage />
@@ -259,7 +216,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									onValueChange={field.onChange}>
 									<SelectTrigger
 										ref={field.ref}
-										className='bg-gray-975 border border-gray-375'>
+										className='border border-gray-375 bg-gray-975'>
 										<SelectValue placeholder='Occupation' />
 									</SelectTrigger>
 									<SelectContent>
@@ -300,7 +257,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 										}}>
 										<SelectTrigger
 											ref={field.ref}
-											className='bg-gray-975 border border-gray-375'>
+											className='border border-gray-375 bg-gray-975'>
 											<SelectValue placeholder='Gender' />
 										</SelectTrigger>
 										<SelectContent>
@@ -322,26 +279,6 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					/>
 				</div>
 			)}
-			<FormField
-				control={props.form.control}
-				name='civility'
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>
-							Civility<span className='text-red-500'>*</span>
-						</FormLabel>
-						<FormControl>
-							<Input
-								{...field}
-								className='bg-gray-975 border border-gray-375'
-								id='civility'
-								placeholder='Civility'
-							/>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
 			{props.customer === 'Personal' && (
 				<FormField
 					control={props.form.control}
@@ -359,7 +296,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 											id='start'
 											variant='outline'
 											className={cn(
-												'bg-gray-975 w-full border border-gray-375 pl-3 text-left font-normal text-black',
+												'w-full border border-gray-375 bg-gray-975 pl-3 text-left font-normal text-black',
 												!field.value && 'text-muted-foreground'
 											)}>
 											{field.value ? (

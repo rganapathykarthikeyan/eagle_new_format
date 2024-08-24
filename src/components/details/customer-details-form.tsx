@@ -231,99 +231,51 @@ export function CustomerDetailsForm() {
 					<form
 						className='w-4/5 space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex w-full flex-row items-center justify-between gap-5'>
-							<div className='flex w-full flex-row items-center gap-5'>
-								<FormLabel className='w-full'>
-									Account Type<span className='text-red-500'>*</span>
-								</FormLabel>
-								<FormField
-									control={form.control}
-									name='accountType'
-									render={({ field }) => (
-										<FormItem className='w-full'>
-											<FormControl>
-												<div className='flex flex-grow flex-row gap-8'>
-													<div
-														className={cn(
-															'text-gray-875 cursor-pointer rounded-md px-8 py-1 font-semibold',
-															{
-																'bg-blue-875 text-white':
-																	field.value === 'Personal'
-															}
-														)}
-														onClick={() => {
-															field.onChange('Personal')
-															setCustomerType('Personal')
-														}}>
-														Personal
-													</div>
-													<div
-														className={cn(
-															'text-gray-875 cursor-pointer rounded-md px-8 py-1 font-semibold',
-															{
-																'bg-blue-875 text-white':
-																	field.value === 'Corporate'
-															}
-														)}
-														onClick={() => {
-															field.onChange('Corporate')
-															setCustomerType('Corporate')
-														}}>
-														Corporate
-													</div>
+						<div className='flex w-full flex-row items-center justify-center gap-12'>
+							<FormLabel>
+								Account Type<span className='text-red-500'>*</span> :
+							</FormLabel>
+							<FormField
+								control={form.control}
+								name='accountType'
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<div className='flex flex-grow flex-row gap-8'>
+												<div
+													className={cn(
+														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														{
+															'bg-blue-875 text-white':
+																field.value === 'Personal'
+														}
+													)}
+													onClick={() => {
+														field.onChange('Personal')
+														setCustomerType('Personal')
+													}}>
+													Personal
 												</div>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<div className='flex w-full flex-row items-center gap-5'>
-								<FormLabel className='w-full'>
-									<span className='w-full'>
-										Customer or Insured<span className='text-red-500'>*</span>
-									</span>
-								</FormLabel>
-								<FormField
-									control={form.control}
-									name='customerOrInsured'
-									render={({ field }) => (
-										<FormItem className='w-full'>
-											<FormControl>
-												<div className='flex flex-grow flex-row gap-8'>
-													<div
-														className={cn(
-															'text-gray-875 cursor-pointer rounded-md px-8 py-1 font-semibold',
-															{
-																'bg-blue-875 text-white':
-																	field.value === 'Customer'
-															}
-														)}
-														onClick={() => {
-															field.onChange('Customer')
-														}}>
-														Customer
-													</div>
-													<div
-														className={cn(
-															'text-gray-875 cursor-pointer rounded-md px-8 py-1 font-semibold',
-															{
-																'bg-blue-875 text-white':
-																	field.value === 'Insured'
-															}
-														)}
-														onClick={() => {
-															field.onChange('Insured')
-														}}>
-														Insured
-													</div>
+												<div
+													className={cn(
+														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														{
+															'bg-blue-875 text-white':
+																field.value === 'Corporate'
+														}
+													)}
+													onClick={() => {
+														field.onChange('Corporate')
+														setCustomerType('Corporate')
+													}}>
+													Corporate
 												</div>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 						</div>
 
 						<section className='flex flex-col justify-between gap-5'>
@@ -332,8 +284,6 @@ export function CustomerDetailsForm() {
 									customer={customerType}
 									form={form}
 								/>
-							</div>
-							<div className='grid w-full grid-cols-4 gap-5'>
 								<IdentificationDetailsField form={form} />
 							</div>
 							{/* <BusinessDetailsField
@@ -342,6 +292,7 @@ export function CustomerDetailsForm() {
 								goSpecific={goSpecific}
 								pos={3}
 							/> */}
+							<h3 className='font-jakarta text-lg font-semibold'>Address Details</h3>
 							<div className='grid w-full grid-cols-4 gap-5'>
 								<AddressDetailsField form={form} />
 							</div>
@@ -350,7 +301,7 @@ export function CustomerDetailsForm() {
 							<Button
 								className='w-1/4'
 								variant='greenbtn'>
-								Submit
+								Next
 							</Button>
 						</div>
 					</form>

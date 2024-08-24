@@ -1,9 +1,9 @@
 import { CarLayout } from '../car'
 import { EditCurrentValues } from '../car/edit-current-values'
-import { CustomerDetailsForm } from '../details/customer-details-form'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
+import { DriverDetailsForm } from './driver-details-form'
 
-export function CustomerDetailsPage() {
+export function DriverDetailsPage() {
 	return (
 		<CarLayout>
 			<Dialog>
@@ -16,7 +16,7 @@ export function CustomerDetailsPage() {
 					<EditCurrentValues />
 				</DialogContent>
 			</Dialog>
-			<CustomerDetailsForm />
+			<DriverDetailsForm />
 		</CarLayout>
 	)
 }

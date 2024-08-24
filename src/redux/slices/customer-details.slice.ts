@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: CustomerDetails = {
 	name: '',
-	code: '260',
+	code: '230',
 	mobile: '',
 	premium: false,
 	email: '',

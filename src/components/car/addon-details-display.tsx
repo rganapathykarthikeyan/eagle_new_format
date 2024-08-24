@@ -23,22 +23,25 @@ export function AddonDetailsDisplay(props: PremiumDetailsDisplayProps) {
 				<div className='font-dmserif text-xl'>Add on</div>
 				<div className='w-3/4 border-2 border-blue-875'></div>
 			</div>
-			<div className='flex flex-col items-center justify-center gap-3 rounded-2xl border border-gray-825 p-5 shadow-premiumContainerShadow'>
-				<Select
-					value={type}
-					onValueChange={(e) => {
-						setType(e)
-					}}>
-					<SelectTrigger className='flex w-fit items-center gap-3 border-none font-sans text-lg font-semibold text-blue-875'>
-						<SelectValue placeholder='Select Body Type' />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value='Benefit'>Benefit Covers</SelectItem>
-						<SelectItem value='Addon'>Addon Covers</SelectItem>
-					</SelectContent>
-				</Select>
+			<div className='flex w-full flex-col items-center justify-center gap-3 rounded-2xl border border-gray-825 p-2 shadow-premiumContainerShadow'>
+				<div className='flex w-full flex-row items-center justify-between'>
+					<Select
+						value={type}
+						onValueChange={(e) => {
+							setType(e)
+						}}>
+						<SelectTrigger className='flex w-fit items-center gap-3 border-none font-sans text-lg font-semibold text-blue-875'>
+							<SelectValue placeholder='Select Body Type' />
+						</SelectTrigger>
+						<SelectContent className='max-h-[40vh]'>
+							<SelectItem value='Benefit'>Benefit Covers</SelectItem>
+							<SelectItem value='Addon'>Addon Covers</SelectItem>
+						</SelectContent>
+					</Select>
+					{type === 'Addon' && <span className='text-sm'>in MUR</span>}
+				</div>
 				{type === 'Benefit' ? (
-					<div className='flex w-full flex-col gap-4'>
+					<div className='flex w-full flex-col gap-4 px-2'>
 						{props.benefitCoverList.map((benefit) => {
 							return (
 								<div
@@ -68,7 +71,7 @@ export function AddonDetailsDisplay(props: PremiumDetailsDisplayProps) {
 						})}
 					</div>
 				) : (
-					<div className='flex flex-col gap-4'>
+					<div className='flex w-full flex-col gap-4 px-2'>
 						{props.optionalCoverList.map((optional) => {
 							return (
 								<div
@@ -89,7 +92,7 @@ export function AddonDetailsDisplay(props: PremiumDetailsDisplayProps) {
 										</span>
 									</div>
 									<h3 className='text-lg font-semibold text-blue-875'>
-										{optional.PremiumAfterTax} MUR
+										{optional.PremiumAfterTax}
 									</h3>
 								</div>
 							)

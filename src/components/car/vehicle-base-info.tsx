@@ -38,6 +38,8 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 
 	const dispatch = useAppDispatch()
 
+	const [formattedValue, setFormattedValue] = useState<string>(vehicleData.value.toLocaleString())
+
 	const years: string[] = []
 
 	const currentYear = new Date(Date.now()).getFullYear()
@@ -63,7 +65,7 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 			bodyType: vehicleData.bodyTypeID,
 			make: vehicleData.makeID,
 			model: vehicleData.modelID,
-			manufactureyear: vehicleData.year + '',
+			manufactureyear: vehicleData.year === 0 ? '' : vehicleData.year + '',
 			isRenewal: vehicleData.isRenewal,
 			suminsured: vehicleData.sumInsured !== null ? vehicleData.sumInsured : ''
 		}
@@ -191,7 +193,7 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 													className='border-gray-360 border shadow-inputShadowDrop'>
 													<SelectValue placeholder='Manufacture Year' />
 												</SelectTrigger>
-												<SelectContent>
+												<SelectContent className='max-h-[40vh]'>
 													{years.map((year) => {
 														return (
 															<SelectItem
@@ -218,10 +220,15 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 											<Input
 												className='border-gray-360 border shadow-inputShadowDrop'
 												placeholder='Sum Insured'
-												type='number'
-												value={field.value}
+												value={formattedValue}
 												onChange={(e) => {
-													field.onChange(e)
+													let inputValue = e.target.value
+													inputValue = inputValue.replace(/[^0-9]/g, '')
+													const numericValue = Number(inputValue)
+													const formattedValue =
+														numericValue.toLocaleString()
+													field.onChange(numericValue + '')
+													setFormattedValue(formattedValue)
 												}}
 											/>
 										</FormControl>

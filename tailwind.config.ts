@@ -32,6 +32,7 @@ const config = {
 					550: '#3D3D3D',
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
+					725: '#142644',
 					800: '#818181', // mediumGray
 					825: '#E1E4E8',
 					850: '#908E8E',

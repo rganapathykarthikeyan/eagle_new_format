@@ -95,7 +95,7 @@ export function SelectModel(props: selectModelProps) {
 								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Select Model' />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent className='max-h-[40vh]'>
 								{modelsList.map((model, index) => {
 									return (
 										<SelectItem
