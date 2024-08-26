@@ -26,7 +26,8 @@ import {
 	type SaveDriverResponse,
 	type TitleTypeResponse,
 	type VehicleModelResponse,
-	type FuelTypeResponse
+	type FuelTypeResponse,
+	type IDTypesResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -52,7 +53,8 @@ import {
 	type SaveDriverRequest,
 	type TypeRequest,
 	type VehicleModelReq,
-	type FuelTypeRequest
+	type FuelTypeRequest,
+	type IdTypeRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -501,6 +503,21 @@ export const commonApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		idType: build.mutation<IDTypesResponse, IdTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: IdTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_id_types',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -533,5 +550,6 @@ export const {
 	useSaveDriverMutation,
 	useTitleTypeMutation,
 	useVehicleModelMutation,
-	useFuelTypeMutation
+	useFuelTypeMutation,
+	useIdTypeMutation
 } = commonApi

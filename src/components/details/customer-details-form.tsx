@@ -12,23 +12,23 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import {
 	updateAddressDetails,
 	updateContactInformation,
-	updatePersonalDetails
+	updatePersonalDetails,
+	updateQuoteDetails
 } from '@/redux/slices'
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm, type UseFormReturn } from 'react-hook-form'
+import { useBuyPolicyMutation, useSaveCustomerDetailsMutation } from '@/redux/api/commonApi'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { useToast } from '../ui/use-toast'
 
 const formSchema = z.object({
 	accountType: z.string(),
-	customerOrInsured: z.string(),
 	title: z.string().min(1, {
 		message: 'Select a title'
 	}),
 	firstname: z.string().min(2, {
-		message: 'Please enter First Name'
-	}),
-	SocioCategory: z.string().min(2, {
 		message: 'Please enter First Name'
 	}),
 	lastname: z.string().min(2, {
@@ -53,9 +53,7 @@ const formSchema = z.object({
 	district: z.string().min(1, {
 		message: 'City or Town is required'
 	}),
-	mailId: z.string().min(6, {
-		message: 'Invalid mail id'
-	}),
+	mailId: z.string(),
 	contact1: z.string().min(4, {
 		message: 'Contact number is required'
 	}),
@@ -66,18 +64,10 @@ const formSchema = z.object({
 	contact2Code: z.string(),
 	country: z.string(),
 	cityName: z.string(),
-	civility: z.string(),
 	idType: z.string().min(1, {
 		message: 'Select a type'
 	}),
 	idNumber: z.string().min(1, {
-		message: 'Required'
-	}),
-	preferredNotification: z.string().min(1, {
-		message: 'Required'
-	}),
-	taxExempted: z.boolean(),
-	status: z.string().min(1, {
 		message: 'Required'
 	})
 })
@@ -85,9 +75,7 @@ const formSchema = z.object({
 export type CustomerFormType = UseFormReturn<
 	{
 		accountType: string
-		customerOrInsured: string
 		title: string
-		SocioCategory: string
 		firstname: string
 		lastname: string
 		gender: string
@@ -106,12 +94,8 @@ export type CustomerFormType = UseFormReturn<
 		district: string
 		pobox?: string | undefined
 		country: string
-		civility: string
 		idType: string
 		idNumber: string
-		preferredNotification: string
-		taxExempted: boolean
-		status: string
 	},
 	unknown,
 	undefined
@@ -120,6 +104,15 @@ export type CustomerFormType = UseFormReturn<
 export function CustomerDetailsForm() {
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appData = useAppSelector((state) => state.apps)
+	const motorData = useAppSelector((state) => state.motor)
+
+	const [saveCustomerDetails] = useSaveCustomerDetailsMutation()
+	const [isLoading, setIsLoading] = useState(false)
+
+	const { toast } = useToast()
+
+	const [buyPolicies] = useBuyPolicyMutation()
 
 	const route = useRouter()
 
@@ -134,7 +127,153 @@ export function CustomerDetailsForm() {
 	const timestamp2 = dateObject2.getTime()
 
 	function navigateToVehicle() {
-		route.push('/car-insurance/details/vehicle-details')
+		setIsLoading(true)
+		const idNumber =
+			customerData.accType === 'Personal'
+				? customerData.isResident
+					? customerData.nrc
+					: customerData.passport
+				: customerData.companyRegistrationNumber
+		const req = {
+			BrokerBranchCode: appData.brokerCode,
+			CustomerReferenceNo: motorData.CustomerReferenceNo,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			ProductId: appData.productId,
+			AppointmentDate: '',
+			BusinessType: null,
+			CityCode: customerData.poBox,
+			CityName: customerData.cityName,
+			ClientName: customerData.name,
+			Clientstatus: 'Y',
+			CreatedBy: appData.loginId,
+			DobOrRegDate: customerData.dob,
+			District: customerData.cityName,
+			Email1: customerData.email,
+			Email2: null,
+			Email3: null,
+			Fax: null,
+			Gender: customerData.gender,
+			IdNumber: idNumber,
+			IdType: '1',
+			IsTaxExempted: 'N',
+			Language: '1',
+			MobileNo1: customerData.mobile,
+			MobileNo2: customerData.mobile2,
+			MobileNo3: null,
+			Nationality: 'ZMB',
+			Occupation: '1',
+			OtherOccupation: '',
+			Placeofbirth: customerData.cityName,
+			PolicyHolderType: '1',
+			PolicyHolderTypeid: '1',
+			PreferredNotification: 'Sms',
+			RegionCode: customerData.city,
+			MobileCode1: customerData.code,
+			WhatsappCode: customerData.code,
+			MobileCodeDesc1: '1',
+			WhatsappDesc: '1',
+			WhatsappNo: '',
+			StateCode: '37',
+			StateName: null,
+			Status: 'Y',
+			Type: customerData.accType,
+			TaxExemptedId: null,
+			TelephoneNo1: '',
+			PinCode: customerData.poBox,
+			TelephoneNo2: null,
+			TelephoneNo3: null,
+			VrTinNo: null,
+			Title: customerData.title,
+			Address1: customerData.address,
+			SaveOrSubmit: 'Submit',
+			Zone: '1'
+		}
+		const res = saveCustomerDetails(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				buyPolicy()
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				setIsLoading(false)
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				setIsLoading(false)
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+		})
+	}
+
+	function buyPolicy() {
+		const req = {
+			RequestReferenceNo: motorData.RequestReferenceNo,
+			CreatedBy: appData.loginId,
+			ProductId: appData.productId,
+			ManualReferralYn: 'N',
+			ReferralRemarks: null,
+			Vehicles: [
+				{
+					Covers: appData.covers,
+					Id: '1',
+					SectionId: vehicleData.classID
+				}
+			]
+		}
+		const res = buyPolicies(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.Result !== null
+			) {
+				dispatch(
+					updateQuoteDetails({
+						CustomerId: value.data.data.Result.CustomerId,
+						QuoteNo: value.data.data.Result.QuoteNo
+					})
+				)
+				setIsLoading(false)
+				route.push('/car-insurance/details/vehicle-details')
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				setIsLoading(false)
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				setIsLoading(false)
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+		})
 	}
 
 	const dispatch = useAppDispatch()
@@ -143,8 +282,7 @@ export function CustomerDetailsForm() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			accountType: 'Personal',
-			customerOrInsured: 'Customer',
-			title: customerData.title,
+			title: 'Mr', //customerData.title
 			firstname: customerData.name.split(' ')[0],
 			lastname: customerData.name.split(' ')[1],
 			mobile: customerData.mobile,
@@ -160,8 +298,7 @@ export function CustomerDetailsForm() {
 			contact1: customerData.mobile,
 			contact2: customerData.mobile2,
 			contact1Code: customerData.code,
-			contact2Code: customerData.code2,
-			taxExempted: false
+			contact2Code: customerData.code2
 		}
 	})
 
@@ -300,8 +437,16 @@ export function CustomerDetailsForm() {
 						<div className='flex w-full items-center justify-center'>
 							<Button
 								className='w-1/4'
-								variant='greenbtn'>
-								Next
+								variant='greenbtn'
+								onClick={navigateToVehicle}>
+								{isLoading ? (
+									<ClipLoader
+										color='#FFFFFF'
+										size={20}
+									/>
+								) : (
+									<span>Next</span>
+								)}
 							</Button>
 						</div>
 					</form>

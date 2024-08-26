@@ -2425,3 +2425,29 @@ export const fuelTypeResSchema = z.object({
 })
 
 export type FuelTypeRes = z.infer<typeof fuelTypeResSchema>
+
+export const idTypeReqSchema = z.object({
+	InsuranceId: z.string(),
+	BranchCode: z.string(),
+	PolicyTypeId: z.string()
+})
+
+export type IdTypeRequest = z.infer<typeof idTypeReqSchema>
+
+export const idTypeSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(
+		z.object({
+			TitleType: z.string().nullable(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.string().nullable(),
+			RiskId: z.string().nullable()
+		})
+	)
+})
+
+export type IDTypesRes = z.infer<typeof idTypeSchema>

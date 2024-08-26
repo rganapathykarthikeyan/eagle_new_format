@@ -67,7 +67,9 @@ import {
 	VehicleModelResponseSchema,
 	type FuelTypeRequest,
 	type FuelTypeRes,
-	fuelTypeResSchema
+	fuelTypeResSchema,
+	type IDTypesRes,
+	type IdTypeRequest
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -337,6 +339,14 @@ export type FuelTypeResponse = TResponse<FuelTypeRes>
 
 export async function getFuelType(data: FuelTypeRequest, token: string | null) {
 	return api.post<FuelTypeRes>(endPoints.fuelTypes, data, fuelTypeResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type IDTypesResponse = TResponse<IDTypesRes>
+
+export async function getIDTypes(data: IdTypeRequest, token: string | null) {
+	return api.post<FuelTypeRes>(endPoints.idTypes, data, fuelTypeResSchema, {
 		headers: { Authorization: token }
 	})
 }

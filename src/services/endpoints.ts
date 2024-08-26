@@ -34,6 +34,7 @@ const endPoints = {
 	createOrder: 'EwayCommonApi/selcom/v1/checkout/create-order-minim',
 	orderStatus: 'EwayCommonApi/selcom/v1/checkout/order-status',
 	vehicleModelDetails: 'EwayMotorApi/api/vehiclemodeldetails',
-	fuelTypes: 'EwayCommonApi/dropdown/fueltype'
+	fuelTypes: 'EwayCommonApi/dropdown/fueltype',
+	idTypes: 'EwayCommonApi/dropdown/policyholderidtype'
 }
 export default endPoints

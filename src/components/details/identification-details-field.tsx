@@ -1,12 +1,46 @@
-import { Input } from '../ui'
+'use client'
+
+import { useIdTypeMutation } from '@/redux/api/commonApi'
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { type CustomerFormType } from './customer-details-form'
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '@/redux/hooks'
+import { Skeleton } from '../ui/skeleton'
 
 type identificationDetailsFieldProps = {
 	form: CustomerFormType
 }
 
 export function IdentificationDetailsField(props: identificationDetailsFieldProps) {
+	const branchCode = useAppSelector((state) => state.apps.branchCode)
+
+	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
+
+	const [idTypeList, setIdTypeList] = useState<{ value: string; label: string }[]>([])
+	const [getIdTypes] = useIdTypeMutation()
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: insuranceID,
+			BranchCode: branchCode,
+			PolicyTypeId: '1'
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = getIdTypes(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setIdTypeList(tempArr)
+			}
+		})
+	}, [insuranceID, branchCode])
+
 	return (
 		<>
 			<FormField
@@ -18,12 +52,36 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 							ID Type<span className='text-red-500'>*</span>
 						</FormLabel>
 						<FormControl>
-							<Input
-								{...field}
-								className='border border-gray-375 bg-gray-975'
-								id='idType'
-								placeholder='Id Type'
-							/>
+							{idTypeList.length === 0 ? (
+								<Skeleton className='h-10 w-full' />
+							) : (
+								<div className=''>
+									<Select
+										disabled={field.disabled}
+										name={field.name}
+										value={field.value}
+										onValueChange={(e) => {
+											field.onChange(e)
+										}}>
+										<SelectTrigger
+											ref={field.ref}
+											className='border border-gray-375 bg-gray-975'>
+											<SelectValue placeholder='Title' />
+										</SelectTrigger>
+										<SelectContent>
+											{idTypeList.map((title, index) => {
+												return (
+													<SelectItem
+														key={index}
+														value={title.value}>
+														{title.label}
+													</SelectItem>
+												)
+											})}
+										</SelectContent>
+									</Select>
+								</div>
+							)}
 						</FormControl>
 						<FormMessage />
 					</FormItem>
