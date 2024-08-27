@@ -49,7 +49,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='regNo'
 								placeholder='Registration Number'
 								onChange={(e) => {
@@ -75,7 +75,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='chassisNo'
 								placeholder='Enter Chassis number'
 								onChange={(e) => {
@@ -100,7 +100,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='engineNo'
 								placeholder='Enter Engine Number'
 								onChange={(e) => {
@@ -123,9 +123,33 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='engineCapacity'
 								placeholder='Enter Engine Capacity'
+								type='number'
+								onChange={(e) => {
+									if (e.target.value.length < 6) {
+										field.onChange(e)
+									}
+								}}
+							/>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			<FormField
+				control={props.form.control}
+				name='seats'
+				render={({ field }) => (
+					<FormItem className='w-full'>
+						<FormLabel>Seat Capacity</FormLabel>
+						<FormControl>
+							<Input
+								{...field}
+								className='border border-gray-375 bg-gray-975'
+								id='seats'
+								placeholder='Enter Seat Capacity'
 								type='number'
 								onChange={(e) => {
 									if (e.target.value.length < 6) {
@@ -147,7 +171,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						<FormControl>
 							<Input
 								{...field}
-								className='bg-gray-975 border border-gray-375'
+								className='border border-gray-375 bg-gray-975'
 								id='tareweight'
 								placeholder='Enter Tare Weight (kg)'
 								type='number'
@@ -179,7 +203,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									onValueChange={field.onChange}>
 									<SelectTrigger
 										ref={field.ref}
-										className='bg-gray-975 border border-gray-375'>
+										className='border border-gray-375 bg-gray-975'>
 										<SelectValue placeholder='Colors' />
 									</SelectTrigger>
 									<SelectContent>

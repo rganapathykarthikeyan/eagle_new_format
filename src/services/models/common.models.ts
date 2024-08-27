@@ -1673,7 +1673,7 @@ export const SaveVehicleRequestSchema = z.object({
 	Color: z.string(),
 	CreatedBy: z.string(),
 	EngineNumber: z.string(),
-	Grossweight: z.null(),
+	Grossweight: z.string().nullable(),
 	ManufactureYear: z.string(),
 	Motorusage: z.string().nullable(),
 	NumberOfAxels: z.null(),
@@ -1684,10 +1684,11 @@ export const SaveVehicleRequestSchema = z.object({
 	ResStatusCode: z.string(),
 	ResStatusDesc: z.string(),
 	SeatingCapacity: z.string(),
-	Tareweight: z.null(),
+	Tareweight: z.string().nullable(),
 	Vehcilemodel: z.string(),
 	VehicleType: z.string(),
-	Vehiclemake: z.string()
+	Vehiclemake: z.string(),
+	FuelUsed: z.number().nullable()
 })
 
 export type SaveVehicleRequest = z.infer<typeof SaveVehicleRequestSchema>
@@ -1884,8 +1885,8 @@ export const buyPolicyResponseSchema = z.object({
 		.object({
 			Response: z.string(),
 			RequestReferenceNo: z.string(),
-			QuoteNo: z.string(),
-			CustomerId: z.string()
+			QuoteNo: z.string().nullable(),
+			CustomerId: z.string().optional()
 		})
 		.nullable(),
 	ErroCode: z.number()

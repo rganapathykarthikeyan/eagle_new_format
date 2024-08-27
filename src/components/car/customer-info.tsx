@@ -131,7 +131,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
 			SearchFromApi: false,
-			SeatingCapacity: vehicleData.seat,
+			SeatingCapacity: 0, //vehicleData.seat
 			CustomerStatus: 'Y',
 			Status: 'Y'
 		}

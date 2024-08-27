@@ -22,6 +22,10 @@ import { format } from 'date-fns'
 import { CalendarDays } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { useRouter } from 'next/navigation'
+import { useAppSelector } from '@/redux/hooks'
+import { type SaveDriverRequest } from '@/services/models/common.models'
+import { useToast } from '../ui/use-toast'
+import { useSaveDriverMutation } from '@/redux/api/commonApi'
 
 const formSchema = z.object({
 	driverName: z.string().min(1, { message: 'Name Required' }),
@@ -36,9 +40,16 @@ const formSchema = z.object({
 })
 
 export function DriverDetailsForm() {
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
+	const reqRefNo = useAppSelector((state) => state.motor.RequestReferenceNo)
+
 	const years18 = new Date()
 
 	years18.setFullYear(years18.getFullYear() - 18)
+
+	const { toast } = useToast()
+	const [saveDriver] = useSaveDriverMutation()
 
 	const route = useRouter()
 
@@ -56,7 +67,66 @@ export function DriverDetailsForm() {
 		}
 	})
 
-	function onSubmit() {
+	function saveDriverDetails(values: z.infer<typeof formSchema>) {
+		const req: SaveDriverRequest = []
+
+		// driversDetails.forEach((driver) => {
+		if (
+			values.licenseNumber !== '' &&
+			values.driverName !== '' &&
+			values.driverOrOwner === 'Driver'
+		) {
+			req.push({
+				CreatedBy: customerData.name,
+				DriverDob: '09/07/2006',
+				DriverName: values.driverName,
+				DriverType: '1',
+				LicenseNo: values.licenseNumber,
+				QuoteNo: QuoteNo,
+				RiskId: '1',
+				RequestReferenceNo: reqRefNo,
+				MaritalStatus: values.driverMaritalStatus,
+				CountryId: null,
+				StateId: null,
+				CityId: null,
+				AreaGroup: null,
+				DriverExperience: values.drivingExperience,
+				LicenseIssueDt: null,
+				Gender: values.gender
+			})
+		}
+		// })
+
+		const res = saveDriver(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				toast({
+					variant: 'default',
+					title: 'Driver Details Updated'
+				})
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			}
+		})
+	}
+
+	function onSubmit(values: z.infer<typeof formSchema>) {
+		saveDriverDetails(values)
 		route.push('/car-insurance/details/upload-details')
 	}
 

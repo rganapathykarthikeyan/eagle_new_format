@@ -1,6 +1,9 @@
+'use client'
+
 import { FileUploader } from 'react-drag-drop-files'
 import { Button } from '../ui'
-import { Check } from 'lucide-react'
+import { Upload } from 'lucide-react'
+import { useState } from 'react'
 
 type UploadFieldProps = {
 	type: {
@@ -29,6 +32,7 @@ type UploadFieldProps = {
 
 export default function UploadField(props: UploadFieldProps) {
 	// const fileData = props.fileDataList[props.index]
+	const [file, setFileName] = useState<File | null>(null)
 	// const fileName =
 	// 	fileData && fileData.file ? props.type.label + ' - ' + fileData.file.name : props.type.label
 	return (
@@ -41,12 +45,11 @@ export default function UploadField(props: UploadFieldProps) {
 				id='fileUpload'
 				label='Drag and Drop Files Here'
 				name='file'
-				// handleChange={(file: File) => {
-				// 	props.handleFileChange(file, props.index)
-				// }}
-			>
+				handleChange={(file: File) => {
+					setFileName(file)
+				}}>
 				{/* {props.fileDataList[props.index].isUploaded ? ( */}
-				<div className='flex items-center justify-center'>
+				{/* <div className='flex items-center justify-center'>
 					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-green-200'>
 						<Check
 							color='white'
@@ -54,16 +57,16 @@ export default function UploadField(props: UploadFieldProps) {
 							width={16}
 						/>
 					</div>
+				</div> */}
+				{/* ) : ( */}
+				<div>
+					<Upload
+						height={24}
+						strokeWidth={1}
+						width={24}
+					/>
 				</div>
-				{/* ) : (
-					<div>
-						<Upload
-							height={24}
-							strokeWidth={1}
-							width={24}
-						/>
-					</div>
-				)} */}
+				{/* )}  */}
 				<div className='flex flex-col'>
 					<h3 className='text-sm font-bold md:text-base'>
 						<h3>
@@ -71,7 +74,7 @@ export default function UploadField(props: UploadFieldProps) {
 							{props.fileDataList[props.index].MandatoryStatus === 'Y' && (
 								<span className='text-red-500'>*</span>
 							)} */}
-							Upload
+							{file !== null ? file?.name : 'Upload'}
 						</h3>
 					</h3>
 					<h3 className='text-[11px] sm:text-xs'>

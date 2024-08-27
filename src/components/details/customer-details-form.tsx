@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import {
 	updateAddressDetails,
 	updateContactInformation,
+	updateIdentificationDetails,
 	updatePersonalDetails,
 	updateQuoteDetails
 } from '@/redux/slices'
@@ -137,17 +138,17 @@ export function CustomerDetailsForm() {
 			AppointmentDate: '',
 			BusinessType: null,
 			CityCode: customerData.poBox,
-			CityName: customerData.cityName,
+			CityName: values.cityName,
 			ClientName: customerData.name,
 			Clientstatus: 'Y',
 			CreatedBy: appData.loginId,
-			DobOrRegDate: customerData.dob,
-			District: customerData.cityName,
+			DobOrRegDate: values.dob !== undefined ? formatDateDDMMYYYY(values.dob) : '',
+			District: values.citytown,
 			Email1: customerData.email,
 			Email2: null,
 			Email3: null,
 			Fax: null,
-			Gender: customerData.gender,
+			Gender: values.gender,
 			IdNumber: values.idNumber,
 			IdType: '1',
 			IsTaxExempted: 'N',
@@ -158,11 +159,11 @@ export function CustomerDetailsForm() {
 			Nationality: 'ZMB',
 			Occupation: '1',
 			OtherOccupation: '',
-			Placeofbirth: customerData.cityName,
+			Placeofbirth: values.cityName,
 			PolicyHolderType: '1',
 			PolicyHolderTypeid: '1',
 			PreferredNotification: 'Sms',
-			RegionCode: customerData.city,
+			RegionCode: values.citytown,
 			MobileCode1: customerData.code,
 			WhatsappCode: customerData.code,
 			MobileCodeDesc1: '1',
@@ -174,12 +175,12 @@ export function CustomerDetailsForm() {
 			Type: customerData.accType,
 			TaxExemptedId: null,
 			TelephoneNo1: '',
-			PinCode: customerData.poBox,
+			PinCode: values.pobox ? values.pobox : '',
 			TelephoneNo2: null,
 			TelephoneNo3: null,
 			VrTinNo: null,
-			Title: customerData.title,
-			Address1: customerData.address,
+			Title: '1',
+			Address1: values.residentialaddress,
 			SaveOrSubmit: 'Submit',
 			Zone: '1'
 		}
@@ -192,6 +193,7 @@ export function CustomerDetailsForm() {
 				value.data.data.Result !== null
 			) {
 				buyPolicy()
+				route.push('/car-insurance/details/vehicle-details')
 			} else if (
 				value.data?.type === 'success' &&
 				value.data.data !== undefined &&
@@ -227,7 +229,7 @@ export function CustomerDetailsForm() {
 				{
 					Covers: appData.covers,
 					Id: '1',
-					SectionId: vehicleData.classID
+					SectionId: '104'
 				}
 			]
 		}
@@ -240,8 +242,13 @@ export function CustomerDetailsForm() {
 			) {
 				dispatch(
 					updateQuoteDetails({
-						CustomerId: value.data.data.Result.CustomerId,
-						QuoteNo: value.data.data.Result.QuoteNo
+						CustomerId: value.data.data.Result.CustomerId
+							? value.data.data.Result.CustomerId
+							: '',
+						QuoteNo:
+							value.data.data.Result.QuoteNo !== null
+								? value.data.data.Result.QuoteNo
+								: ''
 					})
 				)
 				setIsLoading(false)
@@ -292,7 +299,14 @@ export function CustomerDetailsForm() {
 			contact1: customerData.mobile,
 			contact2: customerData.mobile2,
 			contact1Code: customerData.code,
-			contact2Code: customerData.code2
+			contact2Code: customerData.code2,
+			residentialaddress: customerData.address,
+			citytown: customerData.city,
+			district: customerData.district,
+			pobox: customerData.poBox,
+			country: customerData.country,
+			idType: customerData.idType + '',
+			idNumber: customerData.idType === 7 ? customerData.nrc : customerData.passport
 		}
 	})
 
@@ -304,7 +318,7 @@ export function CustomerDetailsForm() {
 					gender: values.gender,
 					occupation: values.occupation,
 					dob: values.dob !== undefined ? formatDateDDMMYYYY(values.dob) : '',
-					name: values.firstname + values.lastname,
+					name: values.firstname + ' ' + values.lastname,
 					mobile: values.mobile,
 					accountType: values.accountType
 				})
@@ -347,10 +361,20 @@ export function CustomerDetailsForm() {
 				city: values.citytown,
 				poBox: values.pobox !== undefined ? values.pobox : '',
 				workAddress: values.workaddress !== undefined ? values.workaddress : '',
-				cityName: values.cityName
+				cityName: values.cityName,
+				country: values.country,
+				district: values.district
 			})
 		)
-		route.push('/car-insurance/details/vehicle-details')
+		dispatch(
+			updateIdentificationDetails({
+				nrc: values.idType === '7' ? values.idNumber : '',
+				passport: values.idType === '3' ? values.idNumber : '',
+				isResident: true,
+				companyNumber: values.accountType === 'Corporate' ? values.idNumber : '',
+				idType: +values.idType
+			})
+		)
 		navigateToVehicle(values)
 	}
 
