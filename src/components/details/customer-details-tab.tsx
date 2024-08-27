@@ -1,13 +1,32 @@
 'use client'
 
 import { cn } from '@/lib'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export function CustomerDetailsTab() {
 	const path = usePathname()
 	// const total = useAppSelector((state) => state.premiummotor.TotalPremium)
 	// const vehicleData = useAppSelector((state) => state.carInsurance)
 	// const Reference = useAppSelector((state) => state.motor.RequestReferenceNo)
+
+	const route = useRouter()
+
+	const [current, setCurrent] = useState<number>(1)
+
+	useEffect(() => {
+		if (path === '/car-insurance/details/customer-details') {
+			setCurrent(1)
+		} else if (path === '/car-insurance/details/vehicle-details') {
+			setCurrent(2)
+		} else if (path === '/car-insurance/details/driver-details') {
+			setCurrent(3)
+		} else if (path === '/car-insurance/details/upload-details') {
+			setCurrent(4)
+		} else if (path === '/car-insurance/payment') {
+			setCurrent(5)
+		}
+	}, [path])
 
 	return (
 		<div className='flex w-3/4 flex-col rounded-3xl bg-gradient-to-r from-blue-950 to-blue-975 px-8 font-sans font-semibold'>
@@ -50,47 +69,67 @@ export function CustomerDetailsTab() {
 				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-2 text-sm text-white', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/customer-details'
-						})}>
+						})}
+						onClick={() => {
+							if (current > 1) {
+								route.push('/car-insurance/details/customer-details')
+							}
+						}}>
 						Customer Info
 					</h4>
 				</div>
 				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-2 text-sm text-white', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/vehicle-details'
-						})}>
+						})}
+						onClick={() => {
+							if (current > 2) {
+								route.push('/car-insurance/details/vehicle-details')
+							}
+						}}>
 						Vehicle Details
 					</h4>
 				</div>
 				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-2 text-sm text-white', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/driver-details'
-						})}>
+						})}
+						onClick={() => {
+							if (current > 3) {
+								route.push('/car-insurance/details/driver-details')
+							}
+						}}>
 						Driver Details
 					</h4>
 				</div>
 				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-2 text-sm text-white', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/upload-details'
-						})}>
+						})}
+						onClick={() => {
+							if (current > 4) {
+								route.push('/car-insurance/details/upload-details')
+							}
+						}}>
 						Upload Documents
 					</h4>
 				</div>
 				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-2 text-sm text-white', {
 							'rounded-t-2xl bg-white text-black': path === '/car-insurance/payment'
 						})}>
 						Payment Method

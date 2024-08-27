@@ -3,12 +3,19 @@ import { Minus, Plus } from 'lucide-react'
 import { Button } from '../ui'
 import { CustomerDetailsTab } from './customer-details-tab'
 import UploadField from './upload-field'
+import { useRouter } from 'next/navigation'
 
 export function DocumentUploadForm() {
+	const route = useRouter()
+
 	const docTypesList = [
 		{ value: 'Licence ID', label: 'Licence ID' },
 		{ value: 'Vehicle Registration ID', label: 'Vehicle Registration ID' }
 	]
+
+	function submit() {
+		route.push('/car-insurance/payment')
+	}
 
 	return (
 		<section className='flex h-full w-full flex-col items-center gap-10 py-10'>
@@ -53,7 +60,8 @@ export function DocumentUploadForm() {
 				<div className='flex w-full items-center justify-center'>
 					<Button
 						className='w-1/4'
-						variant='greenbtn'>
+						variant='greenbtn'
+						onClick={submit}>
 						Next
 					</Button>
 				</div>

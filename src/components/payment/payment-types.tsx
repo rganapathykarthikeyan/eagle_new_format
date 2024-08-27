@@ -30,7 +30,9 @@ export function PaymentTypes() {
 					value='card'>
 					<CardDetails />
 				</TabsContent>
-				<TabsContent value='bank'>
+				<TabsContent
+					className='w-1/2'
+					value='bank'>
 					<CardDetails />
 				</TabsContent>
 				<TabsContent value='qrcode'>

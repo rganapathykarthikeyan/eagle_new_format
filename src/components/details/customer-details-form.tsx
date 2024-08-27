@@ -126,14 +126,8 @@ export function CustomerDetailsForm() {
 	const dateObject2 = new Date(+custDob[2], +custDob[1] - 1, +custDob[0])
 	const timestamp2 = dateObject2.getTime()
 
-	function navigateToVehicle() {
+	function navigateToVehicle(values: z.infer<typeof formSchema>) {
 		setIsLoading(true)
-		const idNumber =
-			customerData.accType === 'Personal'
-				? customerData.isResident
-					? customerData.nrc
-					: customerData.passport
-				: customerData.companyRegistrationNumber
 		const req = {
 			BrokerBranchCode: appData.brokerCode,
 			CustomerReferenceNo: motorData.CustomerReferenceNo,
@@ -154,7 +148,7 @@ export function CustomerDetailsForm() {
 			Email3: null,
 			Fax: null,
 			Gender: customerData.gender,
-			IdNumber: idNumber,
+			IdNumber: values.idNumber,
 			IdType: '1',
 			IsTaxExempted: 'N',
 			Language: '1',
@@ -356,8 +350,8 @@ export function CustomerDetailsForm() {
 				cityName: values.cityName
 			})
 		)
-
-		navigateToVehicle()
+		route.push('/car-insurance/details/vehicle-details')
+		navigateToVehicle(values)
 	}
 
 	return (
@@ -437,8 +431,7 @@ export function CustomerDetailsForm() {
 						<div className='flex w-full items-center justify-center'>
 							<Button
 								className='w-1/4'
-								variant='greenbtn'
-								onClick={navigateToVehicle}>
+								variant='greenbtn'>
 								{isLoading ? (
 									<ClipLoader
 										color='#FFFFFF'

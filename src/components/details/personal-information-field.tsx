@@ -15,7 +15,7 @@ import {
 } from '../ui'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { type CustomerFormType } from './customer-details-form'
-import { useGetOccupationListMutation, useTitleTypeMutation } from '@/redux/api/commonApi'
+import { useGetOccupationListMutation } from '@/redux/api/commonApi'
 import { useAppSelector } from '@/redux/hooks'
 import { Skeleton } from '../ui/skeleton'
 import { Calendar } from '../ui/calendar'
@@ -29,8 +29,8 @@ type personalInformationFieldProps = {
 }
 
 export function PersonalInformationField(props: personalInformationFieldProps) {
-	const [getTitleTypes] = useTitleTypeMutation()
-	const [titleList, setTitleList] = useState<{ value: string; label: string }[]>([])
+	// const [getTitleTypes] = useTitleTypeMutation()
+	// const [titleList, setTitleList] = useState<{ value: string; label: string }[]>([])
 	const [OccupationList, setOccupation] = useState<{ value: string; label: string }[]>([])
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
 
@@ -41,28 +41,28 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 
 	years18.setFullYear(years18.getFullYear() - 18)
 
-	useEffect(() => {
-		const request = {
-			InsuranceId: insuranceID,
-			ItemType: 'NAME_TITLE',
-			BranchCode: '99999',
-			ItemCode: 'null',
-			TitleType: props.customer === 'Personal' ? 'I' : 'C'
-		}
-		const tempArr: { value: string; label: string }[] = []
-		const res = getTitleTypes(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data?.data !== undefined) {
-				value.data.data!.Result.map((value) => {
-					tempArr.push({
-						value: value.Code,
-						label: value.CodeDesc
-					})
-				})
-				setTitleList(tempArr)
-			}
-		})
-	}, [props.customer])
+	// useEffect(() => {
+	// 	const request = {
+	// 		InsuranceId: insuranceID,
+	// 		ItemType: 'NAME_TITLE',
+	// 		BranchCode: '99999',
+	// 		ItemCode: 'null',
+	// 		TitleType: props.customer === 'Personal' ? 'I' : 'C'
+	// 	}
+	// 	const tempArr: { value: string; label: string }[] = []
+	// 	const res = getTitleTypes(request)
+	// 	res.then((value) => {
+	// 		if (value.data?.type === 'success' && value.data?.data !== undefined) {
+	// 			value.data.data!.Result.map((value) => {
+	// 				tempArr.push({
+	// 					value: value.Code,
+	// 					label: value.CodeDesc
+	// 				})
+	// 			})
+	// 			setTitleList(tempArr)
+	// 		}
+	// 	})
+	// }, [props.customer])
 
 	useEffect(() => {
 		const request = {
@@ -97,24 +97,24 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							Title<span className='text-red-500'>*</span>
 						</FormLabel>
 						<FormControl>
-							{titleList.length === 0 ? (
+							{/* {titleList.length === 0 ? (
 								<Skeleton className='h-10 w-full' />
 							) : (
-								<div className='w-20'>
-									<Select
-										disabled={field.disabled}
-										name={field.name}
-										value={field.value}
-										onValueChange={(e) => {
-											field.onChange(e)
-										}}>
-										<SelectTrigger
-											ref={field.ref}
-											className='border border-gray-375 bg-gray-975'>
-											<SelectValue placeholder='Title' />
-										</SelectTrigger>
-										<SelectContent>
-											{titleList.map((title, index) => {
+								<div className='w-20'> */}
+							<Select
+								disabled={field.disabled}
+								name={field.name}
+								value={field.value}
+								onValueChange={(e) => {
+									field.onChange(e)
+								}}>
+								<SelectTrigger
+									ref={field.ref}
+									className='border border-gray-375 bg-gray-975'>
+									<SelectValue placeholder='Title' />
+								</SelectTrigger>
+								<SelectContent>
+									{/* {titleList.map((title, index) => {
 												return (
 													<SelectItem
 														key={index}
@@ -122,11 +122,21 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 														{title.label}
 													</SelectItem>
 												)
-											})}
-										</SelectContent>
-									</Select>
-								</div>
-							)}
+											})} */}
+									<SelectItem
+										key={1}
+										value='Mr'>
+										Mr
+									</SelectItem>
+									<SelectItem
+										key={2}
+										value='Mrs'>
+										Mrs
+									</SelectItem>
+								</SelectContent>
+							</Select>
+							{/* </div>
+							)} */}
 						</FormControl>
 						<FormMessage />
 					</FormItem>

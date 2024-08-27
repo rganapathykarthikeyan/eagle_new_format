@@ -58,7 +58,7 @@ export function VehicleDetailsForm() {
 	})
 
 	function navigateToPay() {
-		route.push('/car-insurance/payment')
+		route.push('/car-insurance/details/driver-details')
 	}
 
 	function onSubmit() {
