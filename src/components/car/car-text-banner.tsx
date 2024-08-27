@@ -59,7 +59,7 @@ export function CarTextBanner() {
 
 	return (
 		<div className='photoAnimation flex w-full flex-row items-center justify-center gap-4 pt-10'>
-			<div className='flex h-16 w-16 overflow-hidden rounded-full'>
+			<div className='flex h-12 w-20 overflow-hidden rounded-full md:h-16 md:w-16'>
 				<Image
 					alt='person'
 					className='h-full w-full object-cover object-center'
@@ -69,8 +69,8 @@ export function CarTextBanner() {
 				/>
 			</div>
 			<div className='flex flex-col gap-2 rounded-t-3xl rounded-ee-3xl bg-white p-3 py-6 shadow-inputShadowDrop'>
-				<h1 className='bannerTitle font-inter text-2xl font-bold text-blue-625'></h1>
-				<h4 className='bannerSubTitle font-inter text-sm opacity-50'></h4>
+				<h1 className='bannerTitle font-inter text-base font-bold text-blue-625 lg:text-2xl'></h1>
+				<h4 className='bannerSubTitle font-inter text-xs opacity-50 lg:text-sm'></h4>
 			</div>
 		</div>
 	)

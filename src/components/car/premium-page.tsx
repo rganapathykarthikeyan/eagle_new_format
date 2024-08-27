@@ -448,7 +448,7 @@ export function PremiumPage() {
 					</Button>
 				</div>
 			) : (
-				<section className='flex w-full flex-row items-start gap-3 p-4'>
+				<section className='flex w-full flex-col items-start gap-3 p-4 lg:flex-row'>
 					{isLoading ? (
 						<Skeleton className='h-[50vh] w-full' />
 					) : (
