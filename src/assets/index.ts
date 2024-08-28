@@ -9,8 +9,8 @@ export const assets = {
 		view: '/icons/view.svg',
 		shield: '/icons/shield.svg',
 		home: '/icons/home.svg',
-		insuranceCar: '/icons/insuranceCar.svg',
-		travelInsurance: '/icons/travelInsurance.svg'
+		insuranceCar: '/icons/InsuranceCar.svg',
+		travelInsurance: '/icons/TravelInsurance.svg'
 	},
 	images: {
 		bike: '/images/bike.png',
