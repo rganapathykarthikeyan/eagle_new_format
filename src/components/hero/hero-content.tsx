@@ -22,8 +22,12 @@ export function HeroContent() {
 		gsap.from('.rightAnimation', { x: 80, opacity: 0, duration: 1, delay: 3 })
 	})
 
-	function buy() {
+	function buyCar() {
 		router.push('/car-insurance/1')
+	}
+
+	function buyHomeInsurance() {
+		router.push('/home-insurance')
 	}
 
 	return (
@@ -53,7 +57,7 @@ export function HeroContent() {
 								className='w-fit px-8 hover:shadow'
 								size='smRoundedfull'
 								variant='whiteRounded'
-								onClick={buy}>
+								onClick={buyCar}>
 								Buy Policy
 							</Button>
 						</div>
@@ -90,7 +94,8 @@ export function HeroContent() {
 							<h1 className='text-base font-semibold'>Home Insurance</h1>
 							<Button
 								className='w-fit rounded-2xl hover:shadow'
-								variant='greenbtn'>
+								variant='greenbtn'
+								onClick={buyHomeInsurance}>
 								Buy Policy
 							</Button>
 						</div>

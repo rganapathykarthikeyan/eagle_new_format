@@ -8,11 +8,13 @@ import {
 	premiumMotorSlice
 } from './slices'
 import { commonApi } from './api/commonApi'
+import { homeInsuranceSlice } from './slices/home-insurance.slice'
 
 const reducer = combineReducers({
 	[carInsuranceSlice.reducerPath]: carInsuranceSlice.reducer,
 	[customerDetailsSlice.reducerPath]: customerDetailsSlice.reducer,
 	[appSlice.reducerPath]: appSlice.reducer,
+	[homeInsuranceSlice.reducerPath]: homeInsuranceSlice.reducer,
 	[commonApi.reducerPath]: commonApi.reducer,
 	[premiumMotorSlice.reducerPath]: premiumMotorSlice.reducer,
 	[motorSlice.reducerPath]: motorSlice.reducer

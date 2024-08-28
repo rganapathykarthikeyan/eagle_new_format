@@ -14,6 +14,11 @@ export const metadata: Metadata = {
 export default function Layout(props: PropsWithChildren) {
 	return (
 		<html lang='en'>
+			<script
+				async
+				defer
+				src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+				type='text/javascript'></script>
 			<AppProvider>
 				<body className={cn(fontVariables, 'bg-gray-950')}>{props.children}</body>
 			</AppProvider>

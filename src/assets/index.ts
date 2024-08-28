@@ -7,7 +7,10 @@ export const assets = {
 		google: '/icons/google-icon.svg',
 		apple: '/icons/apple-icon.svg',
 		view: '/icons/view.svg',
-		shield: '/icons/shield.svg'
+		shield: '/icons/shield.svg',
+		home: '/icons/home.svg',
+		insuranceCar: '/icons/insuranceCar.svg',
+		travelInsurance: '/icons/travelInsurance.svg'
 	},
 	images: {
 		bike: '/images/bike.png',

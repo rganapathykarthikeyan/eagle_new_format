@@ -21,6 +21,7 @@ const config = {
 					100: '#FAFAFA', // white
 					200: '#F8F8FA', // lightGray
 					300: '#E2E8F0', // lightestGray
+					325: '#808080',
 					350: '#EDEDED',
 					375: '#E0E2E7',
 					400: '#656565', // gray
@@ -77,7 +78,9 @@ const config = {
 					320: '#0D85361A',
 					400: '#EBF7F6',
 					500: '#10B981',
-					600: '#35B6B4'
+					600: '#35B6B4',
+					700: '#EAFFFC',
+					800: '#41DDB2'
 				},
 				yellow: {
 					100: '#FDEB9D' // paleYellow
