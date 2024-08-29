@@ -41,6 +41,7 @@ export const assets = {
 		family: '/images/family.png',
 		vehicleSketch: '/images/vehicleSketch.svg',
 		sClass: '/images/SClass.png',
-		person: '/images/person.jpeg'
+		person: '/images/person.jpeg',
+		homeImage: '/images/HomeImage.png'
 	}
 }

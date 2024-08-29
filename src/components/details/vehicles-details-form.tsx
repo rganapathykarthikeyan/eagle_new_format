@@ -149,10 +149,10 @@ export function VehicleDetailsForm() {
 			<CustomerDetailsTab />
 			<Form {...form}>
 				<form
-					className='w-4/5 space-y-8'
+					className='w-full space-y-8 px-2 lg:w-4/5 lg:px-0'
 					onSubmit={form.handleSubmit(onSubmit)}>
 					<section className='flex flex-col justify-between gap-5'>
-						<div className='grid w-full grid-cols-4 gap-5'>
+						<div className='grid w-full grid-cols-1 gap-5 lg:grid-cols-4'>
 							<MotorDetailsField form={form} />
 						</div>
 					</section>
@@ -176,7 +176,7 @@ export function VehicleDetailsForm() {
 				/> */}
 					<div className='flex w-full items-center justify-center'>
 						<Button
-							className='w-1/4'
+							className='w-1/3 lg:w-1/4'
 							variant='greenbtn'>
 							{isLoading ? (
 								<ClipLoader

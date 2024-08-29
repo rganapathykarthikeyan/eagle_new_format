@@ -18,14 +18,14 @@ export function DocumentUploadForm() {
 	}
 
 	return (
-		<section className='flex h-full w-full flex-col items-center gap-10 py-10'>
+		<section className='flex h-full w-full flex-col items-center gap-10 py-2 lg:py-10'>
 			<CustomerDetailsTab />
 			<section className='flex w-full flex-col items-center gap-10'>
 				{docTypesList.map((type, index) => {
 					return (
 						<div
 							key={index}
-							className='flex w-1/2 flex-row items-center gap-2'>
+							className='flex w-full flex-row items-center gap-2 lg:w-1/2'>
 							<UploadField
 								key={index}
 								// fileDataList={fileDataList}

@@ -88,8 +88,8 @@ export function SelectLocation() {
 						1
 					</div>
 				</div>
-				<h1 className='locationTitle text-center font-inter text-4xl font-bold text-blue-825'></h1>
-				<p className='locationSubTitle w-4/5 text-center font-roboto text-sm text-gray-500'></p>
+				<h1 className='locationTitle text-center font-inter text-2xl font-bold text-blue-825 lg:text-4xl'></h1>
+				<p className='locationSubTitle w-4/5 text-center font-roboto text-xs text-gray-500 lg:text-sm'></p>
 			</div>
 			<div className='locationHome flex flex-row gap-3'>
 				<Select

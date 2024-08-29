@@ -23,10 +23,10 @@ export function SelectHomeCovers() {
 								2
 							</div>
 						</div>
-						<h1 className='text-center font-inter text-4xl font-bold text-blue-825'>
+						<h1 className='text-center font-inter text-2xl font-bold text-blue-825 lg:text-4xl'>
 							Select your Cover
 						</h1>
-						<p className='w-4/5 text-center font-roboto text-sm text-gray-500'>
+						<p className='w-4/5 text-center font-roboto text-xs text-gray-500 lg:text-sm'>
 							Please fill the form below to receive a quote for your project. Feel
 							free to add as much detail as needed.
 						</p>

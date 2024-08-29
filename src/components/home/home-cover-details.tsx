@@ -31,9 +31,17 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 					return (
 						<div
 							key={index}
-							className={cn('rounded-2xl border px-6 py-1 text-lg text-blue-875', {
-								'bg-green-600 text-white': current === index
-							})}>
+							className={cn(
+								'cursor-pointer rounded-2xl border px-6 py-1 text-lg text-blue-875',
+								{
+									'bg-green-600 text-white': current === index
+								}
+							)}
+							onClick={() => {
+								if (current > index) {
+									setCurrent(index)
+								}
+							}}>
 							{cover.homeAddress}
 						</div>
 					)
@@ -64,8 +72,8 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 				</div>
 				{curDetails.ownerOrTenet === 'Owner' && (
 					<div className='flex w-full flex-row items-center justify-center'>
-						<div className='flex w-1/2 flex-row items-center gap-2'>
-							<div className='w-48'>
+						<div className='flex w-full flex-row items-center gap-2 lg:w-1/2'>
+							<div className='text-xs lg:w-48 lg:text-base'>
 								Sum Insured<span className='text-red-500'>*</span>
 							</div>
 							<Input
@@ -75,7 +83,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 						</div>
 					</div>
 				)}
-				<div className='flex h-full w-full flex-row items-stretch justify-between gap-6'>
+				<div className='flex h-full w-full flex-col items-stretch justify-between gap-6 lg:flex-row'>
 					<div className='relative flex w-full flex-col items-center justify-between gap-3 overflow-hidden rounded-lg border border-green-600 bg-green-700 py-3'>
 						<Image
 							alt='home'
@@ -84,7 +92,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							width={54}
 						/>
 						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='text-gray-325 font-inter text-sm'>I want</span>
+							<span className='font-inter text-sm text-gray-325'>I want</span>
 							<span className='font-inter text-lg font-medium'>Building</span>
 						</div>
 						<div className='flex flex-row items-start justify-start self-start px-2'>
@@ -106,7 +114,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							width={54}
 						/>
 						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='text-gray-325 font-inter text-sm'>I want</span>
+							<span className='font-inter text-sm text-gray-325'>I want</span>
 							<span className='font-inter text-lg font-medium'>Contents</span>
 						</div>
 						<div className='flex flex-row items-start justify-start self-start px-2'>
@@ -128,7 +136,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							width={54}
 						/>
 						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='text-gray-325 font-inter text-sm'>I want</span>
+							<span className='font-inter text-sm text-gray-325'>I want</span>
 							<span className='font-inter text-lg font-medium'>
 								Electronic Equipment
 							</span>
@@ -150,7 +158,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							width={54}
 						/>
 						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='text-gray-325 font-inter text-sm'>I want</span>
+							<span className='font-inter text-sm text-gray-325'>I want</span>
 							<span className='font-inter text-lg font-medium'>
 								Personal Accident
 							</span>
@@ -173,7 +181,9 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 						className='w-1/2'
 						variant='greenbtn'
 						onClick={() => {
-							setCurrent((pre) => pre + 1)
+							if (current < props.homeCover.length - 1) {
+								setCurrent((pre) => pre + 1)
+							}
 						}}>
 						Save and Continue
 					</Button>

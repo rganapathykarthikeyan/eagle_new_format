@@ -379,14 +379,14 @@ export function CustomerDetailsForm() {
 	}
 
 	return (
-		<section className='flex h-full w-full flex-col items-center gap-10 py-10'>
+		<section className='flex h-full w-full flex-col items-center gap-10 py-2 lg:py-10'>
 			<CustomerDetailsTab />
 			<section className='flex w-full flex-col items-center gap-10'>
 				<Form {...form}>
 					<form
-						className='w-4/5 space-y-8'
+						className='w-full space-y-8 px-2 lg:w-4/5 lg:px-0'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex w-full flex-row items-center justify-center gap-12'>
+						<div className='flex w-full flex-row items-center justify-center gap-2 lg:gap-12'>
 							<FormLabel>
 								Account Type<span className='text-red-500'>*</span> :
 							</FormLabel>
@@ -399,7 +399,7 @@ export function CustomerDetailsForm() {
 											<div className='flex flex-grow flex-row gap-8'>
 												<div
 													className={cn(
-														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														'cursor-pointer rounded-md px-3 py-1 font-semibold text-gray-875 lg:px-8',
 														{
 															'bg-blue-875 text-white':
 																field.value === 'Personal'
@@ -413,7 +413,7 @@ export function CustomerDetailsForm() {
 												</div>
 												<div
 													className={cn(
-														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														'cursor-pointer rounded-md px-3 py-1 font-semibold text-gray-875 lg:px-8',
 														{
 															'bg-blue-875 text-white':
 																field.value === 'Corporate'
@@ -434,7 +434,7 @@ export function CustomerDetailsForm() {
 						</div>
 
 						<section className='flex flex-col justify-between gap-5'>
-							<div className='grid w-full grid-cols-4 gap-5'>
+							<div className='grid w-full grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-5'>
 								<PersonalInformationField
 									customer={customerType}
 									form={form}
@@ -448,13 +448,13 @@ export function CustomerDetailsForm() {
 								pos={3}
 							/> */}
 							<h3 className='font-jakarta text-lg font-semibold'>Address Details</h3>
-							<div className='grid w-full grid-cols-4 gap-5'>
+							<div className='grid w-full grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-5'>
 								<AddressDetailsField form={form} />
 							</div>
 						</section>
 						<div className='flex w-full items-center justify-center'>
 							<Button
-								className='w-1/4'
+								className='w-1/3 lg:w-1/4'
 								variant='greenbtn'>
 								{isLoading ? (
 									<ClipLoader

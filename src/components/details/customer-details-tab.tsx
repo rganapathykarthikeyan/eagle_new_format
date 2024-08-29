@@ -29,8 +29,8 @@ export function CustomerDetailsTab() {
 	}, [path])
 
 	return (
-		<div className='flex w-3/4 flex-col rounded-3xl bg-gradient-to-r from-blue-950 to-blue-975 px-8 font-sans font-semibold'>
-			<div className='flex w-full items-center justify-center p-4 text-center font-inter text-3xl font-bold text-white'>
+		<div className='flex w-full flex-col rounded-3xl bg-gradient-to-r from-blue-950 to-blue-975 px-1 font-sans font-semibold lg:w-3/4 lg:px-8'>
+			<div className='flex w-full items-center justify-center p-4 text-center font-inter text-base font-bold text-white lg:text-3xl'>
 				<span>
 					{path === '/car-insurance/details/customer-details' &&
 						'Please provide your customer details within 3 min'}
@@ -44,32 +44,34 @@ export function CustomerDetailsTab() {
 						'Please confirm your details and proceed with payment'}
 				</span>
 			</div>
-			<div className='flex flex-row justify-around gap-10 rounded-xl border border-gray-900 p-1'>
-				<span className='flex flex-col font-jakarta text-lg text-white'>
-					<span className='text-sm font-medium'>Ref.No : </span>EAG-MOT-06063
+			<div className='flex flex-row flex-wrap justify-around gap-4 rounded-xl border border-gray-900 p-1 lg:gap-10'>
+				<span className='flex flex-col font-jakarta text-sm text-white lg:text-lg'>
+					<span className='text-xs font-medium lg:text-sm'>Ref.No : </span>EAG-MOT-06063
 					{/* {Reference} */}
 				</span>
-				<span className='flex flex-col font-jakarta text-lg text-white'>
-					<span className='text-sm font-medium'>Make :</span> AUDI
+				<span className='flex flex-col font-jakarta text-sm text-white lg:text-lg'>
+					<span className='text-xs font-medium lg:text-sm'>Make :</span> AUDI
 					{/* {vehicleData.mark} */}
 				</span>
-				<span className='flex flex-col font-jakarta text-lg text-white'>
-					<span className='text-sm font-medium'>Model : </span>A3 AUTO
+				<span className='flex flex-col font-jakarta text-sm text-white lg:text-lg'>
+					<span className='text-xs font-medium lg:text-sm'>Model : </span>A3 AUTO
 					{/* {vehicleData.model} */}
 				</span>
-				<span className='flex flex-col font-jakarta text-lg text-white'>
-					<span className='text-sm font-medium'>Policy Days Count :</span> 365 days
+				<span className='flex flex-col font-jakarta text-sm text-white lg:text-lg'>
+					<span className='text-xs font-medium lg:text-sm'>Policy Days Count :</span> 365
+					days
 				</span>
-				<span className='flex flex-col font-jakarta text-lg text-white'>
-					<span className='text-sm font-medium'>Total Premium : </span>10801 MUR
+				<span className='flex flex-col font-jakarta text-sm text-white lg:text-lg'>
+					<span className='text-xs font-medium lg:text-sm'>Total Premium : </span>10801
+					MUR
 					{/* {total} */}
 				</span>
 			</div>
-			<div className='flex flex-row justify-around gap-10'>
-				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
+			<div className='flex w-full flex-row items-end justify-around gap-2 overflow-x-auto lg:gap-4'>
+				<div className='flex h-full flex-col items-center justify-end p-1 pb-0 lg:p-6 lg:pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('cursor-pointer p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-1 text-xs text-white lg:p-2 lg:text-sm', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/customer-details'
 						})}
@@ -81,10 +83,10 @@ export function CustomerDetailsTab() {
 						Customer Info
 					</h4>
 				</div>
-				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
+				<div className='flex h-full flex-col items-center justify-end p-1 pb-0 lg:p-6 lg:pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('cursor-pointer p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-1 text-xs text-white lg:p-2 lg:text-sm', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/vehicle-details'
 						})}
@@ -96,10 +98,10 @@ export function CustomerDetailsTab() {
 						Vehicle Details
 					</h4>
 				</div>
-				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
+				<div className='flex h-full flex-col items-center justify-end p-1 pb-0 lg:p-6 lg:pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('cursor-pointer p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-1 text-xs text-white lg:p-2 lg:text-sm', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/driver-details'
 						})}
@@ -111,10 +113,10 @@ export function CustomerDetailsTab() {
 						Driver Details
 					</h4>
 				</div>
-				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
+				<div className='flex h-full flex-col items-center justify-end p-1 pb-0 lg:p-6 lg:pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('cursor-pointer p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-1 text-xs text-white lg:p-2 lg:text-sm', {
 							'rounded-t-2xl bg-white text-black':
 								path === '/car-insurance/details/upload-details'
 						})}
@@ -126,10 +128,10 @@ export function CustomerDetailsTab() {
 						Upload Documents
 					</h4>
 				</div>
-				<div className='flex h-full flex-col items-center justify-end gap-2 p-6 pb-0'>
+				<div className='flex h-full flex-col items-center justify-end p-1 pb-0 lg:p-6 lg:pb-0'>
 					{/* <p className='rounded-3xl bg-white p-2 text-xs text-red-500'>3 min</p> */}
 					<h4
-						className={cn('cursor-pointer p-2 text-sm text-white', {
+						className={cn('cursor-pointer p-1 text-xs text-white lg:p-2 lg:text-sm', {
 							'rounded-t-2xl bg-white text-black': path === '/car-insurance/payment'
 						})}>
 						Payment Method

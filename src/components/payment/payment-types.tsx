@@ -4,11 +4,11 @@ import { QRDetails } from './qr-details'
 
 export function PaymentTypes() {
 	return (
-		<div className='flex h-full w-3/4'>
+		<div className='flex h-full w-full lg:w-3/4'>
 			<Tabs
 				className='flex w-full flex-col items-center'
 				defaultValue='card'>
-				<TabsList className='flex w-1/2'>
+				<TabsList className='flex w-full lg:w-1/2'>
 					<TabsTrigger
 						className='flex-grow'
 						value='card'>
@@ -26,12 +26,12 @@ export function PaymentTypes() {
 					</TabsTrigger>
 				</TabsList>
 				<TabsContent
-					className='w-1/2'
+					className='w-full lg:w-1/2'
 					value='card'>
 					<CardDetails />
 				</TabsContent>
 				<TabsContent
-					className='w-1/2'
+					className='w-full lg:w-1/2'
 					value='bank'>
 					<CardDetails />
 				</TabsContent>

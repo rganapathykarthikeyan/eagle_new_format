@@ -131,14 +131,14 @@ export function DriverDetailsForm() {
 	}
 
 	return (
-		<section className='flex h-full w-full flex-col items-center gap-10 py-10'>
+		<section className='flex h-full w-full flex-col items-center gap-10 py-2 lg:py-10'>
 			<CustomerDetailsTab />
 			<section className='flex w-full flex-col items-center gap-10'>
 				<Form {...form}>
 					<form
-						className='w-4/5 space-y-8'
+						className='w-full space-y-8 px-2 lg:w-4/5 lg:px-0'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex w-full flex-row items-center justify-center gap-12'>
+						<div className='flex w-full flex-row items-center justify-center gap-4 lg:gap-12'>
 							<FormLabel>
 								Driver or Owner<span className='text-red-500'>*</span> :
 							</FormLabel>
@@ -151,7 +151,7 @@ export function DriverDetailsForm() {
 											<div className='flex flex-grow flex-row gap-8'>
 												<div
 													className={cn(
-														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														'cursor-pointer rounded-md px-3 py-1 font-semibold text-gray-875 lg:px-8',
 														{
 															'bg-blue-875 text-white':
 																field.value === 'Driver'
@@ -164,7 +164,7 @@ export function DriverDetailsForm() {
 												</div>
 												<div
 													className={cn(
-														'cursor-pointer rounded-md px-8 py-1 font-semibold text-gray-875',
+														'cursor-pointer rounded-md px-3 py-1 font-semibold text-gray-875 lg:px-8',
 														{
 															'bg-blue-875 text-white':
 																field.value === 'Owner'
@@ -183,7 +183,7 @@ export function DriverDetailsForm() {
 							/>
 						</div>
 						<section className='flex flex-col justify-between gap-5'>
-							<div className='grid w-full grid-cols-4 gap-5'>
+							<div className='grid w-full grid-cols-1 gap-5 lg:grid-cols-4'>
 								<FormField
 									control={form.control}
 									name='driverName'
