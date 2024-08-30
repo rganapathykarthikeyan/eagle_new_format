@@ -1,14 +1,21 @@
 import { cn } from '@/lib'
-import { type EachHomeDetails } from '@/redux/slices'
-import { useState } from 'react'
+import { updateSingleAddressDetails, type EachHomeDetails } from '@/redux/slices'
+import { useEffect, useState } from 'react'
 import { Checkbox } from '../ui/checkbox'
 import { Button, Input } from '../ui'
-import Image from 'next/image'
 import { assets } from '@/assets'
-import { ArrowRight, Check } from 'lucide-react'
+import { CoverContents } from './cover-contents'
+import { useAppDispatch } from '@/redux/hooks'
 
 type HomeCoverDetailsProps = {
 	homeCover: EachHomeDetails[]
+}
+
+type CoversListDisplay = {
+	icon: string
+	title: string
+	suminsured: string
+	fieldName: string
 }
 
 export function HomeCoverDetails(props: HomeCoverDetailsProps) {
@@ -24,9 +31,129 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		personalAccident: props.homeCover[current].personalAccident
 	})
 
+	const [covers, setCovers] = useState<CoversListDisplay[]>([
+		{
+			icon: assets.icons.home,
+			title: 'Building',
+			suminsured: curDetails.sumInsured,
+			fieldName: 'sumInsured'
+		},
+		{
+			icon: assets.icons.insuranceCar,
+			title: 'Contents',
+			suminsured: curDetails.constents,
+			fieldName: 'constents'
+		},
+		{
+			icon: assets.icons.travelInsurance,
+			title: 'Electronic Equipment',
+			suminsured: curDetails.electricEquipement,
+			fieldName: 'electricEquipement'
+		},
+		{
+			icon: assets.icons.home,
+			title: 'Personal Accident',
+			suminsured: curDetails.personalAccident,
+			fieldName: 'personalAccident'
+		},
+		{
+			icon: assets.icons.home,
+			title: 'Family Personal Accident',
+			suminsured: curDetails.sumInsured,
+			fieldName: 'sumInsured'
+		},
+		{
+			icon: assets.icons.home,
+			title: 'Family Personal Accident',
+			suminsured: curDetails.sumInsured,
+			fieldName: 'sumInsured'
+		},
+		{
+			icon: assets.icons.home,
+			title: 'Family Public liability',
+			suminsured: curDetails.sumInsured,
+			fieldName: 'sumInsured'
+		}
+	])
+
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		setCurrentDetails({
+			homeAddress: props.homeCover[current].homeAddress,
+			addressId: props.homeCover[current].addressId,
+			ownerOrTenet: props.homeCover[current].ownerOrTenet,
+			sumInsured: props.homeCover[current].sumInsured,
+			constents: props.homeCover[current].constents,
+			electricEquipement: props.homeCover[current].electricEquipement,
+			personalAccident: props.homeCover[current].personalAccident
+		})
+	}, [current])
+
+	useEffect(() => {
+		const newCovers = [
+			{
+				icon: assets.icons.home,
+				title: 'Building',
+				suminsured: curDetails.sumInsured,
+				fieldName: 'sumInsured'
+			},
+			{
+				icon: assets.icons.insuranceCar,
+				title: 'Contents',
+				suminsured: curDetails.constents,
+				fieldName: 'constents'
+			},
+			{
+				icon: assets.icons.travelInsurance,
+				title: 'Electronic Equipment',
+				suminsured: curDetails.electricEquipement,
+				fieldName: 'electricEquipement'
+			},
+			{
+				icon: assets.icons.home,
+				title: 'Personal Accident',
+				suminsured: curDetails.personalAccident,
+				fieldName: 'personalAccident'
+			},
+			{
+				icon: assets.icons.home,
+				title: 'Family Personal Accident',
+				suminsured: curDetails.sumInsured,
+				fieldName: 'sumInsured'
+			},
+			{
+				icon: assets.icons.home,
+				title: 'Family Personal Accident',
+				suminsured: curDetails.sumInsured,
+				fieldName: 'sumInsured'
+			},
+			{
+				icon: assets.icons.home,
+				title: 'Family Public liability',
+				suminsured: curDetails.sumInsured,
+				fieldName: 'sumInsured'
+			}
+		]
+		setCovers(newCovers)
+	}, [curDetails])
+
+	function updateDetails(fieldName: string, value: string) {
+		setCurrentDetails({ ...curDetails, [fieldName]: value })
+		dispatch(
+			updateSingleAddressDetails({
+				homeList: { ...curDetails, [fieldName]: value },
+				index: current
+			})
+		)
+	}
+
 	return (
-		<section className='flex w-full flex-col gap-5'>
-			<div className='flex w-full flex-row gap-2 overflow-x-auto'>
+		<section
+			className={cn('flex w-full flex-col gap-5', {
+				'min-h-[50svh]': curDetails.ownerOrTenet === ''
+			})}>
+			<div className='flex w-full flex-row items-center justify-center gap-2 overflow-x-auto'>
 				{props.homeCover.map((cover, index) => {
 					return (
 						<div
@@ -47,34 +174,70 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 					)
 				})}
 			</div>
-			<div className='flex flex-col gap-5'>
+			<div className='flex flex-col items-center gap-5'>
 				<div className='flex w-full flex-row items-center justify-around gap-3'>
-					<div className='flex flex-row items-center gap-2'>
+					<div className='flex flex-grow flex-col gap-2'>
+						<h3 className='font-jakarta text-3xl font-bold'>
+							Are you Owner of the house?
+						</h3>
+						<h5 className='font-manrope text-lg font-medium text-gray-325'>
+							Please select the owner or tenant and provide the details for the same.
+						</h5>
+					</div>
+					<div className='flex flex-row items-center gap-2 text-2xl font-medium'>
 						<Checkbox
 							checked={curDetails.ownerOrTenet === 'Owner'}
 							id='owner'
 							onCheckedChange={() => {
-								setCurrentDetails({ ...curDetails, ownerOrTenet: 'Owner' })
+								updateDetails('ownerOrTenet', 'Owner')
 							}}
 						/>
 						<label htmlFor='owner'>Yes, I&apos;m Owner</label>
 					</div>
-					<div className='flex flex-row items-center gap-2'>
+					<div className='flex flex-row items-center gap-2 text-2xl font-medium'>
 						<Checkbox
 							checked={curDetails.ownerOrTenet === 'Tenant'}
 							id='tenant'
 							onCheckedChange={() => {
-								setCurrentDetails({ ...curDetails, ownerOrTenet: 'Tenant' })
+								updateDetails('ownerOrTenet', 'Tenant')
 							}}
 						/>
 						<label htmlFor='tenant'>No, I&apos;m Tenant</label>
 					</div>
 				</div>
 				{curDetails.ownerOrTenet === 'Owner' && (
-					<div className='flex w-full flex-row items-center justify-center'>
-						<div className='flex w-full flex-row items-center gap-2 lg:w-1/2'>
-							<div className='text-xs lg:w-48 lg:text-base'>
-								Sum Insured<span className='text-red-500'>*</span>
+					<div className='flex w-full flex-row items-center justify-center gap-3 lg:w-3/4'>
+						<div className='flex w-full flex-row items-center justify-center gap-2 lg:w-1/2'>
+							<div className='w-full text-xs lg:text-base'>
+								Building Sum Insured<span className='text-red-500'>*</span>
+							</div>
+							<Input
+								placeholder='Sum Insured'
+								value={curDetails.sumInsured}
+								onChange={(e) => {
+									updateDetails('sumInsured', e.target.value)
+								}}
+							/>
+						</div>
+						<div className='flex w-full flex-row items-center justify-center gap-2 lg:w-1/2'>
+							<div className='w-full text-xs lg:text-base'>
+								Contents Sum Insured<span className='text-red-500'>*</span>
+							</div>
+							<Input
+								placeholder='Sum Insured'
+								value={curDetails.constents}
+								onChange={(e) => {
+									updateDetails('constents', e.target.value)
+								}}
+							/>
+						</div>
+					</div>
+				)}
+				{curDetails.ownerOrTenet === 'Tenant' && (
+					<div className='flex w-full flex-row items-center justify-center gap-3 lg:w-3/4'>
+						<div className='flex w-full flex-row items-center justify-center gap-2 lg:w-1/2'>
+							<div className='w-full text-xs lg:text-base'>
+								Contents Sum Insured<span className='text-red-500'>*</span>
 							</div>
 							<Input
 								placeholder='Sum Insured'
@@ -83,111 +246,54 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 						</div>
 					</div>
 				)}
-				<div className='flex h-full w-full flex-col items-stretch justify-between gap-6 lg:flex-row'>
-					<div className='relative flex w-full flex-col items-center justify-between gap-3 overflow-hidden rounded-lg border border-green-600 bg-green-700 py-3'>
-						<Image
-							alt='home'
-							height={54}
-							src={assets.icons.home}
-							width={54}
-						/>
-						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='font-inter text-sm text-gray-325'>I want</span>
-							<span className='font-inter text-lg font-medium'>Building</span>
+				{curDetails.ownerOrTenet !== '' && (
+					<>
+						<div className='grid h-full w-full grid-cols-4 gap-6'>
+							{curDetails.ownerOrTenet === 'Tenant' ? (
+								<>
+									{covers.slice(1).map((cover, index) => {
+										return (
+											<CoverContents
+												key={index}
+												fieldName={cover.fieldName}
+												icon={cover.icon}
+												title={cover.title}
+												updateDetails={updateDetails}
+												value={cover.suminsured}
+											/>
+										)
+									})}
+								</>
+							) : (
+								covers.map((cover, index) => {
+									return (
+										<CoverContents
+											key={index}
+											fieldName={cover.fieldName}
+											icon={cover.icon}
+											title={cover.title}
+											updateDetails={updateDetails}
+											value={cover.suminsured}
+										/>
+									)
+								})
+							)}
 						</div>
-						<div className='flex flex-row items-start justify-start self-start px-2'>
-							<span className='text-xs font-bold'>100000 ZMW</span>
+
+						<div className='flex w-full items-center justify-center'>
+							<Button
+								className='w-1/2'
+								variant='greenbtn'
+								onClick={() => {
+									if (current < props.homeCover.length - 1) {
+										setCurrent((pre) => pre + 1)
+									}
+								}}>
+								Save and Continue
+							</Button>
 						</div>
-						<div className='absolute -bottom-6 -right-6 flex h-16 w-16 rounded-full bg-green-800'>
-							<Check
-								className='p-3'
-								color='white'
-								size={50}
-							/>
-						</div>
-					</div>
-					<div className='relative flex w-full flex-col items-center justify-between gap-3 overflow-hidden rounded-lg border border-green-600 bg-green-700 py-3'>
-						<Image
-							alt='home'
-							height={54}
-							src={assets.icons.insuranceCar}
-							width={54}
-						/>
-						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='font-inter text-sm text-gray-325'>I want</span>
-							<span className='font-inter text-lg font-medium'>Contents</span>
-						</div>
-						<div className='flex flex-row items-start justify-start self-start px-2'>
-							<span className='text-xs font-bold'>5000 ZMW</span>
-						</div>
-						<div className='absolute -bottom-6 -right-6 flex h-16 w-16 rounded-full bg-green-800'>
-							<Check
-								className='p-3'
-								color='white'
-								size={50}
-							/>
-						</div>
-					</div>
-					<div className='relative flex w-full flex-col items-center justify-between gap-3 overflow-hidden rounded-lg border border-green-600 bg-green-700 py-3'>
-						<Image
-							alt='home'
-							height={54}
-							src={assets.icons.travelInsurance}
-							width={54}
-						/>
-						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='font-inter text-sm text-gray-325'>I want</span>
-							<span className='font-inter text-lg font-medium'>
-								Electronic Equipment
-							</span>
-						</div>
-						<div></div>
-						<div className='absolute -bottom-6 -right-6 flex h-16 w-16 rounded-full bg-blue-825'>
-							<ArrowRight
-								className='p-3'
-								color='white'
-								size={50}
-							/>
-						</div>
-					</div>
-					<div className='relative flex w-full flex-col items-center justify-between gap-3 overflow-hidden rounded-lg border border-green-600 bg-green-700 py-3'>
-						<Image
-							alt='home'
-							height={54}
-							src={assets.icons.home}
-							width={54}
-						/>
-						<div className='flex flex-col items-center justify-between gap-1'>
-							<span className='font-inter text-sm text-gray-325'>I want</span>
-							<span className='font-inter text-lg font-medium'>
-								Personal Accident
-							</span>
-						</div>
-						{/* <div className='flex flex-row items-start justify-start self-start px-2'>
-							<span className='text-sm font-bold'>100000 ZMW</span>
-						</div> */}
-						<div></div>
-						<div className='absolute -bottom-6 -right-6 flex h-16 w-16 rounded-full bg-blue-825'>
-							<ArrowRight
-								className='p-3'
-								color='white'
-								size={50}
-							/>
-						</div>
-					</div>
-				</div>
-				<div className='flex w-full items-center justify-center'>
-					<Button
-						className='w-1/2'
-						variant='greenbtn'
-						onClick={() => {
-							if (current < props.homeCover.length - 1) {
-								setCurrent((pre) => pre + 1)
-							}
-						}}>
-						Save and Continue
-					</Button>
-				</div>
+					</>
+				)}
 			</div>
 		</section>
 	)

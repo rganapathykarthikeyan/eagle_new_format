@@ -39,8 +39,14 @@ export const homeInsuranceSlice = createSlice({
 				})
 			})
 			state.homeDetailsList = curList
+		},
+		updateSingleAddressDetails(
+			state: HomeDetails,
+			action: PayloadAction<{ homeList: EachHomeDetails; index: number }>
+		) {
+			state.homeDetailsList[action.payload.index] = action.payload.homeList
 		}
 	}
 })
 
-export const { addNewAddress } = homeInsuranceSlice.actions
+export const { addNewAddress, updateSingleAddressDetails } = homeInsuranceSlice.actions
