@@ -6,6 +6,7 @@ import { Button, Input } from '../ui'
 import { assets } from '@/assets'
 import { CoverContents } from './cover-contents'
 import { useAppDispatch } from '@/redux/hooks'
+import { useRouter } from 'next/navigation'
 
 type HomeCoverDetailsProps = {
 	homeCover: EachHomeDetails[]
@@ -75,6 +76,8 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			fieldName: 'sumInsured'
 		}
 	])
+
+	const route = useRouter()
 
 	const dispatch = useAppDispatch()
 
@@ -287,6 +290,8 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 								onClick={() => {
 									if (current < props.homeCover.length - 1) {
 										setCurrent((pre) => pre + 1)
+									} else {
+										route.push('/home-insurance/details')
 									}
 								}}>
 								Save and Continue
