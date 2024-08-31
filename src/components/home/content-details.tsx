@@ -7,11 +7,11 @@ import { useState } from 'react'
 import { cn } from '@/lib'
 import { Label } from '../ui/label'
 
-type BuildingDetailsProps = {
+type ContentDetailsProps = {
 	goNext: () => void
 }
 
-export function BuildingDetails(props: BuildingDetailsProps) {
+export function ContentDetails(props: ContentDetailsProps) {
 	const homeData = useAppSelector((state) => state.homeInsurance)
 
 	const [current, setCurrent] = useState<number>(0)
@@ -20,8 +20,8 @@ export function BuildingDetails(props: BuildingDetailsProps) {
 		<section className='flex h-full w-full flex-row gap-2'>
 			<div className='flex h-full w-1/2 flex-col items-end gap-2 px-4 py-3'>
 				<AllBuildingDetails
-					fieldName='sumInsured'
-					title='Building'
+					fieldName='contents'
+					title='Content'
 				/>
 			</div>
 			<div className='flex h-full w-full flex-col items-center justify-center px-4 py-3'>
@@ -51,19 +51,19 @@ export function BuildingDetails(props: BuildingDetailsProps) {
 						<div className='flex flex-col gap-1'>
 							<Label>Sum Insured</Label>
 							<Input
-								placeholder='Building Sum Insured'
-								value={homeData.homeDetailsList[current].sumInsured}
+								placeholder='Content Sum Insured'
+								value={homeData.homeDetailsList[current].contents}
 							/>
 						</div>
 					)}
 					<div className='flex w-full flex-row gap-5'>
 						<div className='flex w-full flex-col gap-1'>
 							<Label>Dwelling Type</Label>
-							<Input placeholder='Building Dwelling Type' />
+							<Input placeholder='Content Dwelling Type' />
 						</div>
 						<div className='flex w-full flex-col gap-1'>
 							<Label>Construction Type</Label>
-							<Input placeholder='Building Construction Type' />
+							<Input placeholder='Content Construction Type' />
 						</div>
 					</div>
 					<div className='flex w-full flex-row justify-center'>

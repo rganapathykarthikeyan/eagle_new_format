@@ -40,6 +40,7 @@ const config = {
 					875: '#6C737F',
 					900: '#AFAFAF',
 					920: '#EFF0F6',
+					925: '#F6FFFE',
 					950: '#FDFEFB',
 					975: '#F9F9FC'
 				},
@@ -146,7 +147,8 @@ const config = {
 				detailsContainerShadow: '0px 1.5px 2px 0px rgba(16, 24, 40, 0.1)',
 				inputShadowDrop: '0px 2px 6px 0px rgba(19, 18, 66, 0.07)',
 				containerShadow1: '0px 1px 1px 1px rgba(0, 0, 0, 0.1)',
-				premiumContainerShadow: '0px 0px 16px 0px rgba(0, 0, 0, 0.06)'
+				premiumContainerShadow: '0px 0px 16px 0px rgba(0, 0, 0, 0.06)',
+				homeDetailsContainerShadow: '0px 4px 4px 0px rgba(40, 54, 113, 0.25)'
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],

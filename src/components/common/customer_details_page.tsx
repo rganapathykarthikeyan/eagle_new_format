@@ -1,12 +1,10 @@
 import { CarLayout } from '../car'
-import { EditCurrentValues } from '../car/edit-current-values'
 import { CustomerDetailsForm } from '../details/customer-details-form'
-import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 
 export function CustomerDetailsPage() {
 	return (
 		<CarLayout>
-			<Dialog>
+			{/* <Dialog>
 				<DialogTrigger className='w-full'>
 					<div className='fixed left-0 top-[12%] z-10 rounded-r-xl bg-blue-875 p-1 px-5 font-jakarta font-semibold text-white hover:px-10 hover:duration-500 lg:top-1/4'>
 						Edit Vehicle Details
@@ -15,7 +13,7 @@ export function CustomerDetailsPage() {
 				<DialogContent>
 					<EditCurrentValues />
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
 			<CustomerDetailsForm />
 		</CarLayout>
 	)

@@ -5,7 +5,7 @@ export type EachHomeDetails = {
 	addressId: string
 	ownerOrTenet: string
 	sumInsured: string
-	constents: string
+	contents: string
 	electricEquipement: string
 	personalAccident: string
 }
@@ -33,7 +33,7 @@ export const homeInsuranceSlice = createSlice({
 					addressId: home.value,
 					ownerOrTenet: '',
 					sumInsured: '',
-					constents: '',
+					contents: '',
 					electricEquipement: '',
 					personalAccident: ''
 				})

@@ -8,6 +8,8 @@ import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue }
 import { X } from 'lucide-react'
 import { useAppDispatch } from '@/redux/hooks'
 import { addNewAddress } from '@/redux/slices'
+import { Dialog, DialogContent } from '../ui/dialog'
+import { ManualAddressDialog } from './manual-address-dialog'
 // import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 
 gsap.registerPlugin(TextPlugin)
@@ -38,6 +40,8 @@ const dummyLocationList = [
 export function SelectLocation() {
 	const [selectedLocation, setSelectedLocation] = useState<{ value: string; label: string }>()
 
+	const [showDialog, setShowDialog] = useState<boolean>(false)
+
 	const [selectedLocationList, setSelectedLocationList] = useState<
 		{
 			value: string
@@ -55,6 +59,10 @@ export function SelectLocation() {
 		}
 	}
 
+	function onAddManual(ManualAdd: { value: string; label: string }) {
+		setSelectedLocationList((pre) => [...pre, ManualAdd])
+	}
+
 	function onRemove(curLocation: { value: string; label: string }) {
 		const pos = selectedLocationList.findIndex((location) => {
 			return location.value === curLocation.value
@@ -67,6 +75,11 @@ export function SelectLocation() {
 
 	function saveCurrentLocations() {
 		dispatch(addNewAddress(selectedLocationList))
+	}
+
+	function setManualLocation(totalAddress: { value: string; label: string }) {
+		onAddManual(totalAddress)
+		setShowDialog(false)
 	}
 
 	useGSAP(() => {
@@ -92,32 +105,41 @@ export function SelectLocation() {
 				<p className='locationSubTitle w-4/5 text-center font-roboto text-xs text-gray-500 lg:text-sm'></p>
 			</div>
 			<div className='locationHome flex flex-row gap-3'>
-				<Select
-					value={selectedLocation?.value}
-					onValueChange={(e) => {
-						const pos = dummyLocationList.findIndex((item) => {
-							return item.value === e
-						})
+				<div className='flex w-full flex-col items-end'>
+					<Select
+						value={selectedLocation?.value}
+						onValueChange={(e) => {
+							const pos = dummyLocationList.findIndex((item) => {
+								return item.value === e
+							})
 
-						if (pos !== -1) {
-							setSelectedLocation(dummyLocationList[pos])
-						}
-					}}>
-					<SelectTrigger className='border-gray-360 border shadow-inputShadowDrop'>
-						<SelectValue placeholder='Select Location' />
-					</SelectTrigger>
-					<SelectContent>
-						{dummyLocationList.map((location, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={location.value}>
-									{location.label}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+							if (pos !== -1) {
+								setSelectedLocation(dummyLocationList[pos])
+							}
+						}}>
+						<SelectTrigger className='border-gray-360 border shadow-inputShadowDrop'>
+							<SelectValue placeholder='Select Location' />
+						</SelectTrigger>
+						<SelectContent>
+							{dummyLocationList.map((location, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={location.value}>
+										{location.label}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+					<span
+						className='cursor-pointer text-sm font-bold text-blue-300'
+						onClick={() => {
+							setShowDialog(true)
+						}}>
+						Can&apos;t find your Address
+					</span>
+				</div>
 				<Button
 					variant='greenbtn'
 					onClick={onAdd}>
@@ -148,6 +170,15 @@ export function SelectLocation() {
 					onChange: setValue
 				}}
 			/> */}
+			<Dialog
+				open={showDialog}
+				onOpenChange={(e) => {
+					setShowDialog(e)
+				}}>
+				<DialogContent>
+					<ManualAddressDialog setManualLocation={setManualLocation} />
+				</DialogContent>
+			</Dialog>
 			{selectedLocationList.length !== 0 && (
 				<Button
 					variant='greenbtn'

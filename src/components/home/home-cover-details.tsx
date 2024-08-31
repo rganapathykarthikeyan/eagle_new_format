@@ -27,7 +27,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		addressId: props.homeCover[current].addressId,
 		ownerOrTenet: props.homeCover[current].ownerOrTenet,
 		sumInsured: props.homeCover[current].sumInsured,
-		constents: props.homeCover[current].constents,
+		contents: props.homeCover[current].contents,
 		electricEquipement: props.homeCover[current].electricEquipement,
 		personalAccident: props.homeCover[current].personalAccident
 	})
@@ -42,8 +42,8 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		{
 			icon: assets.icons.insuranceCar,
 			title: 'Contents',
-			suminsured: curDetails.constents,
-			fieldName: 'constents'
+			suminsured: curDetails.contents,
+			fieldName: 'contents'
 		},
 		{
 			icon: assets.icons.travelInsurance,
@@ -87,7 +87,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			addressId: props.homeCover[current].addressId,
 			ownerOrTenet: props.homeCover[current].ownerOrTenet,
 			sumInsured: props.homeCover[current].sumInsured,
-			constents: props.homeCover[current].constents,
+			contents: props.homeCover[current].contents,
 			electricEquipement: props.homeCover[current].electricEquipement,
 			personalAccident: props.homeCover[current].personalAccident
 		})
@@ -104,8 +104,8 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			{
 				icon: assets.icons.insuranceCar,
 				title: 'Contents',
-				suminsured: curDetails.constents,
-				fieldName: 'constents'
+				suminsured: curDetails.contents,
+				fieldName: 'contents'
 			},
 			{
 				icon: assets.icons.travelInsurance,
@@ -178,16 +178,16 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 				})}
 			</div>
 			<div className='flex flex-col items-center gap-5'>
-				<div className='flex w-full flex-row items-center justify-around gap-3'>
+				<div className='flex w-full flex-col items-center justify-around gap-3 lg:flex-row'>
 					<div className='flex flex-grow flex-col gap-2'>
-						<h3 className='font-jakarta text-3xl font-bold'>
+						<h3 className='font-jakarta text-xl font-bold lg:text-3xl'>
 							Are you Owner of the house?
 						</h3>
-						<h5 className='font-manrope text-lg font-medium text-gray-325'>
+						<h5 className='font-manrope text-sm font-medium text-gray-325 lg:text-lg'>
 							Please select the owner or tenant and provide the details for the same.
 						</h5>
 					</div>
-					<div className='flex flex-row items-center gap-2 text-2xl font-medium'>
+					<div className='flex flex-row items-center gap-2 text-lg font-medium lg:text-2xl'>
 						<Checkbox
 							checked={curDetails.ownerOrTenet === 'Owner'}
 							id='owner'
@@ -197,7 +197,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 						/>
 						<label htmlFor='owner'>Yes, I&apos;m Owner</label>
 					</div>
-					<div className='flex flex-row items-center gap-2 text-2xl font-medium'>
+					<div className='flex flex-row items-center gap-2 text-lg font-medium lg:text-2xl'>
 						<Checkbox
 							checked={curDetails.ownerOrTenet === 'Tenant'}
 							id='tenant'
@@ -209,7 +209,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 					</div>
 				</div>
 				{curDetails.ownerOrTenet === 'Owner' && (
-					<div className='flex w-full flex-row items-center justify-center gap-3 lg:w-3/4'>
+					<div className='flex w-full flex-col items-center justify-center gap-3 lg:w-3/4 lg:flex-row'>
 						<div className='flex w-full flex-row items-center justify-center gap-2 lg:w-1/2'>
 							<div className='w-full text-xs lg:text-base'>
 								Building Sum Insured<span className='text-red-500'>*</span>
@@ -227,10 +227,10 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 								Contents Sum Insured<span className='text-red-500'>*</span>
 							</div>
 							<Input
-								placeholder='Sum Insured'
-								value={curDetails.constents}
+								placeholder='Contents Insured'
+								value={curDetails.contents}
 								onChange={(e) => {
-									updateDetails('constents', e.target.value)
+									updateDetails('contents', e.target.value)
 								}}
 							/>
 						</div>
@@ -244,14 +244,17 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							</div>
 							<Input
 								placeholder='Sum Insured'
-								value={curDetails.sumInsured}
+								value={curDetails.contents}
+								onChange={(e) => {
+									updateDetails('contents', e.target.value)
+								}}
 							/>
 						</div>
 					</div>
 				)}
 				{curDetails.ownerOrTenet !== '' && (
 					<>
-						<div className='grid h-full w-full grid-cols-4 gap-6'>
+						<div className='grid h-full w-full grid-cols-2 gap-6 lg:grid-cols-4'>
 							{curDetails.ownerOrTenet === 'Tenant' ? (
 								<>
 									{covers.slice(1).map((cover, index) => {
