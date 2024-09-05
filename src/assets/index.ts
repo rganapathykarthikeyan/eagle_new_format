@@ -46,6 +46,10 @@ export const assets = {
 		homeBg: '/images/homeBg.jpeg',
 		homeCov1: '/images/homeCov1.svg',
 		homeCov2: '/images/homeCov2.svg',
-		homeCov3: '/images/homeCov3.svg'
+		homeCov3: '/images/homeCov3.svg',
+		coverPlan: '/images/coverPlan.svg',
+		coverPlan1: '/images/coverPlan1.svg',
+		coverPlan2: '/images/coverPlan2.svg',
+		coverPlan3: '/images/coverPlan3.svg'
 	}
 }

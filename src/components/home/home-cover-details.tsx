@@ -156,7 +156,7 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			className={cn('flex w-full flex-col gap-5', {
 				'min-h-[50svh]': curDetails.ownerOrTenet === ''
 			})}>
-			<div className='flex w-full flex-row items-center justify-center gap-2 overflow-x-auto'>
+			<div className='flex w-full flex-row items-center justify-center gap-2 overflow-x-auto lg:w-3/4'>
 				{props.homeCover.map((cover, index) => {
 					return (
 						<div
