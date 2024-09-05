@@ -43,7 +43,7 @@ export const assets = {
 		sClass: '/images/SClass.png',
 		person: '/images/person.jpeg',
 		homeImage: '/images/HomeImage.png',
-		homeBg: '/images/Home.jpeg',
+		homeBg: '/images/homeBg.jpeg',
 		homeCov1: '/images/homeCov1.svg',
 		homeCov2: '/images/homeCov2.svg',
 		homeCov3: '/images/homeCov3.svg'
