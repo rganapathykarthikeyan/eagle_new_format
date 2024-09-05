@@ -34,6 +34,7 @@ const config = {
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
 					725: '#142644',
+					750: '#181A20',
 					800: '#818181', // mediumGray
 					825: '#E1E4E8',
 					850: '#908E8E',
@@ -77,6 +78,7 @@ const config = {
 					200: '#06B217', // brightGreen
 					300: '#0D8536',
 					320: '#0D85361A',
+					350: '#99B746',
 					400: '#EBF7F6',
 					500: '#10B981',
 					600: '#35B6B4',
@@ -148,7 +150,8 @@ const config = {
 				inputShadowDrop: '0px 2px 6px 0px rgba(19, 18, 66, 0.07)',
 				containerShadow1: '0px 1px 1px 1px rgba(0, 0, 0, 0.1)',
 				premiumContainerShadow: '0px 0px 16px 0px rgba(0, 0, 0, 0.06)',
-				homeDetailsContainerShadow: '0px 4px 4px 0px rgba(40, 54, 113, 0.25)'
+				homeDetailsContainerShadow: '0px 4px 4px 0px rgba(40, 54, 113, 0.25)',
+				homeCoverTypeShadow: '0px 10px 40px 0px rgba(24, 26, 32, 0.08)'
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],

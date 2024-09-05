@@ -1,11 +1,20 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button, Input } from '../ui'
+import { cn } from '@/lib'
+import { useState } from 'react'
+import { Label } from '../ui/label'
 
 type ManualAddressDialogProps = {
-	setManualLocation: (totalAddress: { value: string; label: string }) => void
+	setManualLocation: (totalAddress: {
+		value: string
+		label: string
+		ownerOrTenant: string
+	}) => void
 }
 
 const addressInfoSchema = z.object({
@@ -17,6 +26,8 @@ const addressInfoSchema = z.object({
 })
 
 export function ManualAddressDialog(props: ManualAddressDialogProps) {
+	const [oOrT, setOOrT] = useState<string>('Owner')
+
 	const form = useForm<z.infer<typeof addressInfoSchema>>({
 		resolver: zodResolver(addressInfoSchema),
 		defaultValues: {
@@ -39,7 +50,7 @@ export function ManualAddressDialog(props: ManualAddressDialogProps) {
 			values.state +
 			',' +
 			values.postCode
-		props.setManualLocation({ value: fullAddress, label: fullAddress })
+		props.setManualLocation({ value: fullAddress, label: fullAddress, ownerOrTenant: 'Owner' })
 	}
 
 	return (
@@ -48,6 +59,35 @@ export function ManualAddressDialog(props: ManualAddressDialogProps) {
 				<form
 					className='space-y-8'
 					onSubmit={form.handleSubmit(onSubmit)}>
+					<div className='flex flex-row items-center gap-4'>
+						<Label>Owner or Tenant:</Label>
+						<div
+							className={cn(
+								'flex flex-row items-center gap-2 text-sm font-medium text-gray-325',
+								{
+									'border-gray-750 border-b font-bold text-blue-300':
+										oOrT === 'Owner'
+								}
+							)}
+							onClick={() => {
+								setOOrT('Owner')
+							}}>
+							<h4 className='cursor-pointer'>Owner</h4>
+						</div>
+						<div
+							className={cn(
+								'flex flex-row items-center gap-2 text-sm font-medium text-gray-325',
+								{
+									'border-gray-750 border-b font-bold text-blue-300':
+										oOrT === 'Tenant'
+								}
+							)}
+							onClick={() => {
+								setOOrT('Tenant')
+							}}>
+							<h4 className='cursor-pointer'>Tenant</h4>
+						</div>
+					</div>
 					<div className='selectCustomerInfo flex flex-row gap-10'>
 						<FormField
 							control={form.control}

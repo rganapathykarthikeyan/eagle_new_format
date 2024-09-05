@@ -1,3 +1,5 @@
+import { assets } from '@/assets'
+
 export const months = [
 	'Jan',
 	'Feb',
@@ -99,5 +101,38 @@ export const onBoardingOptions = [
 		optionName: 'Set up your account quickly with AI',
 		optionDescription:
 			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
+	}
+]
+
+export const coverTypesHome = [
+	{
+		title: 'Building + Contents Cover',
+		image: assets.images.homeCov1,
+		Building: true,
+		Content: true,
+		Building1: true,
+		Content1: true,
+		Building2: true,
+		Content2: true
+	},
+	{
+		title: 'Building Cover Only',
+		image: assets.images.homeCov2,
+		Building: true,
+		Content: false,
+		Building1: true,
+		Content1: false,
+		Building2: true,
+		Content2: false
+	},
+	{
+		title: 'Contents Cover Only',
+		image: assets.images.homeCov3,
+		Building: false,
+		Content: true,
+		Building1: false,
+		Content1: true,
+		Building2: false,
+		Content2: true
 	}
 ]

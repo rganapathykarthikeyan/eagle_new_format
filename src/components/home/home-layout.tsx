@@ -15,7 +15,8 @@ export function HomeLayout(props: PropsWithChildren) {
 			<HeaderContent />
 			<section
 				className={cn('grid h-full flex-grow grid-cols-4', {
-					'px-4 lg:px-12': path !== '/car-insurance/premium'
+					'px-4 lg:px-12': path !== '/car-insurance/premium',
+					'px-0 lg:px-0': path === '/home-insurance'
 				})}>
 				<div className='col-span-4 lg:col-span-4'>{props.children}</div>
 			</section>

@@ -24,14 +24,14 @@ export const homeInsuranceSlice = createSlice({
 	reducers: {
 		addNewAddress(
 			state: HomeDetails,
-			action: PayloadAction<{ value: string; label: string }[]>
+			action: PayloadAction<{ value: string; label: string; ownerOrTenant: string }[]>
 		) {
 			const curList: EachHomeDetails[] = []
 			action.payload.forEach((home) => {
 				curList.push({
 					homeAddress: home.label,
 					addressId: home.value,
-					ownerOrTenet: '',
+					ownerOrTenet: home.ownerOrTenant,
 					sumInsured: '',
 					contents: '',
 					electricEquipement: '',

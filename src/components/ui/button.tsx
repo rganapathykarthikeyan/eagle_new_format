@@ -21,7 +21,8 @@ const buttonVariants = cva(
 				whiteBordered: 'bg-white text-blue-600 border-2 border-gray-300 font-medium',
 				whiteBlackOutlined: 'bg-white text-black border border-black rounded-md',
 				greenbtn: 'bg-green-600 text-white',
-				darkBlueBtn: 'bg-blue-825 text-white'
+				darkBlueBtn: 'bg-blue-825 text-white',
+				lightGreenBtn: 'bg-green-350 text-white'
 			},
 			size: {
 				default: 'h-10 px-4 py-2',
