@@ -104,8 +104,8 @@ export function SelectLocation() {
 	})
 
 	return (
-		<section className='flex min-h-[90svh] w-full items-center justify-center bg-[#0000008f]'>
-			<section className='flex w-3/4 flex-col gap-10 px-4 py-10 font-jakarta lg:px-32 lg:py-12'>
+		<section className='flex min-h-screen w-full items-center justify-center bg-[#0000008f] lg:min-h-[90svh]'>
+			<section className='flex w-full flex-col gap-10 px-4 py-10 font-jakarta lg:w-3/4 lg:px-32 lg:py-12'>
 				<div className='flex w-full flex-col items-center gap-4'>
 					<p className='locationSubTitle w-4/5 text-center font-manrope text-xs text-white lg:text-xs'></p>
 					<h1 className='locationTitle text-center font-inter text-2xl font-bold text-white lg:text-5xl'></h1>
@@ -114,9 +114,9 @@ export function SelectLocation() {
 					<div className='flex w-fit flex-row gap-3 rounded-t-xl bg-white p-3'>
 						<div
 							className={cn(
-								'flex flex-row items-center gap-2 text-sm font-medium text-gray-325',
+								'flex flex-row items-center gap-2 text-xs font-medium text-gray-325 lg:text-sm',
 								{
-									'border-gray-750 border-b text-black': oOrT === 'Owner'
+									'border-b border-gray-750 text-black': oOrT === 'Owner'
 								}
 							)}
 							onClick={() => {
@@ -126,9 +126,9 @@ export function SelectLocation() {
 						</div>
 						<div
 							className={cn(
-								'flex flex-row items-center gap-2 text-sm font-medium text-gray-325',
+								'flex flex-row items-center gap-2 text-xs font-medium text-gray-325 lg:text-sm',
 								{
-									'border-gray-750 border-b text-black': oOrT === 'Tenant'
+									'border-b border-gray-750 text-black': oOrT === 'Tenant'
 								}
 							)}
 							onClick={() => {
@@ -198,7 +198,7 @@ export function SelectLocation() {
 							<div
 								key={index}
 								className='flex flex-row items-center gap-2 rounded-3xl border bg-white p-1'>
-								<span className='font-dmsan text-sm'>
+								<span className='font-dmsan text-xs lg:text-sm'>
 									{selectedLocations.label} | {selectedLocations.ownerOrTenant}
 								</span>
 								<X

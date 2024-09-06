@@ -58,6 +58,7 @@ const config = {
 					500: '#5452F6', // indigo
 					600: '#1E293B', // gunmetal
 					625: '#020246',
+					650: '#624BFF',
 					700: '#4285F4', // vibrantBlue
 					725: '#41DDB2',
 					750: '#1FD3E6',

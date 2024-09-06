@@ -62,15 +62,18 @@ export function SelectHomeCovers() {
 			{homeData.homeDetailsList.length !== 0 ? (
 				<section className='flex w-full flex-col gap-10 px-4 py-10 font-roboto lg:px-32 lg:py-12'>
 					<div className='homeCovers flex w-full flex-col items-center gap-4'>
-						<h3 className='text-gray-750 text-3xl font-semibold'>
+						<h3 className='text-center text-3xl font-semibold text-gray-750'>
 							Choose your Coverage Type
 						</h3>
-						<h5 className='text-sm'>Aliquam lacinia diam quis lacus euismod</h5>
+						<h5 className='text-center text-sm'>
+							Aliquam lacinia diam quis lacus euismod
+						</h5>
 					</div>
 					{/* <HomeCoverDetails homeCover={homeData.homeDetailsList} /> */}
 					<div className='flex flex-row items-center justify-center gap-2'>
 						<Image
 							alt='cover'
+							className='hidden lg:flex'
 							height={200}
 							src={assets.images.coverPlan}
 							width={380}
@@ -86,7 +89,7 @@ export function SelectHomeCovers() {
 													className={cn(
 														'flex flex-row items-center gap-2 pb-4 text-sm font-medium text-gray-325',
 														{
-															'border-gray-750 border-b text-black':
+															'border-b border-gray-750 text-black':
 																index + 1 === detailsPart
 														}
 													)}
@@ -109,7 +112,7 @@ export function SelectHomeCovers() {
 													className={cn(
 														'flex flex-row items-center gap-2 pb-4 text-sm font-medium text-gray-325',
 														{
-															'border-gray-750 border-b text-black':
+															'border-b border-gray-750 text-black':
 																index + 1 === detailsPart
 														}
 													)}
@@ -145,31 +148,38 @@ export function SelectHomeCovers() {
 							</div>
 						</div>
 					</div>
-					<div className='grid w-full grid-cols-2 gap-4'>
+					<div className='grid w-full grid-cols-none gap-4 lg:grid-cols-2'>
 						<div className='flex w-full flex-col gap-4'>
-							<div className='flex flex-col gap-4 rounded-lg bg-[#E9F2FF] p-10'>
+							<div className='relative flex flex-col gap-4 rounded-lg bg-[#E9F2FF] p-10'>
 								<h1 className='font-dmsan text-3xl font-bold'>All Risk</h1>
 								<p>
 									We are committed to providing our customers with exceptional
 									service.
 								</p>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
 								/>
+								<Image
+									alt='cover1'
+									className='absolute -right-7 bottom-3'
+									height={150}
+									src={assets.images.coverPlan1}
+									width={230}
+								/>
 							</div>
-							<div className='flex flex-col gap-4 rounded-lg bg-[#FFE9F3] p-10'>
+							<div className='relative flex flex-col gap-4 rounded-lg bg-[#FFE9F3] p-10'>
 								<h1 className='font-dmsan text-3xl font-bold'>Personal Accident</h1>
 								<p>
 									We are committed to providing our customers with exceptional
 									service.
 								</p>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
@@ -177,24 +187,31 @@ export function SelectHomeCovers() {
 									}}
 								/>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
 								/>
+								<Image
+									alt='cover1'
+									className='absolute bottom-3 right-6'
+									height={100}
+									src={assets.images.coverPlan3}
+									width={100}
+								/>
 							</div>
 						</div>
 						<div className='flex flex-col gap-4'>
-							<div className='flex flex-col gap-4 rounded-lg bg-[#F3FFD2] p-10'>
+							<div className='relative flex flex-col gap-4 rounded-lg bg-[#F3FFD2] p-10'>
 								<h1 className='font-dmsan text-3xl font-bold'>Domestic Servant</h1>
 								<p>
 									We are committed to providing our customers with exceptional
 									service.
 								</p>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
@@ -202,15 +219,22 @@ export function SelectHomeCovers() {
 									}}
 								/>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
 								/>
+								<Image
+									alt='cover1'
+									className='absolute bottom-3 right-6'
+									height={100}
+									src={assets.images.coverPlan2}
+									width={100}
+								/>
 							</div>
-							<div className='flex flex-col gap-4 rounded-lg bg-[#DFDCFF] p-10'>
+							<div className='relative flex flex-col gap-4 rounded-lg bg-[#DFDCFF] p-10'>
 								<h1 className='font-dmsan text-3xl font-bold'>
 									Personal Liability
 								</h1>
@@ -219,7 +243,7 @@ export function SelectHomeCovers() {
 									service.
 								</p>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
@@ -227,29 +251,36 @@ export function SelectHomeCovers() {
 									}}
 								/>
 								<Input
-									className='w-1/2'
+									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
 								/>
+								<Image
+									alt='cover1'
+									className='absolute -right-6 bottom-3'
+									height={150}
+									src={assets.images.coverPlan4}
+									width={200}
+								/>
 							</div>
 						</div>
 					</div>
-					<div className='flex w-full flex-row justify-center gap-5'>
+					<div className='flex w-full flex-row flex-wrap justify-center gap-5'>
 						<Button
-							className='rounded-3xl'
+							className='rounded-3xl lg:w-56'
 							variant='outline'>
 							Reset
 						</Button>
 						<Button
-							className='rounded-3xl'
-							variant='bluebtn'>
+							className='rounded-3xl lg:w-56'
+							variant='brightBlueBtn'>
 							View Premium
 						</Button>
 						<Button
-							className='rounded-3xl'
+							className='rounded-3xl lg:w-56'
 							variant='lightGreenBtn'
 							onClick={() => {
 								setCurrent((pre) => pre + 1)

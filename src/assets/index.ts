@@ -44,12 +44,14 @@ export const assets = {
 		person: '/images/person.jpeg',
 		homeImage: '/images/HomeImage.png',
 		homeBg: '/images/homeBg.jpeg',
+		apartment: '/images/apartment.jpg',
 		homeCov1: '/images/homeCov1.svg',
 		homeCov2: '/images/homeCov2.svg',
 		homeCov3: '/images/homeCov3.svg',
 		coverPlan: '/images/coverPlan.svg',
 		coverPlan1: '/images/coverPlan1.svg',
 		coverPlan2: '/images/coverPlan2.svg',
-		coverPlan3: '/images/coverPlan3.svg'
+		coverPlan3: '/images/coverPlan3.svg',
+		coverPlan4: '/images/coverPlan4.svg'
 	}
 }

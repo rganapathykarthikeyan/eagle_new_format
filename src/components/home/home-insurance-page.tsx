@@ -10,9 +10,16 @@ export function HomeInsurancePage() {
 		<section className='relative flex min-h-[90svh] flex-col items-center justify-end overflow-hidden'>
 			<Image
 				alt='bg'
-				className='absolute top-0 -z-20 max-h-[90svh] w-full object-cover'
+				className='absolute top-0 -z-20 hidden max-h-[90svh] min-h-[90svh] w-full object-cover lg:flex'
 				height={1080}
 				src={assets.images.homeBg}
+				width={1920}
+			/>
+			<Image
+				alt='bg'
+				className='absolute top-0 -z-20 flex max-h-screen min-h-screen w-full object-cover lg:hidden'
+				height={1080}
+				src={assets.images.apartment}
 				width={1920}
 			/>
 			<SelectLocation />

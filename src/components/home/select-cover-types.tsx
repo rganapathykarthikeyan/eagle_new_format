@@ -2,7 +2,7 @@
 
 import { cn, coverTypesHome } from '@/lib'
 import { useAppSelector } from '@/redux/hooks'
-import { Check, X } from 'lucide-react'
+import { Check, MoveUpRight, X } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { Button } from '../ui'
@@ -17,11 +17,11 @@ export function SelectCoverTypes() {
 			{homeData.homeDetailsList.length !== 0 && (
 				<>
 					<section className='flex w-full flex-col items-center justify-center gap-2'>
-						<h3 className='text-gray-750 text-3xl font-semibold'>
+						<h3 className='text-center text-3xl font-semibold text-gray-750'>
 							Choose your Cover Type
 						</h3>
 						<h5 className='text-sm'>Aliquam lacinia diam quis lacus euismod</h5>
-						<div className='flex w-full flex-row items-center justify-around gap-2'>
+						<div className='grid w-3/4 grid-cols-none grid-rows-3 gap-2 lg:w-3/4 lg:grid-cols-3 lg:grid-rows-none'>
 							{coverTypesHome.map((cover, index) => {
 								return (
 									<div
@@ -71,12 +71,20 @@ export function SelectCoverTypes() {
 											variant={
 												coverType === index + 1
 													? 'lightGreenBtn'
-													: 'outline'
+													: 'whiteBlackOutlined'
 											}
 											onClick={() => {
 												selectCoverType(index + 1)
 											}}>
-											{coverType === index + 1 ? 'Selected' : 'Add'}
+											<div className='flex w-full flex-row items-center justify-center gap-2'>
+												<span className='flex-grow'>
+													{coverType === index + 1 ? 'Selected' : 'Add'}
+												</span>
+												<MoveUpRight
+													className=''
+													size={16}
+												/>
+											</div>
 										</Button>
 									</div>
 								)
