@@ -9,11 +9,14 @@ import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Button, Input } from '../ui'
+import { useRouter } from 'next/navigation'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
 	const [current, setCurrent] = useState<number>(0)
 	const [detailsPart, setDetailsPart] = useState<number>(1)
+
+	const route = useRouter()
 
 	const dispatch = useAppDispatch()
 
@@ -276,7 +279,10 @@ export function SelectHomeCovers() {
 						</Button>
 						<Button
 							className='rounded-3xl lg:w-56'
-							variant='brightBlueBtn'>
+							variant='brightBlueBtn'
+							onClick={() => {
+								route.push('/home-insurance/premium')
+							}}>
 							View Premium
 						</Button>
 						<Button
