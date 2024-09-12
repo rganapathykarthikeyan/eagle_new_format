@@ -26,23 +26,28 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		homeAddress: props.homeCover[current].homeAddress,
 		addressId: props.homeCover[current].addressId,
 		ownerOrTenet: props.homeCover[current].ownerOrTenet,
-		sumInsured: props.homeCover[current].sumInsured,
-		contents: props.homeCover[current].contents,
+		BuildingSumInsured: props.homeCover[current].BuildingSumInsured,
+		ContentSuminsured: props.homeCover[current].ContentSuminsured,
 		electricEquipement: props.homeCover[current].electricEquipement,
-		personalAccident: props.homeCover[current].personalAccident
+		allRiskSumInsured: props.homeCover[current].allRiskSumInsured,
+		PersonalAccidentSi: props.homeCover[current].PersonalAccidentSi,
+		coverType: props.homeCover[current].coverType,
+		sectionType: props.homeCover[current].sectionType,
+		DomesticServentSi: props.homeCover[current].DomesticServentSi,
+		PersonalLiabilitySi: props.homeCover[current].PersonalLiabilitySi
 	})
 
 	const [covers, setCovers] = useState<CoversListDisplay[]>([
 		{
 			icon: assets.icons.home,
 			title: 'Building',
-			suminsured: curDetails.sumInsured,
+			suminsured: curDetails.BuildingSumInsured,
 			fieldName: 'sumInsured'
 		},
 		{
 			icon: assets.icons.insuranceCar,
 			title: 'Contents',
-			suminsured: curDetails.contents,
+			suminsured: curDetails.ContentSuminsured,
 			fieldName: 'contents'
 		},
 		{
@@ -54,25 +59,25 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		{
 			icon: assets.icons.home,
 			title: 'Personal Accident',
-			suminsured: curDetails.personalAccident,
+			suminsured: curDetails.PersonalAccidentSi,
 			fieldName: 'personalAccident'
 		},
 		{
 			icon: assets.icons.home,
 			title: 'Family Personal Accident',
-			suminsured: curDetails.sumInsured,
+			suminsured: curDetails.DomesticServentSi,
 			fieldName: 'sumInsured'
 		},
 		{
 			icon: assets.icons.home,
 			title: 'Family Personal Accident',
-			suminsured: curDetails.sumInsured,
+			suminsured: curDetails.PersonalAccidentSi,
 			fieldName: 'sumInsured'
 		},
 		{
 			icon: assets.icons.home,
 			title: 'Family Public liability',
-			suminsured: curDetails.sumInsured,
+			suminsured: curDetails.PersonalLiabilitySi,
 			fieldName: 'sumInsured'
 		}
 	])
@@ -86,10 +91,15 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			homeAddress: props.homeCover[current].homeAddress,
 			addressId: props.homeCover[current].addressId,
 			ownerOrTenet: props.homeCover[current].ownerOrTenet,
-			sumInsured: props.homeCover[current].sumInsured,
-			contents: props.homeCover[current].contents,
+			BuildingSumInsured: props.homeCover[current].BuildingSumInsured,
+			ContentSuminsured: props.homeCover[current].ContentSuminsured,
 			electricEquipement: props.homeCover[current].electricEquipement,
-			personalAccident: props.homeCover[current].personalAccident
+			allRiskSumInsured: props.homeCover[current].allRiskSumInsured,
+			PersonalAccidentSi: props.homeCover[current].PersonalAccidentSi,
+			coverType: props.homeCover[current].coverType,
+			sectionType: props.homeCover[current].sectionType,
+			DomesticServentSi: props.homeCover[current].DomesticServentSi,
+			PersonalLiabilitySi: props.homeCover[current].PersonalLiabilitySi
 		})
 	}, [current])
 
@@ -98,13 +108,13 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			{
 				icon: assets.icons.home,
 				title: 'Building',
-				suminsured: curDetails.sumInsured,
+				suminsured: curDetails.BuildingSumInsured,
 				fieldName: 'sumInsured'
 			},
 			{
 				icon: assets.icons.insuranceCar,
 				title: 'Contents',
-				suminsured: curDetails.contents,
+				suminsured: curDetails.ContentSuminsured,
 				fieldName: 'contents'
 			},
 			{
@@ -116,25 +126,25 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			{
 				icon: assets.icons.home,
 				title: 'Personal Accident',
-				suminsured: curDetails.personalAccident,
+				suminsured: curDetails.PersonalAccidentSi,
 				fieldName: 'personalAccident'
 			},
 			{
 				icon: assets.icons.home,
 				title: 'Family Personal Accident',
-				suminsured: curDetails.sumInsured,
+				suminsured: curDetails.DomesticServentSi,
 				fieldName: 'sumInsured'
 			},
 			{
 				icon: assets.icons.home,
 				title: 'Family Personal Accident',
-				suminsured: curDetails.sumInsured,
+				suminsured: curDetails.PersonalAccidentSi,
 				fieldName: 'sumInsured'
 			},
 			{
 				icon: assets.icons.home,
 				title: 'Family Public liability',
-				suminsured: curDetails.sumInsured,
+				suminsured: curDetails.PersonalLiabilitySi,
 				fieldName: 'sumInsured'
 			}
 		]
@@ -216,9 +226,9 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							</div>
 							<Input
 								placeholder='Sum Insured'
-								value={curDetails.sumInsured}
+								value={curDetails.BuildingSumInsured}
 								onChange={(e) => {
-									updateDetails('sumInsured', e.target.value)
+									updateDetails('BuildingSumInsured', e.target.value)
 								}}
 							/>
 						</div>
@@ -228,9 +238,9 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							</div>
 							<Input
 								placeholder='Contents Insured'
-								value={curDetails.contents}
+								value={curDetails.ContentSuminsured}
 								onChange={(e) => {
-									updateDetails('contents', e.target.value)
+									updateDetails('.ContentSuminsured', e.target.value)
 								}}
 							/>
 						</div>
@@ -244,9 +254,9 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 							</div>
 							<Input
 								placeholder='Sum Insured'
-								value={curDetails.contents}
+								value={curDetails.ContentSuminsured}
 								onChange={(e) => {
-									updateDetails('contents', e.target.value)
+									updateDetails('ContentSuminsured', e.target.value)
 								}}
 							/>
 						</div>
