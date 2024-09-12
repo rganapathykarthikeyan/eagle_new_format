@@ -26,7 +26,7 @@ export function AllBuildingDetails(props: AllBuildingDetailsProps) {
 	}, [])
 
 	return (
-		<div className='bg-gray-925 shadow-homeDetailsContainerShadow flex w-3/4 flex-col gap-2 rounded-xl px-4'>
+		<div className='flex w-3/4 flex-col gap-2 rounded-xl bg-gray-925 px-4 shadow-homeDetailsContainerShadow'>
 			<div className='flex w-full flex-row items-center justify-center gap-2 border-b border-gray-325'>
 				<Image
 					alt='homeImage'
@@ -48,7 +48,7 @@ export function AllBuildingDetails(props: AllBuildingDetailsProps) {
 							<h4>
 								{props.title} - {home.homeAddress}
 							</h4>
-							<h4>{home[props.fieldName] === '' ? 0 : home[props.fieldName]}</h4>
+							{/* <h4>{home[props.fieldName] === '' ? 0 : home[props.fieldName]}</h4> */}
 						</div>
 					)
 				})}

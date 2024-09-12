@@ -99,7 +99,14 @@ export function SelectHomeCovers() {
 			return item.SectionId === sectionId
 		})
 
-		// console.log(fieldName, pos, sectionId, isKeyOfEachHomeDetails(fieldName), curSection)
+		// console.log(
+		// 	fieldName,
+		// 	pos,
+		// 	sectionId,
+		// 	isKeyOfEachHomeDetails(fieldName),
+		// 	curSection,
+		// 	curDetails
+		// )
 
 		if (pos !== -1) {
 			const newData = [...curSection]
@@ -175,16 +182,13 @@ export function SelectHomeCovers() {
 				homeData.homeDetailsList[current].coverType === '1'
 			) {
 				setShowTabType(1)
-				setDetailsPart(1)
 			} else if (
 				homeData.homeDetailsList[current].ownerOrTenet === 'Owner' &&
 				homeData.homeDetailsList[current].coverType === '2'
 			) {
 				setShowTabType(2)
-				setDetailsPart(1)
 			} else if (homeData.homeDetailsList[current].coverType !== '') {
 				setShowTabType(3)
-				setDetailsPart(1)
 			} else {
 				setShowTabType(0)
 			}
@@ -258,7 +262,11 @@ export function SelectHomeCovers() {
 											placeholder='Building Sum Insured'
 											value={curDetails.BuildingSumInsured}
 											onChange={(e) => {
-												updateDetails('sumInsured', e.target.value)
+												updateSectionDetails(
+													'BuildingSumInsured',
+													e.target.value,
+													'1'
+												)
 											}}
 										/>
 										<Input
@@ -278,7 +286,11 @@ export function SelectHomeCovers() {
 											placeholder='Content Sum Insured'
 											value={curDetails.ContentSuminsured}
 											onChange={(e) => {
-												updateDetails('sumInsured', e.target.value)
+												updateSectionDetails(
+													'ContentSuminsured',
+													e.target.value,
+													'47'
+												)
 											}}
 										/>
 									</>

@@ -20,7 +20,7 @@ export function ContentDetails(props: ContentDetailsProps) {
 		<section className='flex h-full w-full flex-row gap-2'>
 			<div className='flex h-full w-1/2 flex-col items-end gap-2 px-4 py-3'>
 				<AllBuildingDetails
-					fieldName='contents'
+					fieldName='ContentSuminsured'
 					title='Content'
 				/>
 			</div>
@@ -52,7 +52,7 @@ export function ContentDetails(props: ContentDetailsProps) {
 							<Label>Sum Insured</Label>
 							<Input
 								placeholder='Content Sum Insured'
-								value={homeData.homeDetailsList[current].contents}
+								value={homeData.homeDetailsList[current].ContentSuminsured}
 							/>
 						</div>
 					)}

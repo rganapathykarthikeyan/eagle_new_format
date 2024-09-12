@@ -20,7 +20,7 @@ export function BuildingDetails(props: BuildingDetailsProps) {
 		<section className='flex h-full w-full flex-row gap-2'>
 			<div className='flex h-full w-1/2 flex-col items-end gap-2 px-4 py-3'>
 				<AllBuildingDetails
-					fieldName='sumInsured'
+					fieldName='BuildingSumInsured'
 					title='Building'
 				/>
 			</div>
@@ -52,7 +52,7 @@ export function BuildingDetails(props: BuildingDetailsProps) {
 							<Label>Sum Insured</Label>
 							<Input
 								placeholder='Building Sum Insured'
-								value={homeData.homeDetailsList[current].sumInsured}
+								value={homeData.homeDetailsList[current].BuildingSumInsured}
 							/>
 						</div>
 					)}
