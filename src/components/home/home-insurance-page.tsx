@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { MoveDownRef } from './move-down-ref'
 import { SelectLocation } from './select-location'
 import { assets } from '@/assets'
-import { SelectCoverTypes } from './select-cover-types'
 import { SelectHomeCovers } from './select-home-covers'
 
 export function HomeInsurancePage() {
@@ -24,7 +23,6 @@ export function HomeInsurancePage() {
 			/>
 			<SelectLocation />
 			<section className='flex h-full w-full flex-col items-center gap-20 overflow-hidden px-4 pt-4 font-roboto lg:px-14 lg:pb-8 lg:pt-14'>
-				<SelectCoverTypes />
 				<SelectHomeCovers />
 				<MoveDownRef />
 			</section>

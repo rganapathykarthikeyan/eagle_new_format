@@ -1,13 +1,33 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
+export type SectionDetails = {
+	SectionId: string
+	RiskId: null | string
+	BuildingSumInsured?: string
+	OutbuildConstructType?: string
+	ContentSuminsured?: string
+	allRiskSumInsured?: string
+	PersonalLiabilitySi?: string
+	DomesticServantType?: string
+	Count?: string
+	DomesticServentSi?: string
+	RelationType?: string
+	PersonalAccidentSi?: string
+}
+
 export type EachHomeDetails = {
 	homeAddress: string
 	addressId: string
 	ownerOrTenet: string
-	sumInsured: string
-	contents: string
+	BuildingSumInsured: string
+	ContentSuminsured: string
 	electricEquipement: string
-	personalAccident: string
+	PersonalAccidentSi: string
+	allRiskSumInsured: string
+	DomesticServentSi: string
+	PersonalLiabilitySi: string
+	coverType: string
+	sectionType: SectionDetails[]
 }
 
 export type HomeDetails = {
@@ -32,10 +52,15 @@ export const homeInsuranceSlice = createSlice({
 					homeAddress: home.label,
 					addressId: home.value,
 					ownerOrTenet: home.ownerOrTenant,
-					sumInsured: '',
-					contents: '',
+					allRiskSumInsured: '',
+					DomesticServentSi: '',
+					PersonalLiabilitySi: '',
+					BuildingSumInsured: '',
+					ContentSuminsured: '',
 					electricEquipement: '',
-					personalAccident: ''
+					PersonalAccidentSi: '',
+					coverType: '',
+					sectionType: []
 				})
 			})
 			state.homeDetailsList = curList

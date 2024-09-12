@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { months } from './constants'
+import { type EachHomeDetails } from '@/redux/slices'
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -60,4 +61,23 @@ export function getDataWithinParenthesis(str: string) {
 export function isValidEmail(email: string) {
 	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 	return regex.test(email)
+}
+
+export function isKeyOfEachHomeDetails(fieldName: string): fieldName is keyof EachHomeDetails {
+	const keys: (keyof EachHomeDetails)[] = [
+		'homeAddress',
+		'addressId',
+		'ownerOrTenet',
+		'BuildingSumInsured',
+		'ContentSuminsured',
+		'electricEquipement',
+		'PersonalAccidentSi',
+		'allRiskSumInsured',
+		'DomesticServentSi',
+		'PersonalLiabilitySi',
+		'coverType',
+		'sectionType'
+	]
+
+	return keys.includes(fieldName as keyof EachHomeDetails)
 }

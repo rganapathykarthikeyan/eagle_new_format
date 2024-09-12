@@ -1,33 +1,58 @@
 'use client'
 
 import { assets } from '@/assets'
-import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateSingleAddressDetails } from '@/redux/slices'
+import {
+	type EachHomeDetails,
+	type SectionDetails,
+	updateSingleAddressDetails
+} from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Button, Input } from '../ui'
 import { useRouter } from 'next/navigation'
+import { SelectCoverTypes } from './select-cover-types'
+import { DetailsTab } from './details-tab'
+import { isKeyOfEachHomeDetails } from '@/lib'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
 	const [current, setCurrent] = useState<number>(0)
 	const [detailsPart, setDetailsPart] = useState<number>(1)
 
+	const [showTabType, setShowTabType] = useState<number>(0)
+
+	const [coverType, selectCoverType] = useState<number>(0)
+
 	const route = useRouter()
 
 	const dispatch = useAppDispatch()
 
-	const [curDetails, setCurrentDetails] = useState({
+	useEffect(() => {
+		if (homeData.homeDetailsList.length !== 0) {
+			if (homeData.homeDetailsList[current].coverType !== '') {
+				selectCoverType(+homeData.homeDetailsList[current].coverType)
+			} else {
+				selectCoverType(0)
+			}
+		}
+	}, [current])
+
+	const [curDetails, setCurrentDetails] = useState<EachHomeDetails>({
 		homeAddress: '',
 		addressId: '',
 		ownerOrTenet: '',
-		sumInsured: '',
-		contents: '',
+		BuildingSumInsured: '',
+		ContentSuminsured: '',
+		DomesticServentSi: '',
+		PersonalLiabilitySi: '',
+		allRiskSumInsured: '',
 		electricEquipement: '',
-		personalAccident: ''
+		PersonalAccidentSi: '',
+		coverType: '',
+		sectionType: []
 	})
 
 	useEffect(() => {
@@ -36,15 +61,18 @@ export function SelectHomeCovers() {
 				homeAddress: homeData.homeDetailsList[current].homeAddress,
 				addressId: homeData.homeDetailsList[current].addressId,
 				ownerOrTenet: homeData.homeDetailsList[current].ownerOrTenet,
-				sumInsured: homeData.homeDetailsList[current].sumInsured,
-				contents: homeData.homeDetailsList[current].contents,
+				BuildingSumInsured: homeData.homeDetailsList[current].BuildingSumInsured,
+				ContentSuminsured: homeData.homeDetailsList[current].ContentSuminsured,
 				electricEquipement: homeData.homeDetailsList[current].electricEquipement,
-				personalAccident: homeData.homeDetailsList[current].personalAccident
+				allRiskSumInsured: homeData.homeDetailsList[current].allRiskSumInsured,
+				PersonalAccidentSi: homeData.homeDetailsList[current].PersonalAccidentSi,
+				coverType: homeData.homeDetailsList[current].coverType,
+				sectionType: homeData.homeDetailsList[current].sectionType,
+				DomesticServentSi: homeData.homeDetailsList[current].DomesticServentSi,
+				PersonalLiabilitySi: homeData.homeDetailsList[current].PersonalLiabilitySi
 			})
 		}
 	}, [homeData, current])
-
-	const detailsMenu = ['Buildings Details', 'Content Details']
 
 	useGSAP(() => {
 		gsap.from('.homeCovers', { y: 80, opacity: 0, duration: 0.8 })
@@ -60,9 +88,125 @@ export function SelectHomeCovers() {
 		)
 	}
 
+	function updateSectionDetails(
+		fieldName: keyof SectionDetails,
+		value: string,
+		sectionId: string
+	) {
+		const curSection = curDetails.sectionType
+
+		const pos = curSection.findIndex((item) => {
+			return item.SectionId === sectionId
+		})
+
+		// console.log(fieldName, pos, sectionId, isKeyOfEachHomeDetails(fieldName), curSection)
+
+		if (pos !== -1) {
+			const newData = [...curSection]
+			newData[pos] = { ...newData[pos], [fieldName]: value }
+
+			if (isKeyOfEachHomeDetails(fieldName)) {
+				const updatedDetails = {
+					...curDetails,
+					[fieldName]: value,
+					sectionType: newData
+				}
+				setCurrentDetails(updatedDetails)
+				dispatch(
+					updateSingleAddressDetails({
+						homeList: updatedDetails,
+						index: current
+					})
+				)
+			} else {
+				const updatedDetails = { ...curDetails, sectionType: curSection }
+				setCurrentDetails(updatedDetails)
+				dispatch(
+					updateSingleAddressDetails({
+						homeList: updatedDetails,
+						index: current
+					})
+				)
+			}
+		} else {
+			const newDetails: SectionDetails = { SectionId: sectionId, RiskId: null }
+
+			newDetails[fieldName] = value
+
+			if (isKeyOfEachHomeDetails(fieldName)) {
+				setCurrentDetails({
+					...curDetails,
+					[fieldName]: value,
+					sectionType: [...curSection, newDetails]
+				})
+				dispatch(
+					updateSingleAddressDetails({
+						homeList: {
+							...curDetails,
+							[fieldName]: value,
+							sectionType: [...curSection, newDetails]
+						},
+						index: current
+					})
+				)
+			} else {
+				setCurrentDetails({ ...curDetails, sectionType: [...curSection, newDetails] })
+				dispatch(
+					updateSingleAddressDetails({
+						homeList: { ...curDetails, sectionType: [...curSection, newDetails] },
+						index: current
+					})
+				)
+			}
+		}
+	}
+
+	function updateDetailsPart(index: number) {
+		setDetailsPart(index + 1)
+	}
+
+	useEffect(() => {
+		if (
+			homeData.homeDetailsList.length !== 0 &&
+			current + 1 <= homeData.homeDetailsList.length
+		) {
+			if (
+				homeData.homeDetailsList[current].ownerOrTenet === 'Owner' &&
+				homeData.homeDetailsList[current].coverType === '1'
+			) {
+				setShowTabType(1)
+				setDetailsPart(1)
+			} else if (
+				homeData.homeDetailsList[current].ownerOrTenet === 'Owner' &&
+				homeData.homeDetailsList[current].coverType === '2'
+			) {
+				setShowTabType(2)
+				setDetailsPart(1)
+			} else if (homeData.homeDetailsList[current].coverType !== '') {
+				setShowTabType(3)
+				setDetailsPart(1)
+			} else {
+				setShowTabType(0)
+			}
+		}
+	}, [current, homeData])
+
+	function changeCoverType(index: number) {
+		selectCoverType(index)
+	}
+
 	return (
 		<>
-			{homeData.homeDetailsList.length !== 0 ? (
+			{homeData.homeDetailsList.length !== 0 && (
+				<SelectCoverTypes
+					coverType={coverType}
+					current={current}
+					ownerOrTenant={homeData.homeDetailsList[current].ownerOrTenet}
+					selectCoverType={changeCoverType}
+					updateDetails={updateDetails}
+				/>
+			)}
+			{homeData.homeDetailsList.length !== 0 && showTabType !== 0 && coverType !== 0 ? (
 				<section className='flex w-full flex-col gap-10 px-4 py-10 font-roboto lg:px-32 lg:py-12'>
 					<div className='homeCovers flex w-full flex-col items-center gap-4'>
 						<h3 className='text-center text-3xl font-semibold text-gray-750'>
@@ -70,6 +214,9 @@ export function SelectHomeCovers() {
 						</h3>
 						<h5 className='text-center text-sm'>
 							Aliquam lacinia diam quis lacus euismod
+						</h5>
+						<h5 className='text-blue-425 text-sm'>
+							Address: {homeData.homeDetailsList[current].homeAddress}
 						</h5>
 					</div>
 					{/* <HomeCoverDetails homeCover={homeData.homeDetailsList} /> */}
@@ -83,71 +230,59 @@ export function SelectHomeCovers() {
 						/>
 						<div className='flex w-full flex-col gap-2'>
 							<div className='flex flex-row gap-4'>
-								{homeData.homeDetailsList[current].ownerOrTenet === 'Owner' ? (
-									<>
-										{detailsMenu.map((details, index) => {
-											return (
-												<div
-													key={index}
-													className={cn(
-														'flex flex-row items-center gap-2 pb-4 text-sm font-medium text-gray-325',
-														{
-															'border-b border-gray-750 text-black':
-																index + 1 === detailsPart
-														}
-													)}
-													onClick={() => {
-														if (detailsPart < index + 1) {
-															setDetailsPart(index + 1)
-														}
-													}}>
-													<h4 className='cursor-pointer'>{details}</h4>
-												</div>
-											)
-										})}
-									</>
+								{showTabType === 1 ? (
+									<DetailsTab
+										details={['Buildings Details', 'Content Details']}
+										detailsPart={detailsPart}
+										updateDetailsPart={updateDetailsPart}
+									/>
+								) : showTabType === 2 ? (
+									<DetailsTab
+										details={['Buildings Details']}
+										detailsPart={detailsPart}
+										updateDetailsPart={updateDetailsPart}
+									/>
 								) : (
-									<>
-										{detailsMenu.slice(1).map((details, index) => {
-											return (
-												<div
-													key={index}
-													className={cn(
-														'flex flex-row items-center gap-2 pb-4 text-sm font-medium text-gray-325',
-														{
-															'border-b border-gray-750 text-black':
-																index + 1 === detailsPart
-														}
-													)}
-													onClick={() => {
-														if (detailsPart < index + 1) {
-															setDetailsPart(index + 1)
-														}
-													}}>
-													<h4 className='cursor-pointer'>{details}</h4>
-												</div>
-											)
-										})}
-									</>
+									<DetailsTab
+										details={['Content Details']}
+										detailsPart={detailsPart}
+										updateDetailsPart={updateDetailsPart}
+									/>
 								)}
 							</div>
 							<div className='flex w-full flex-row gap-4'>
-								<Input
-									className='w-full'
-									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
-									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
-									}}
-								/>
-								<Input
-									className='w-full'
-									placeholder='Sum Insured'
-									value={curDetails.contents}
-									onChange={(e) => {
-										updateDetails('contents', e.target.value)
-									}}
-								/>
+								{detailsPart === 1 && (
+									<>
+										<Input
+											className='w-full'
+											placeholder='Building Sum Insured'
+											value={curDetails.BuildingSumInsured}
+											onChange={(e) => {
+												updateDetails('sumInsured', e.target.value)
+											}}
+										/>
+										<Input
+											className='w-full'
+											placeholder='Construction Type'
+											value={curDetails.ContentSuminsured}
+											onChange={(e) => {
+												updateDetails('construct', e.target.value)
+											}}
+										/>
+									</>
+								)}
+								{detailsPart === 2 && (
+									<>
+										<Input
+											className='w-full'
+											placeholder='Content Sum Insured'
+											value={curDetails.ContentSuminsured}
+											onChange={(e) => {
+												updateDetails('sumInsured', e.target.value)
+											}}
+										/>
+									</>
+								)}
 							</div>
 						</div>
 					</div>
@@ -162,9 +297,14 @@ export function SelectHomeCovers() {
 								<Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
+									value={curDetails.allRiskSumInsured}
 									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
+										// updateDetails('allRiskSumInsured', e.target.value)
+										updateSectionDetails(
+											'allRiskSumInsured',
+											e.target.value,
+											'3'
+										)
 									}}
 								/>
 								<Image
@@ -184,19 +324,23 @@ export function SelectHomeCovers() {
 								<Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
+									value={curDetails.PersonalAccidentSi}
 									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
+										updateSectionDetails(
+											'PersonalAccidentSi',
+											e.target.value,
+											'138'
+										)
 									}}
 								/>
-								<Input
+								{/* <Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
-								/>
+								/> */}
 								<Image
 									alt='cover1'
 									className='absolute bottom-3 right-6'
@@ -216,12 +360,16 @@ export function SelectHomeCovers() {
 								<Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
+									value={curDetails.DomesticServentSi}
 									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
+										updateSectionDetails(
+											'DomesticServentSi',
+											e.target.value,
+											'106'
+										)
 									}}
 								/>
-								<Input
+								{/* <Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
@@ -235,7 +383,7 @@ export function SelectHomeCovers() {
 									height={100}
 									src={assets.images.coverPlan2}
 									width={100}
-								/>
+								/> */}
 							</div>
 							<div className='relative flex flex-col gap-4 rounded-lg bg-[#DFDCFF] p-10'>
 								<h1 className='font-dmsan text-3xl font-bold'>
@@ -248,19 +396,23 @@ export function SelectHomeCovers() {
 								<Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
+									value={curDetails.PersonalLiabilitySi}
 									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
+										updateSectionDetails(
+											'PersonalLiabilitySi',
+											e.target.value,
+											'139'
+										)
 									}}
 								/>
-								<Input
+								{/* <Input
 									className='w-full lg:w-1/2'
 									placeholder='Sum Insured'
 									value={curDetails.sumInsured}
 									onChange={(e) => {
 										updateDetails('sumInsured', e.target.value)
 									}}
-								/>
+								/> */}
 								<Image
 									alt='cover1'
 									className='absolute -right-6 bottom-3'
@@ -279,6 +431,17 @@ export function SelectHomeCovers() {
 						</Button>
 						<Button
 							className='rounded-3xl lg:w-56'
+							disabled={current === 0}
+							variant='outline'
+							onClick={() => {
+								setCurrent((pre) => pre - 1)
+								selectCoverType(0)
+							}}>
+							Go Back to Prev Address
+						</Button>
+						<Button
+							className='rounded-3xl lg:w-56'
+							disabled={current + 1 < homeData.homeDetailsList.length}
 							variant='brightBlueBtn'
 							onClick={() => {
 								route.push('/home-insurance/premium')
@@ -287,9 +450,11 @@ export function SelectHomeCovers() {
 						</Button>
 						<Button
 							className='rounded-3xl lg:w-56'
+							disabled={current + 1 >= homeData.homeDetailsList.length}
 							variant='lightGreenBtn'
 							onClick={() => {
 								setCurrent((pre) => pre + 1)
+								selectCoverType(0)
 							}}>
 							Add Another Address
 						</Button>

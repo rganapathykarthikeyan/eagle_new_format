@@ -107,6 +107,7 @@ export const onBoardingOptions = [
 export const coverTypesHome = [
 	{
 		title: 'Building + Contents Cover',
+		coverType: '1',
 		image: assets.images.homeCov1,
 		Building: true,
 		Content: true,
@@ -117,6 +118,7 @@ export const coverTypesHome = [
 	},
 	{
 		title: 'Building Cover Only',
+		coverType: '2',
 		image: assets.images.homeCov2,
 		Building: true,
 		Content: false,
@@ -127,6 +129,7 @@ export const coverTypesHome = [
 	},
 	{
 		title: 'Contents Cover Only',
+		coverType: '3',
 		image: assets.images.homeCov3,
 		Building: false,
 		Content: true,
