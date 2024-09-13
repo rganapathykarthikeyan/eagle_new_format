@@ -7,6 +7,7 @@ const endPoints = {
 	bodyTypeList: 'EwayCommonApi/master/dropdown/induvidual/bodytype',
 	vehicleUsage: 'EwayCommonApi/api/dropdown/induvidual/vehicleusage',
 	saveMotorDetails: 'EwayMotorApi/api/savemotordetails',
+	saveNonMotorDetails: 'EwayMotorApi/api/slide/nonmotorsave',
 	policyEndDates: 'EwayCommonApi/dropdown/policyEndDate',
 	generateOTP: 'EwayCommonApi/otp/generate',
 	verifyOTP: 'EwayCommonApi/otp/validate',

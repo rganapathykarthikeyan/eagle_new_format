@@ -151,6 +151,25 @@ export const customerDetailsSlice = createSlice({
 			state.mobile = action.payload.mobile
 			state.code2 = action.payload.code2
 			state.code2 = action.payload.code2
+		},
+		updateDetailsFromHome(
+			state: CustomerDetails,
+			action: PayloadAction<{
+				name: string
+				mobile: string
+				email: string
+				city: string
+				pobox: string
+				gender: string
+				nrc: string
+			}>
+		) {
+			state.mobile = action.payload.mobile
+			state.email = action.payload.email
+			state.city = action.payload.city
+			state.poBox = action.payload.pobox
+			state.gender = action.payload.gender
+			state.nrc = action.payload.nrc
 		}
 	}
 })
@@ -165,5 +184,6 @@ export const {
 	updateIdentificationDetails,
 	updateAddressDetails,
 	updateContactInformation,
-	updateCustomerDetails
+	updateCustomerDetails,
+	updateDetailsFromHome
 } = customerDetailsSlice.actions

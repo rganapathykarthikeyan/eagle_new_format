@@ -3,14 +3,15 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import TextPlugin from 'gsap/TextPlugin'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { Search, X } from 'lucide-react'
-import { useAppDispatch } from '@/redux/hooks'
-import { addNewAddress } from '@/redux/slices'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { addNewAddress, setGuestLoginDetails } from '@/redux/slices'
 import { Dialog, DialogContent } from '../ui/dialog'
 import { ManualAddressDialog } from './manual-address-dialog'
 import { cn } from '@/lib'
+import { useGuestLoginMutation } from '@/redux/api/homeApi'
 // import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 
 gsap.registerPlugin(TextPlugin)
@@ -43,6 +44,9 @@ export function SelectLocation() {
 		value: string
 		label: string
 	}>()
+	const token = useAppSelector((state) => state.apps.token)
+
+	const [guestLogin] = useGuestLoginMutation()
 
 	const [showDialog, setShowDialog] = useState<boolean>(false)
 
@@ -57,6 +61,35 @@ export function SelectLocation() {
 	>([])
 
 	const dispatch = useAppDispatch()
+
+	function loginAsGuest() {
+		const res = guestLogin()
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				const details = {
+					token: value.data.data.Result.Token,
+					loginId: value.data.data.Result.LoginId,
+					userType: value.data.data.Result.UserType,
+					subUserType: value.data.data.Result.SubUserType,
+					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
+					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
+					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
+					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
+					CustomerCode: value.data.data.Result.CustomerCode,
+					agencyCode: value.data.data.Result.OaCode
+				}
+
+				// console.log(details)
+				dispatch(setGuestLoginDetails(details))
+			}
+		})
+	}
+
+	useEffect(() => {
+		if (token === '') {
+			loginAsGuest()
+		}
+	}, [])
 
 	function onAdd() {
 		if (selectedLocation) {

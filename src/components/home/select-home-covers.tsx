@@ -12,21 +12,45 @@ import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Button, Input } from '../ui'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { SelectCoverTypes } from './select-cover-types'
 import { DetailsTab } from './details-tab'
-import { isKeyOfEachHomeDetails } from '@/lib'
+import { formatDateDDMMYYYY, formatDateDDMMYYYYNextYear, isKeyOfEachHomeDetails } from '@/lib'
+import { HomeCustomerPopUp } from './home-customer-popup'
+import {
+	type locationListHome,
+	type SaveNonMotorDetailRequest
+} from '@/services/models/home.models'
+import { useSaveNonMotorDetailsMutation } from '@/redux/api/homeApi'
+import { useToast } from '../ui/use-toast'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
 	const [current, setCurrent] = useState<number>(0)
 	const [detailsPart, setDetailsPart] = useState<number>(1)
 
+	const customerReferenceNo = useAppSelector((state) => state.nonmotor.CustomerReferenceNo)
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const appData = useAppSelector((state) => state.apps)
+
 	const [showTabType, setShowTabType] = useState<number>(0)
 
 	const [coverType, selectCoverType] = useState<number>(0)
 
-	const route = useRouter()
+	const [openCustomerDialog, setOpenCustomerDialog] = useState<boolean>(false)
+
+	// const route = useRouter()
+
+	const { toast } = useToast()
+
+	const [IsNonMotorLoading, setIsNonMotorLoading] = useState<boolean>(false)
+
+	function setCustomerDialog() {
+		setOpenCustomerDialog((pre) => !pre)
+	}
+
+	const [saveNonMotorDetails] = useSaveNonMotorDetailsMutation()
 
 	const dispatch = useAppDispatch()
 
@@ -73,6 +97,111 @@ export function SelectHomeCovers() {
 			})
 		}
 	}, [homeData, current])
+
+	useEffect(() => {
+		if (customerReferenceNo !== '') {
+			setOpenCustomerDialog(false)
+		}
+	}, [customerReferenceNo])
+
+	function saveNonMotor() {
+		setIsNonMotorLoading(true)
+		const locationList: locationListHome = []
+		homeData.homeDetailsList.map((address, index) => {
+			locationList.push({
+				LocationId: String(index + 1),
+				LocationName: address.homeAddress,
+				SectionList: address.sectionType,
+				CommonError: false
+			})
+		})
+		const request: SaveNonMotorDetailRequest = {
+			PolicyDetails: {
+				SaveOrSubmit: 'Submit',
+				AcexecutiveId: '',
+				ProductType: null,
+				TiraCoverNoteNo: null,
+				CustomerReferenceNo: customerReferenceNo,
+				RequestReferenceNo: null,
+				BuildingOwnerYn: 'N',
+				Createdby: appData.loginId,
+				Currency: 'MUR',
+				ExchangeRate: '1.0',
+				Havepromocode: 'N',
+				PolicyEndDate: formatDateDDMMYYYYNextYear(new Date()),
+				PolicyStartDate: formatDateDDMMYYYY(new Date()),
+				IndustryId: '99999',
+				InsuranceId: appData.insuranceID,
+				ProductId: '63',
+				BranchCode: appData.branchCode
+			},
+			BrokerDetails: {
+				CustomerCode: appData.CustomerCode,
+				CustomerName: customerData.name,
+				BdmCode: appData.CustomerCode,
+				BrokerCode: null,
+				LoginId: appData.loginId,
+				ApplicationId: '1',
+				AgencyCode: appData.agencyCode,
+				BrokerBranchCode: '1',
+				SourceTypeId: null,
+				UserType: 'Broker'
+			},
+			EndorsementDetails: {
+				EndorsementDate: null,
+				EndorsementEffectiveDate: null,
+				EndorsementRemarks: null,
+				EndorsementType: null,
+				EndorsementTypeDesc: null,
+				EndtCategoryDesc: null,
+				EndtCount: null,
+				EndtPrevPolicyNo: null,
+				EndtPrevQuoteNo: null,
+				EndtStatus: null,
+				IsFinanceEndt: null,
+				OrginalPolicyNo: null,
+				PolicyNo: null
+			},
+			LocationList: locationList
+		}
+		const res = saveNonMotorDetails(request)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				// dispatch(updatePremium(true))
+				// if (value.data.data.Result.length === 1) {
+				// 	dispatch(updateDetails(value.data.data.Result[0]))
+				// } else {
+				// 	dispatch(updateCoversList(value.data.data.Result))
+				// }
+				// setIsNonMotorLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+
+			setIsNonMotorLoading(false)
+		})
+	}
 
 	useGSAP(() => {
 		gsap.from('.homeCovers', { y: 80, opacity: 0, duration: 0.8 })
@@ -219,7 +348,7 @@ export function SelectHomeCovers() {
 						<h5 className='text-center text-sm'>
 							Aliquam lacinia diam quis lacus euismod
 						</h5>
-						<h5 className='text-blue-425 text-sm'>
+						<h5 className='text-sm text-blue-425'>
 							Address: {homeData.homeDetailsList[current].homeAddress}
 						</h5>
 					</div>
@@ -451,15 +580,30 @@ export function SelectHomeCovers() {
 							}}>
 							Go Back to Prev Address
 						</Button>
-						<Button
-							className='rounded-3xl lg:w-56'
-							disabled={current + 1 < homeData.homeDetailsList.length}
-							variant='brightBlueBtn'
-							onClick={() => {
-								route.push('/home-insurance/premium')
-							}}>
-							View Premium
-						</Button>
+						{customerReferenceNo === '' ? (
+							<Button
+								className='rounded-3xl lg:w-56'
+								disabled={current + 1 < homeData.homeDetailsList.length}
+								variant='brightBlueBtn'
+								onClick={() => {
+									setOpenCustomerDialog(true)
+									// route.push('/home-insurance/premium')
+								}}>
+								Add Customer Details
+							</Button>
+						) : (
+							<Button
+								className='rounded-3xl lg:w-56'
+								disabled={current + 1 < homeData.homeDetailsList.length}
+								variant='brightBlueBtn'
+								onClick={() => {
+									// route.push('/home-insurance/premium')
+									saveNonMotor()
+								}}>
+								{IsNonMotorLoading ? <ClipLoader /> : <p>View Premium</p>}
+							</Button>
+						)}
+
 						<Button
 							className='rounded-3xl lg:w-56'
 							disabled={current + 1 >= homeData.homeDetailsList.length}
@@ -471,6 +615,10 @@ export function SelectHomeCovers() {
 							Add Another Address
 						</Button>
 					</div>
+					<HomeCustomerPopUp
+						open={openCustomerDialog}
+						openChange={setCustomerDialog}
+					/>
 				</section>
 			) : (
 				<></>

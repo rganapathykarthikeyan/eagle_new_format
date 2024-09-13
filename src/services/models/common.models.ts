@@ -89,7 +89,7 @@ export const GuestLoginSchema = z.object({
 				OldProductName: z.string(),
 				ProductName: z.string(),
 				ProductIconId: z.string(),
-				ProductIconName: z.null(),
+				ProductIconName: z.string().nullable(),
 				PackageYn: z.string(),
 				DisplayOrder: z.number()
 			})
@@ -1602,7 +1602,7 @@ export type ViewPremiumCalData = z.infer<typeof ViewPremiumCalDataSchema>
 
 export const SaveCustomerDetailsSchema = z.object({
 	BrokerBranchCode: z.string(),
-	CustomerReferenceNo: z.string().nullable(),
+	CustomerReferenceNo: z.string().nullable().optional(),
 	InsuranceId: z.string(),
 	BranchCode: z.string().optional(),
 	ProductId: z.string(),
@@ -1628,8 +1628,8 @@ export const SaveCustomerDetailsSchema = z.object({
 	MobileNo3: z.null(),
 	Nationality: z.string(),
 	Occupation: z.string(),
-	OtherOccupation: z.string(),
-	Placeofbirth: z.string(),
+	OtherOccupation: z.string().optional(),
+	Placeofbirth: z.string().optional(),
 	PolicyHolderType: z.string(),
 	PolicyHolderTypeid: z.string(),
 	PreferredNotification: z.string(),
