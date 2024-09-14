@@ -161,3 +161,30 @@ export type saveNonMotorDetailsList = z.infer<typeof saveNonMotorDetailsSchema>
 // })
 
 // export type saveCustomerRequest = z.infer<typeof saveCustomerRequestSchema>
+
+export const getItemValueReqSchema = z.object({
+	InsuranceId: z.string(),
+	ItemType: z.string()
+})
+
+export type getItemValueRequest = z.infer<typeof getItemValueReqSchema>
+
+export const getItemValueResSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(
+		z.object({
+			TitleType: z.string().nullable(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.string().nullable(),
+			RiskId: z.string().nullable(),
+			CodeDescLocal: z.string()
+		})
+	),
+	ErroCode: z.number()
+})
+
+export type getItemValueRes = z.infer<typeof getItemValueResSchema>

@@ -9,7 +9,7 @@ export type SectionDetails = {
 	allRiskSumInsured?: string
 	PersonalLiabilitySi?: string
 	DomesticServantType?: string
-	Count?: string
+	ServantCount?: string
 	DomesticServentSi?: string
 	RelationType?: string
 	PersonalAccidentSi?: string
@@ -27,6 +27,10 @@ export type EachHomeDetails = {
 	DomesticServentSi: string
 	PersonalLiabilitySi: string
 	coverType: string
+	OutbuildConstructType: string
+	DomesticServantType: string
+	ServantCount: string
+	RelationType: string
 	sectionType: SectionDetails[]
 }
 
@@ -60,6 +64,10 @@ export const homeInsuranceSlice = createSlice({
 					electricEquipement: '',
 					PersonalAccidentSi: '',
 					coverType: '',
+					DomesticServantType: '',
+					RelationType: '',
+					ServantCount: '',
+					OutbuildConstructType: '',
 					sectionType: []
 				})
 			})

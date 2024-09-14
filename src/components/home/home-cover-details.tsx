@@ -22,7 +22,7 @@ type CoversListDisplay = {
 export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 	const [current, setCurrent] = useState<number>(0)
 
-	const [curDetails, setCurrentDetails] = useState({
+	const [curDetails, setCurrentDetails] = useState<EachHomeDetails>({
 		homeAddress: props.homeCover[current].homeAddress,
 		addressId: props.homeCover[current].addressId,
 		ownerOrTenet: props.homeCover[current].ownerOrTenet,
@@ -34,6 +34,10 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 		coverType: props.homeCover[current].coverType,
 		sectionType: props.homeCover[current].sectionType,
 		DomesticServentSi: props.homeCover[current].DomesticServentSi,
+		OutbuildConstructType: props.homeCover[current].OutbuildConstructType,
+		DomesticServantType: props.homeCover[current].DomesticServantType,
+		RelationType: props.homeCover[current].RelationType,
+		ServantCount: props.homeCover[current].ServantCount,
 		PersonalLiabilitySi: props.homeCover[current].PersonalLiabilitySi
 	})
 
@@ -99,6 +103,10 @@ export function HomeCoverDetails(props: HomeCoverDetailsProps) {
 			coverType: props.homeCover[current].coverType,
 			sectionType: props.homeCover[current].sectionType,
 			DomesticServentSi: props.homeCover[current].DomesticServentSi,
+			OutbuildConstructType: props.homeCover[current].OutbuildConstructType,
+			DomesticServantType: props.homeCover[current].DomesticServantType,
+			RelationType: props.homeCover[current].RelationType,
+			ServantCount: props.homeCover[current].ServantCount,
 			PersonalLiabilitySi: props.homeCover[current].PersonalLiabilitySi
 		})
 	}, [current])

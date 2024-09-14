@@ -26,7 +26,7 @@ export function SelectCoverTypes(props: SelectCoverTypesProps) {
 							Choose your Cover Type
 						</h3>
 						<h5 className='text-sm'>Aliquam lacinia diam quis lacus euismod</h5>
-						<h5 className='text-blue-425 text-sm'>
+						<h5 className='text-sm text-blue-425'>
 							Address: {homeData.homeDetailsList[props.current].homeAddress}
 						</h5>
 						{props.ownerOrTenant === 'Owner' && (

@@ -11,19 +11,26 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Button, Input } from '../ui'
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 // import { useRouter } from 'next/navigation'
 import { SelectCoverTypes } from './select-cover-types'
 import { DetailsTab } from './details-tab'
 import { formatDateDDMMYYYY, formatDateDDMMYYYYNextYear, isKeyOfEachHomeDetails } from '@/lib'
 import { HomeCustomerPopUp } from './home-customer-popup'
 import {
+	type getItemValueRequest,
 	type locationListHome,
 	type SaveNonMotorDetailRequest
 } from '@/services/models/home.models'
-import { useSaveNonMotorDetailsMutation } from '@/redux/api/homeApi'
+import { useGetItemValueMutation, useSaveNonMotorDetailsMutation } from '@/redux/api/homeApi'
 import { useToast } from '../ui/use-toast'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { AllRiskCover } from './all-risk-cover'
+import { PersonalAccidentCover } from './personal-accident-cover'
+import { DomesticServantDetails } from './domestic-servant-details'
+import { PersonalLiabilityCover } from './personal-liability-cover'
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
+import { FilledDetails } from './filled-details'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
@@ -45,6 +52,13 @@ export function SelectHomeCovers() {
 	const { toast } = useToast()
 
 	const [IsNonMotorLoading, setIsNonMotorLoading] = useState<boolean>(false)
+
+	const insuranceId = useAppSelector((state) => state.apps.insuranceID)
+
+	const [getItemValue] = useGetItemValueMutation()
+	const [constructionTypeList, setConstructionTypeList] = useState<
+		{ value: string; label: string }[]
+	>([])
 
 	function setCustomerDialog() {
 		setOpenCustomerDialog((pre) => !pre)
@@ -76,8 +90,38 @@ export function SelectHomeCovers() {
 		electricEquipement: '',
 		PersonalAccidentSi: '',
 		coverType: '',
+		OutbuildConstructType: '',
+		DomesticServantType: '',
+		RelationType: '',
+		ServantCount: '',
 		sectionType: []
 	})
+
+	useEffect(() => {
+		setCurrent(0)
+	}, [homeData.homeDetailsList.length])
+
+	useEffect(() => {
+		if (appData.token !== '') {
+			const req: getItemValueRequest = {
+				InsuranceId: insuranceId,
+				ItemType: 'wall_type'
+			}
+			const tempArr: { value: string; label: string }[] = []
+			const res = getItemValue(req)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data.data) {
+					value.data.data!.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setConstructionTypeList(tempArr)
+				}
+			})
+		}
+	}, [insuranceId, getItemValue])
 
 	useEffect(() => {
 		if (homeData.homeDetailsList.length !== 0) {
@@ -93,7 +137,11 @@ export function SelectHomeCovers() {
 				coverType: homeData.homeDetailsList[current].coverType,
 				sectionType: homeData.homeDetailsList[current].sectionType,
 				DomesticServentSi: homeData.homeDetailsList[current].DomesticServentSi,
-				PersonalLiabilitySi: homeData.homeDetailsList[current].PersonalLiabilitySi
+				OutbuildConstructType: homeData.homeDetailsList[current].OutbuildConstructType,
+				PersonalLiabilitySi: homeData.homeDetailsList[current].PersonalLiabilitySi,
+				DomesticServantType: homeData.homeDetailsList[current].DomesticServantType,
+				RelationType: homeData.homeDetailsList[current].RelationType,
+				ServantCount: homeData.homeDetailsList[current].ServantCount
 			})
 		}
 	}, [homeData, current])
@@ -340,7 +388,7 @@ export function SelectHomeCovers() {
 				/>
 			)}
 			{homeData.homeDetailsList.length !== 0 && showTabType !== 0 && coverType !== 0 ? (
-				<section className='flex w-full flex-col gap-10 px-4 py-10 font-roboto lg:px-32 lg:py-12'>
+				<section className='relative flex w-full flex-col gap-10 px-4 py-10 font-roboto lg:px-32 lg:py-12'>
 					<div className='homeCovers flex w-full flex-col items-center gap-4'>
 						<h3 className='text-center text-3xl font-semibold text-gray-750'>
 							Choose your Coverage Type
@@ -352,6 +400,14 @@ export function SelectHomeCovers() {
 							Address: {homeData.homeDetailsList[current].homeAddress}
 						</h5>
 					</div>
+					<Dialog>
+						<DialogTrigger className='absolute right-0 -mr-14 rounded-s-xl bg-blue-400 px-8 text-white hover:px-16 hover:duration-300'>
+							View Filled Data
+						</DialogTrigger>
+						<DialogContent>
+							<FilledDetails />
+						</DialogContent>
+					</Dialog>
 					{/* <HomeCoverDetails homeCover={homeData.homeDetailsList} /> */}
 					<div className='flex flex-row items-center justify-center gap-2'>
 						<Image
@@ -398,14 +454,30 @@ export function SelectHomeCovers() {
 												)
 											}}
 										/>
-										<Input
-											className='w-full'
-											placeholder='Construction Type'
-											value={curDetails.ContentSuminsured}
-											onChange={(e) => {
-												updateDetails('construct', e.target.value)
-											}}
-										/>
+										<Select
+											value={curDetails.OutbuildConstructType}
+											onValueChange={(value) => {
+												updateSectionDetails(
+													'OutbuildConstructType',
+													value,
+													'1'
+												)
+											}}>
+											<SelectTrigger className='border border-gray-375 bg-gray-975'>
+												<SelectValue placeholder='Construct Type' />
+											</SelectTrigger>
+											<SelectContent>
+												{constructionTypeList.map((type, index) => {
+													return (
+														<SelectItem
+															key={index}
+															value={type.value}>
+															{type.label}
+														</SelectItem>
+													)
+												})}
+											</SelectContent>
+										</Select>
 									</>
 								)}
 								{detailsPart === 2 && (
@@ -429,139 +501,24 @@ export function SelectHomeCovers() {
 					</div>
 					<div className='grid w-full grid-cols-none gap-4 lg:grid-cols-2'>
 						<div className='flex w-full flex-col gap-4'>
-							<div className='relative flex flex-col gap-4 rounded-lg bg-[#E9F2FF] p-10'>
-								<h1 className='font-dmsan text-3xl font-bold'>All Risk</h1>
-								<p>
-									We are committed to providing our customers with exceptional
-									service.
-								</p>
-								<Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.allRiskSumInsured}
-									onChange={(e) => {
-										// updateDetails('allRiskSumInsured', e.target.value)
-										updateSectionDetails(
-											'allRiskSumInsured',
-											e.target.value,
-											'3'
-										)
-									}}
-								/>
-								<Image
-									alt='cover1'
-									className='absolute -right-7 bottom-3'
-									height={150}
-									src={assets.images.coverPlan1}
-									width={230}
-								/>
-							</div>
-							<div className='relative flex flex-col gap-4 rounded-lg bg-[#FFE9F3] p-10'>
-								<h1 className='font-dmsan text-3xl font-bold'>Personal Accident</h1>
-								<p>
-									We are committed to providing our customers with exceptional
-									service.
-								</p>
-								<Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.PersonalAccidentSi}
-									onChange={(e) => {
-										updateSectionDetails(
-											'PersonalAccidentSi',
-											e.target.value,
-											'138'
-										)
-									}}
-								/>
-								{/* <Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
-									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
-									}}
-								/> */}
-								<Image
-									alt='cover1'
-									className='absolute bottom-3 right-6'
-									height={100}
-									src={assets.images.coverPlan3}
-									width={100}
-								/>
-							</div>
+							<AllRiskCover
+								curDetails={curDetails}
+								updateSectionDetails={updateSectionDetails}
+							/>
+							<PersonalAccidentCover
+								curDetails={curDetails}
+								updateSectionDetails={updateSectionDetails}
+							/>
 						</div>
 						<div className='flex flex-col gap-4'>
-							<div className='relative flex flex-col gap-4 rounded-lg bg-[#F3FFD2] p-10'>
-								<h1 className='font-dmsan text-3xl font-bold'>Domestic Servant</h1>
-								<p>
-									We are committed to providing our customers with exceptional
-									service.
-								</p>
-								<Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.DomesticServentSi}
-									onChange={(e) => {
-										updateSectionDetails(
-											'DomesticServentSi',
-											e.target.value,
-											'106'
-										)
-									}}
-								/>
-								{/* <Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
-									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
-									}}
-								/>
-								<Image
-									alt='cover1'
-									className='absolute bottom-3 right-6'
-									height={100}
-									src={assets.images.coverPlan2}
-									width={100}
-								/> */}
-							</div>
-							<div className='relative flex flex-col gap-4 rounded-lg bg-[#DFDCFF] p-10'>
-								<h1 className='font-dmsan text-3xl font-bold'>
-									Personal Liability
-								</h1>
-								<p>
-									We are committed to providing our customers with exceptional
-									service.
-								</p>
-								<Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.PersonalLiabilitySi}
-									onChange={(e) => {
-										updateSectionDetails(
-											'PersonalLiabilitySi',
-											e.target.value,
-											'139'
-										)
-									}}
-								/>
-								{/* <Input
-									className='w-full lg:w-1/2'
-									placeholder='Sum Insured'
-									value={curDetails.sumInsured}
-									onChange={(e) => {
-										updateDetails('sumInsured', e.target.value)
-									}}
-								/> */}
-								<Image
-									alt='cover1'
-									className='absolute -right-6 bottom-3'
-									height={150}
-									src={assets.images.coverPlan4}
-									width={200}
-								/>
-							</div>
+							<DomesticServantDetails
+								curDetails={curDetails}
+								updateSectionDetails={updateSectionDetails}
+							/>
+							<PersonalLiabilityCover
+								curDetails={curDetails}
+								updateSectionDetails={updateSectionDetails}
+							/>
 						</div>
 					</div>
 					<div className='flex w-full flex-row flex-wrap justify-center gap-5'>

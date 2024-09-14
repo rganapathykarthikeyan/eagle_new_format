@@ -79,7 +79,6 @@ export function SelectLocation() {
 					agencyCode: value.data.data.Result.OaCode
 				}
 
-				// console.log(details)
 				dispatch(setGuestLoginDetails(details))
 			}
 		})

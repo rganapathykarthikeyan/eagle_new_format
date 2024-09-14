@@ -75,8 +75,12 @@ export function isKeyOfEachHomeDetails(fieldName: string): fieldName is keyof Ea
 		'allRiskSumInsured',
 		'DomesticServentSi',
 		'PersonalLiabilitySi',
+		'OutbuildConstructType',
 		'coverType',
-		'sectionType'
+		'sectionType',
+		'DomesticServantType',
+		'RelationType',
+		'ServantCount'
 	]
 
 	return keys.includes(fieldName as keyof EachHomeDetails)

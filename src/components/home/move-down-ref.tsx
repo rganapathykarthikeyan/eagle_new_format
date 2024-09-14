@@ -13,7 +13,7 @@ export function MoveDownRef() {
 
 	useEffect(() => {
 		scrollToBottom()
-	}, [homeData])
+	}, [homeData.homeDetailsList.length])
 
 	return <div ref={pageEnd}></div>
 }

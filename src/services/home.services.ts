@@ -2,7 +2,10 @@ import { type TResponse } from '@/lib/api'
 import {
 	type SaveNonMotorDetailRequest,
 	saveNonMotorDetailsSchema,
-	type saveNonMotorDetailsList
+	type saveNonMotorDetailsList,
+	type getItemValueRes,
+	type getItemValueRequest,
+	getItemValueResSchema
 } from './models/home.models'
 import endPoints from './endpoints'
 import api2 from '@/lib/api2'
@@ -48,4 +51,12 @@ export async function saveCustomerDetails(data: SaveCustomerDetailRequest, token
 			headers: { Authorization: token }
 		}
 	)
+}
+
+export type getItemValueResponse = TResponse<getItemValueRes>
+
+export async function getItemValue(data: getItemValueRequest, token: string | null) {
+	return api2.post<getItemValueRes>(endPoints.getItemValue, data, getItemValueResSchema, {
+		headers: { Authorization: token }
+	})
 }

@@ -1,9 +1,16 @@
-import { type SaveNonMotorDetailRequest } from '@/services/models/home.models'
+import {
+	type getItemValueRequest,
+	type SaveNonMotorDetailRequest
+} from '@/services/models/home.models'
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
 import { store } from '../store'
-import { type GuestLoginResponse, type SaveNonMotorDetailResponse } from '@/services/home.services'
+import {
+	type getItemValueResponse,
+	type GuestLoginResponse,
+	type SaveNonMotorDetailResponse
+} from '@/services/home.services'
 import { type SaveCustomerDetailResponse } from '@/services/common.services'
 import { type SaveCustomerDetailRequest } from '@/services/models/common.models'
 
@@ -61,6 +68,21 @@ export const homeApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		getItemValue: build.mutation<getItemValueResponse, getItemValueRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: getItemValueRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_item_value',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -68,5 +90,6 @@ export const homeApi = createApi({
 export const {
 	useSaveNonMotorDetailsMutation,
 	useGuestLoginMutation,
-	useSaveCustomerDetailsMutation
+	useSaveCustomerDetailsMutation,
+	useGetItemValueMutation
 } = homeApi
