@@ -5,7 +5,8 @@ import {
 	type saveNonMotorDetailsList,
 	type getItemValueRes,
 	type getItemValueRequest,
-	getItemValueResSchema
+	getItemValueResSchema,
+	type PremiumCalcHomeRequest
 } from './models/home.models'
 import endPoints from './endpoints'
 import api2 from '@/lib/api2'
@@ -14,7 +15,10 @@ import {
 	type SaveCustomerDetail,
 	type SaveCustomerDetailRequest,
 	SaveCustomerDetailsResponseSchema,
-	type GuestLogin
+	type GuestLogin,
+	type PremiumCalcData,
+	premiumCalcDataSchema,
+	type ViewPremiumCalcRequest
 } from './models/common.models'
 
 export type GuestLoginResponse = TResponse<GuestLogin>
@@ -57,6 +61,21 @@ export type getItemValueResponse = TResponse<getItemValueRes>
 
 export async function getItemValue(data: getItemValueRequest, token: string | null) {
 	return api2.post<getItemValueRes>(endPoints.getItemValue, data, getItemValueResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export async function calculateHomePremium(data: PremiumCalcHomeRequest, token: string | null) {
+	return api2.post<PremiumCalcData>(endPoints.calculator, data, premiumCalcDataSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export async function viewCalculatedHomePremium(
+	data: ViewPremiumCalcRequest,
+	token: string | null
+) {
+	return api2.post<PremiumCalcData>(endPoints.viewCalculated, data, premiumCalcDataSchema, {
 		headers: { Authorization: token }
 	})
 }

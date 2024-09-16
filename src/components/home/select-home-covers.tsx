@@ -11,7 +11,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { Button, Input } from '../ui'
 // import { useRouter } from 'next/navigation'
 import { SelectCoverTypes } from './select-cover-types'
 import { DetailsTab } from './details-tab'
@@ -22,7 +22,12 @@ import {
 	type locationListHome,
 	type SaveNonMotorDetailRequest
 } from '@/services/models/home.models'
-import { useGetItemValueMutation, useSaveNonMotorDetailsMutation } from '@/redux/api/homeApi'
+import {
+	useGetItemValueMutation,
+	usePremiumHomeCalcMutation,
+	useSaveNonMotorDetailsMutation,
+	useViewPremiumHomeCalcMutation
+} from '@/redux/api/homeApi'
 import { useToast } from '../ui/use-toast'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { AllRiskCover } from './all-risk-cover'
@@ -31,9 +36,12 @@ import { DomesticServantDetails } from './domestic-servant-details'
 import { PersonalLiabilityCover } from './personal-liability-cover'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { FilledDetails } from './filled-details'
+import { BuildingSumInsured } from './building-suminsured'
+import { updateHomeCoversList, updateHomeDetails } from '@/redux/slices/non-motor-details.slice'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
+	const nonMotorData = useAppSelector((state) => state.nonmotor)
 	const [current, setCurrent] = useState<number>(0)
 	const [detailsPart, setDetailsPart] = useState<number>(1)
 
@@ -46,6 +54,18 @@ export function SelectHomeCovers() {
 	const [coverType, selectCoverType] = useState<number>(0)
 
 	const [openCustomerDialog, setOpenCustomerDialog] = useState<boolean>(false)
+
+	const [cvType, setCVType] = useState<string>('')
+
+	useEffect(() => {
+		if (homeData.homeDetailsList[current]) {
+			setCVType(homeData.homeDetailsList[current].coverType)
+		}
+	}, [homeData.homeDetailsList[current], current])
+
+	const [premiumCalculator] = usePremiumHomeCalcMutation()
+
+	const [viewPremiumCalc] = useViewPremiumHomeCalcMutation()
 
 	// const route = useRouter()
 
@@ -220,13 +240,13 @@ export function SelectHomeCovers() {
 				value.data.data.IsError !== true &&
 				value.data.data.Result !== null
 			) {
-				// dispatch(updatePremium(true))
-				// if (value.data.data.Result.length === 1) {
-				// 	dispatch(updateDetails(value.data.data.Result[0]))
-				// } else {
-				// 	dispatch(updateCoversList(value.data.data.Result))
-				// }
-				// setIsNonMotorLoading(false)
+				if (value.data.data.Result.length === 1) {
+					dispatch(updateHomeDetails(value.data.data.Result[0]))
+				} else {
+					dispatch(updateHomeCoversList(value.data.data.Result))
+				}
+
+				setIsNonMotorLoading(false)
 			} else if (
 				value.data?.type === 'success' &&
 				value.data.data !== undefined &&
@@ -249,6 +269,92 @@ export function SelectHomeCovers() {
 
 			setIsNonMotorLoading(false)
 		})
+	}
+
+	useEffect(() => {
+		if (nonMotorData.RequestReferenceNo !== '' || nonMotorData.AllCoverList.length !== 0) {
+			if (nonMotorData.AllCoverList.length === 0) {
+				const req = {
+					InsuranceId: appData.insuranceID,
+					BranchCode: appData.branchCode,
+					AgencyCode: appData.agencyCode,
+					ProductId: appData.productId,
+					SectionId: nonMotorData.SectionId,
+					MSRefNo: nonMotorData.MSRefNo,
+					CdRefNo: nonMotorData.CdRefNo,
+					VdRefNo: nonMotorData.VdRefNo,
+					CreatedBy: nonMotorData.CreatedBy,
+					productId: nonMotorData.ProductId,
+					RequestReferenceNo: nonMotorData.RequestReferenceNo,
+					EffectiveDate: formatDateDDMMYYYYNextYear(new Date()),
+					PolicyEndDate: formatDateDDMMYYYY(new Date()),
+					CoverModification: 'N',
+					VehicleId: '1',
+					LocationId: '1'
+				}
+				setIsNonMotorLoading(true)
+				const res = premiumCalculator(req)
+				res.then(() => {
+					ViewPremiumData()
+				})
+			} else {
+				const promises = nonMotorData.AllCoverList.map((cover) => {
+					const req = {
+						InsuranceId: appData.insuranceID,
+						BranchCode: appData.branchCode,
+						AgencyCode: appData.agencyCode,
+						SectionId: '104',
+						ProductId: appData.productId,
+						MSRefNo: cover.MSRefNo,
+						CdRefNo: cover.CdRefNo,
+						VdRefNo: cover.VdRefNo,
+						CreatedBy: cover.CreatedBy,
+						productId: cover.ProductId,
+						RequestReferenceNo: cover.RequestReferenceNo,
+						EffectiveDate: formatDateDDMMYYYYNextYear(new Date()),
+						PolicyEndDate: formatDateDDMMYYYY(new Date()),
+						CoverModification: 'N',
+						VehicleId: '1',
+						LocationId: '1'
+					}
+					setIsNonMotorLoading(true)
+					return premiumCalculator(req)
+				})
+				Promise.all(promises).then(() => {
+					ViewPremiumData()
+				})
+			}
+		}
+	}, [nonMotorData])
+
+	function ViewPremiumData() {
+		const req = {
+			ProductId: appData.productId,
+			RequestReferenceNo: nonMotorData.RequestReferenceNo
+		}
+		viewPremiumCalc(req)
+	}
+
+	function viewPremium() {
+		if (
+			cvType === '1' &&
+			homeData.homeDetailsList[current].BuildingSumInsured !== '' &&
+			homeData.homeDetailsList[current].ContentSuminsured !== ''
+		) {
+			saveNonMotor()
+		} else if (cvType === '2' && homeData.homeDetailsList[current].BuildingSumInsured !== '') {
+			saveNonMotor()
+		} else if (cvType === '3' && homeData.homeDetailsList[current].ContentSuminsured !== '') {
+			saveNonMotor()
+		} else {
+			if (cvType === '1') {
+				alert('Fill Both Building and Content Sum Insured')
+			} else if (cvType === '2') {
+				alert('Fill Building Sum Insured')
+			} else {
+				alert('Fill Content Sum Insured')
+			}
+		}
 	}
 
 	useGSAP(() => {
@@ -287,7 +393,20 @@ export function SelectHomeCovers() {
 
 		if (pos !== -1) {
 			const newData = [...curSection]
-			newData[pos] = { ...newData[pos], [fieldName]: value }
+
+			const isSumInsured =
+				fieldName !== 'DomesticServantType' &&
+				fieldName !== 'OutbuildConstructType' &&
+				fieldName !== 'RelationType' &&
+				fieldName !== 'ServantCount' &&
+				fieldName !== 'SectionId' &&
+				fieldName !== 'RiskId'
+
+			if (isSumInsured) {
+				newData[pos] = { ...newData[pos], [fieldName]: value, sumInsured: value }
+			} else {
+				newData[pos] = { ...newData[pos], [fieldName]: value }
+			}
 
 			if (isKeyOfEachHomeDetails(fieldName)) {
 				const updatedDetails = {
@@ -315,7 +434,19 @@ export function SelectHomeCovers() {
 		} else {
 			const newDetails: SectionDetails = { SectionId: sectionId, RiskId: null }
 
-			newDetails[fieldName] = value
+			const isSumInsured =
+				fieldName !== 'DomesticServantType' &&
+				fieldName !== 'OutbuildConstructType' &&
+				fieldName !== 'RelationType' &&
+				fieldName !== 'ServantCount' &&
+				fieldName !== 'SectionId' &&
+				fieldName !== 'RiskId'
+
+			if (isSumInsured) {
+				newDetails['sumInsured'] = value
+			} else {
+				newDetails[fieldName] = value
+			}
 
 			if (isKeyOfEachHomeDetails(fieldName)) {
 				setCurrentDetails({
@@ -371,6 +502,10 @@ export function SelectHomeCovers() {
 			}
 		}
 	}, [current, homeData])
+
+	useEffect(() => {
+		setDetailsPart(1)
+	}, [cvType])
 
 	function changeCoverType(index: number) {
 		selectCoverType(index)
@@ -440,47 +575,14 @@ export function SelectHomeCovers() {
 								)}
 							</div>
 							<div className='flex w-full flex-row gap-4'>
-								{detailsPart === 1 && (
-									<>
-										<Input
-											className='w-full'
-											placeholder='Building Sum Insured'
-											value={curDetails.BuildingSumInsured}
-											onChange={(e) => {
-												updateSectionDetails(
-													'BuildingSumInsured',
-													e.target.value,
-													'1'
-												)
-											}}
-										/>
-										<Select
-											value={curDetails.OutbuildConstructType}
-											onValueChange={(value) => {
-												updateSectionDetails(
-													'OutbuildConstructType',
-													value,
-													'1'
-												)
-											}}>
-											<SelectTrigger className='border border-gray-375 bg-gray-975'>
-												<SelectValue placeholder='Construct Type' />
-											</SelectTrigger>
-											<SelectContent>
-												{constructionTypeList.map((type, index) => {
-													return (
-														<SelectItem
-															key={index}
-															value={type.value}>
-															{type.label}
-														</SelectItem>
-													)
-												})}
-											</SelectContent>
-										</Select>
-									</>
+								{detailsPart === 1 && cvType !== '3' && (
+									<BuildingSumInsured
+										constructionTypeList={constructionTypeList}
+										curDetails={curDetails}
+										updateSectionDetails={updateSectionDetails}
+									/>
 								)}
-								{detailsPart === 2 && (
+								{((cvType === '3' && detailsPart === 1) || detailsPart === 2) && (
 									<>
 										<Input
 											className='w-full'
@@ -505,16 +607,10 @@ export function SelectHomeCovers() {
 								curDetails={curDetails}
 								updateSectionDetails={updateSectionDetails}
 							/>
-							<PersonalAccidentCover
-								curDetails={curDetails}
-								updateSectionDetails={updateSectionDetails}
-							/>
+							<PersonalAccidentCover current={current} />
 						</div>
 						<div className='flex flex-col gap-4'>
-							<DomesticServantDetails
-								curDetails={curDetails}
-								updateSectionDetails={updateSectionDetails}
-							/>
+							<DomesticServantDetails current={current} />
 							<PersonalLiabilityCover
 								curDetails={curDetails}
 								updateSectionDetails={updateSectionDetails}
@@ -553,11 +649,15 @@ export function SelectHomeCovers() {
 								className='rounded-3xl lg:w-56'
 								disabled={current + 1 < homeData.homeDetailsList.length}
 								variant='brightBlueBtn'
-								onClick={() => {
-									// route.push('/home-insurance/premium')
-									saveNonMotor()
-								}}>
-								{IsNonMotorLoading ? <ClipLoader /> : <p>View Premium</p>}
+								onClick={viewPremium}>
+								{IsNonMotorLoading ? (
+									<ClipLoader
+										color='white'
+										size={16}
+									/>
+								) : (
+									<p>View Premium</p>
+								)}
 							</Button>
 						)}
 
@@ -566,8 +666,34 @@ export function SelectHomeCovers() {
 							disabled={current + 1 >= homeData.homeDetailsList.length}
 							variant='lightGreenBtn'
 							onClick={() => {
-								setCurrent((pre) => pre + 1)
-								selectCoverType(0)
+								if (
+									cvType === '1' &&
+									homeData.homeDetailsList[current].BuildingSumInsured !== '' &&
+									homeData.homeDetailsList[current].ContentSuminsured !== ''
+								) {
+									setCurrent((pre) => pre + 1)
+									selectCoverType(0)
+								} else if (
+									cvType === '2' &&
+									homeData.homeDetailsList[current].BuildingSumInsured !== ''
+								) {
+									setCurrent((pre) => pre + 1)
+									selectCoverType(0)
+								} else if (
+									cvType === '3' &&
+									homeData.homeDetailsList[current].ContentSuminsured !== ''
+								) {
+									setCurrent((pre) => pre + 1)
+									selectCoverType(0)
+								} else {
+									if (cvType === '1') {
+										alert('Fill Both Building and Content Sum Insured')
+									} else if (cvType === '2') {
+										alert('Fill Building Sum Insured')
+									} else {
+										alert('Fill Content Sum Insured')
+									}
+								}
 							}}>
 							Add Another Address
 						</Button>

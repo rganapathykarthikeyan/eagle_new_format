@@ -14,7 +14,7 @@ export function DetailsTab(props: DetailsTabProps) {
 					<div
 						key={index}
 						className={cn(
-							'flex flex-row items-center gap-2 pb-4 text-sm font-medium text-gray-325',
+							'flex flex-row items-center gap-1 pb-4 text-sm font-medium text-gray-325',
 							{
 								'border-b border-gray-750 text-black':
 									index + 1 === props.detailsPart
@@ -24,6 +24,7 @@ export function DetailsTab(props: DetailsTabProps) {
 							props.updateDetailsPart(index)
 						}}>
 						<h4 className='cursor-pointer'>{details}</h4>
+						<span className='text-red-500'>*</span>
 					</div>
 				)
 			})}

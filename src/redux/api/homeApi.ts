@@ -1,4 +1,5 @@
 import {
+	type PremiumCalcHomeRequest,
 	type getItemValueRequest,
 	type SaveNonMotorDetailRequest
 } from '@/services/models/home.models'
@@ -11,8 +12,14 @@ import {
 	type GuestLoginResponse,
 	type SaveNonMotorDetailResponse
 } from '@/services/home.services'
-import { type SaveCustomerDetailResponse } from '@/services/common.services'
-import { type SaveCustomerDetailRequest } from '@/services/models/common.models'
+import {
+	type PremiumCalcDataResponse,
+	type SaveCustomerDetailResponse
+} from '@/services/common.services'
+import {
+	type ViewPremiumCalcRequest,
+	type SaveCustomerDetailRequest
+} from '@/services/models/common.models'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RootState = any // normally inferred from state
@@ -83,6 +90,36 @@ export const homeApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		premiumHomeCalc: build.mutation<PremiumCalcDataResponse, PremiumCalcHomeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: PremiumCalcHomeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_premium_home_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		viewPremiumHomeCalc: build.mutation<PremiumCalcDataResponse, ViewPremiumCalcRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ViewPremiumCalcRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'view_premium_home_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -91,5 +128,7 @@ export const {
 	useSaveNonMotorDetailsMutation,
 	useGuestLoginMutation,
 	useSaveCustomerDetailsMutation,
-	useGetItemValueMutation
+	useGetItemValueMutation,
+	usePremiumHomeCalcMutation,
+	useViewPremiumHomeCalcMutation
 } = homeApi

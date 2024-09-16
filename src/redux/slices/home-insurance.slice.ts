@@ -13,6 +13,7 @@ export type SectionDetails = {
 	DomesticServentSi?: string
 	RelationType?: string
 	PersonalAccidentSi?: string
+	sumInsured?: string
 }
 
 export type EachHomeDetails = {
@@ -78,8 +79,22 @@ export const homeInsuranceSlice = createSlice({
 			action: PayloadAction<{ homeList: EachHomeDetails; index: number }>
 		) {
 			state.homeDetailsList[action.payload.index] = action.payload.homeList
+		},
+		addNewCoverSectionTypes(
+			state: HomeDetails,
+			action: PayloadAction<{ NewList: SectionDetails[]; index: number; sectionId: string }>
+		) {
+			if (state.homeDetailsList[action.payload.index]) {
+				state.homeDetailsList[action.payload.index].sectionType = [
+					...state.homeDetailsList[action.payload.index].sectionType.filter(
+						(item) => item.SectionId !== action.payload.sectionId
+					),
+					...action.payload.NewList
+				]
+			}
 		}
 	}
 })
 
-export const { addNewAddress, updateSingleAddressDetails } = homeInsuranceSlice.actions
+export const { addNewAddress, updateSingleAddressDetails, addNewCoverSectionTypes } =
+	homeInsuranceSlice.actions

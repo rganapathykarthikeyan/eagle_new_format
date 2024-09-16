@@ -188,3 +188,24 @@ export const getItemValueResSchema = z.object({
 })
 
 export type getItemValueRes = z.infer<typeof getItemValueResSchema>
+
+export const premiumCalcHomeRequestSchema = z.object({
+	InsuranceId: z.string(),
+	BranchCode: z.string(),
+	AgencyCode: z.string(),
+	SectionId: z.string(),
+	ProductId: z.string(),
+	MSRefNo: z.string(),
+	CdRefNo: z.string(),
+	VdRefNo: z.string(),
+	CreatedBy: z.string(),
+	productId: z.string(),
+	RequestReferenceNo: z.string(),
+	EffectiveDate: z.string(),
+	PolicyEndDate: z.string(),
+	CoverModification: z.string(),
+	VehicleId: z.string(),
+	LocationId: z.string()
+})
+
+export type PremiumCalcHomeRequest = z.infer<typeof premiumCalcHomeRequestSchema>

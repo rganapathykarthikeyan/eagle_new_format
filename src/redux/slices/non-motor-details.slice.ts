@@ -1,14 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: NonMotorDetails = {
-	CoverList: null,
 	RequestReferenceNo: '',
 	CustomerReferenceNo: '',
-	VehicleId: '',
 	MSRefNo: '',
 	CdRefNo: '',
 	VdRefNo: '',
-	DdRefNo: '',
 	Response: '',
 	CreatedBy: '',
 	InsuranceId: '',
@@ -20,14 +17,11 @@ const initialState: NonMotorDetails = {
 }
 
 export type NonMotorDetails = {
-	CoverList: string | null
 	RequestReferenceNo: string
 	CustomerReferenceNo: string
-	VehicleId: string
 	MSRefNo: string
 	CdRefNo: string
 	VdRefNo: string
-	DdRefNo: string
 	Response: string
 	CreatedBy: string
 	InsuranceId: string
@@ -36,19 +30,18 @@ export type NonMotorDetails = {
 	QuoteNo: string
 	CustomerId: string
 	AllCoverList: {
-		CoverList: string | null
 		RequestReferenceNo: string
 		CustomerReferenceNo: string
-		VehicleId: string
 		MSRefNo: string
 		CdRefNo: string
 		VdRefNo: string
-		DdRefNo: string
 		Response: string
 		CreatedBy: string
 		InsuranceId: string
 		ProductId: string
 		SectionId: string
+		RiskId: string
+		LocationId: string
 	}[]
 }
 
@@ -56,17 +49,14 @@ export const nonMotorSlice = createSlice({
 	name: 'nonmotor',
 	initialState: initialState,
 	reducers: {
-		updateDetails(
+		updateHomeDetails(
 			state: NonMotorDetails,
 			action: PayloadAction<{
-				CoverList: string | null
 				RequestReferenceNo: string
 				CustomerReferenceNo: string
-				VehicleId: string
 				MSRefNo: string
 				CdRefNo: string
 				VdRefNo: string
-				DdRefNo: string
 				Response: string
 				CreatedBy: string
 				InsuranceId: string
@@ -75,10 +65,8 @@ export const nonMotorSlice = createSlice({
 			}>
 		) {
 			state.CdRefNo = action.payload.CdRefNo
-			state.CoverList = action.payload.CoverList
 			state.CreatedBy = action.payload.CreatedBy
 			state.CustomerReferenceNo = action.payload.CustomerReferenceNo
-			state.DdRefNo = action.payload.DdRefNo
 			state.InsuranceId = action.payload.InsuranceId
 			state.MSRefNo = action.payload.MSRefNo
 			state.ProductId = action.payload.ProductId
@@ -86,7 +74,6 @@ export const nonMotorSlice = createSlice({
 			state.Response = action.payload.Response
 			state.SectionId = action.payload.SectionId
 			state.VdRefNo = action.payload.VdRefNo
-			state.VehicleId = action.payload.VehicleId
 		},
 		updateQuoteDetails(
 			state: NonMotorDetails,
@@ -95,23 +82,22 @@ export const nonMotorSlice = createSlice({
 			state.QuoteNo = action.payload.QuoteNo
 			state.CustomerId = action.payload.CustomerId
 		},
-		updateCoversList(
+		updateHomeCoversList(
 			state: NonMotorDetails,
 			action: PayloadAction<
 				{
-					CoverList: string | null
 					RequestReferenceNo: string
 					CustomerReferenceNo: string
-					VehicleId: string
 					MSRefNo: string
 					CdRefNo: string
 					VdRefNo: string
-					DdRefNo: string
 					Response: string
 					CreatedBy: string
 					InsuranceId: string
 					ProductId: string
 					SectionId: string
+					RiskId: string
+					LocationId: string
 				}[]
 			>
 		) {
@@ -122,7 +108,6 @@ export const nonMotorSlice = createSlice({
 			state.InsuranceId = action.payload[0].InsuranceId
 			state.ProductId = action.payload[0].ProductId
 			state.SectionId = action.payload[0].SectionId
-			state.VehicleId = action.payload[0].VehicleId
 		},
 		updateCustomerReferenceNumber(state: NonMotorDetails, action: PayloadAction<string>) {
 			state.CustomerReferenceNo = action.payload
@@ -131,8 +116,8 @@ export const nonMotorSlice = createSlice({
 })
 
 export const {
-	updateDetails,
+	updateHomeDetails,
 	updateQuoteDetails,
-	updateCoversList,
+	updateHomeCoversList,
 	updateCustomerReferenceNumber
 } = nonMotorSlice.actions
