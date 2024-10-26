@@ -13,6 +13,7 @@ import {
 	type SaveNonMotorDetailResponse
 } from '@/services/home.services'
 import {
+	type ViewPremiumCalDataResponse,
 	type PremiumCalcDataResponse,
 	type SaveCustomerDetailResponse
 } from '@/services/common.services'
@@ -106,7 +107,7 @@ export const homeApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		viewPremiumHomeCalc: build.mutation<PremiumCalcDataResponse, ViewPremiumCalcRequest>({
+		viewPremiumHomeCalc: build.mutation<ViewPremiumCalDataResponse, ViewPremiumCalcRequest>({
 			query: (
 				data
 			): {

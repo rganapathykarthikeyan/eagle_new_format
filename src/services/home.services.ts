@@ -27,7 +27,7 @@ export async function doGuestLogin() {
 	return api2.post<GuestLogin>(
 		endPoints.guestLogin,
 		{
-			e: 'kjIeGIM/2PWZlQUsLQBGq0uOWULX0QWRTSfk2dEbvBik/KTyszKentir1ZMEPiDD4ccgJA4xIW5Km9gKJ+DaePfMhFOhCteQZlr4nEmudBr4WLnPTSVRyIZGOKfpqZAuvaCx5NSm8uEDOdxNSaxLpukUPBUPDieixZ3VYffdIuN0cz6qjzo2psO40izB/GMs4JlM7vOvIsf8WNjIQZ0ci+DW+D+RTtyDbbytT2aceZaDCgf10qYQF5FCKg77sBFCos88q75Z8DhDyaUntMzQ9AArWpe7G9Npj4Fg0v9gSvOizzyrvlnwOANRthoINszO'
+			e: 'kjIeGIM/2PWZlQUsLQBGq0uOWULX0QWRTSfk2dEbvBik/KTyszKentir1ZMEPiDDIy7dx9ARMZpmWZUTsFG2iODW+D+RTtyDbbytT2aceZakCOSI24Kbx3MkQg+3jdRNk6mPgHBpl5Waa2ZBZee4ek6aKaV3iIkCSiX4SokY0CJ6zIufj0WVPE5emAvchppF7SCL/CG5Dxh6tdzrQarEERmgrtg15T7ShalOk7mhozmUyMy6l1XbCDJVV46ozA96AOuA569DKORabFSO2KznTryiCQ3wwWQc/B9qAfeJizUA64Dnr0Mo5FpsVI7YrOdO1ijSMiMifMU='
 		},
 		GuestLoginSchema
 	)

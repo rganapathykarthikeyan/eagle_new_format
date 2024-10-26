@@ -180,8 +180,7 @@ export const getItemValueResSchema = z.object({
 			CodeDesc: z.string(),
 			Status: z.string(),
 			BodyType: z.string().nullable(),
-			RiskId: z.string().nullable(),
-			CodeDescLocal: z.string()
+			RiskId: z.string().nullable()
 		})
 	),
 	ErroCode: z.number()

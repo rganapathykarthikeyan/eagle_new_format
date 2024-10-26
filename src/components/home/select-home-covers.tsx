@@ -38,6 +38,7 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { FilledDetails } from './filled-details'
 import { BuildingSumInsured } from './building-suminsured'
 import { updateHomeCoversList, updateHomeDetails } from '@/redux/slices/non-motor-details.slice'
+import { useRouter } from 'next/navigation'
 
 export function SelectHomeCovers() {
 	const homeData = useAppSelector((state) => state.homeInsurance)
@@ -56,6 +57,8 @@ export function SelectHomeCovers() {
 	const [openCustomerDialog, setOpenCustomerDialog] = useState<boolean>(false)
 
 	const [cvType, setCVType] = useState<string>('')
+
+	const route = useRouter()
 
 	useEffect(() => {
 		if (homeData.homeDetailsList[current]) {
@@ -332,7 +335,17 @@ export function SelectHomeCovers() {
 			ProductId: appData.productId,
 			RequestReferenceNo: nonMotorData.RequestReferenceNo
 		}
-		viewPremiumCalc(req)
+		const res = viewPremiumCalc(req)
+		res.then((value) => {
+			if (
+				value.data &&
+				value.data.type === 'success' &&
+				value.data.data &&
+				value.data.data.Message === 'Success'
+			) {
+				route.push('/home-insurance/premium')
+			}
+		})
 	}
 
 	function viewPremium() {

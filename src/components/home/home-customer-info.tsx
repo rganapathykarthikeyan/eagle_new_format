@@ -109,7 +109,7 @@ export function HomeCustomerInfo(props: HomeCustomerInfoProps) {
 			VrTinNo: null,
 			Title: '5',
 			Address1: values.city,
-			SaveOrSubmit: 'Submit',
+			SaveOrSubmit: 'Save',
 			Zone: '1'
 		}
 		const res = saveCustomerDetails(request)
