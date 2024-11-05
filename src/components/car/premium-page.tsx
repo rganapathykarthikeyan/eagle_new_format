@@ -24,6 +24,7 @@ import {
 import { Button } from '../ui'
 import { Skeleton } from '../ui/skeleton'
 import { OTPDialogBox } from './otp-dialog-box'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export type CoverList = {
 	CalcType: string
@@ -160,23 +161,23 @@ export function PremiumPage() {
 			SubUserType: appData.subUserType,
 			UserType: appData.userType,
 			ApplicationId: '1', //
-			CustomerReferenceNo: null,
+			CustomerReferenceNo: '',
 			RequestReferenceNo: null,
 			VehicleId: '1',
 			CreatedBy: appData.loginId,
 			InsuranceId: appData.insuranceID,
 			BranchCode: appData.branchCode,
 			BrokerBranchCode: appData.brokerCode,
-			SectionId: ['104', '103'],
+			SectionId: ['103'],
 			AgencyCode: appData.agencyCode,
-			ProductId: appData.productId,
+			ProductId: '5',
 			SavedFrom: 'SQ',
 			MobileCode: customerData.code,
 			MobileNumber: customerData.mobile,
-			Chassisnumber: '',
-			Insurancetype: '104',
-			ClaimType: '11',
-			InsuranceClass: '1',
+			Chassisnumber: vehicleData.chassisNumber,
+			Insurancetype: '103',
+			ClaimType: '0',
+			InsuranceClass: '103',
 			LocationId: '1',
 			Motorusage: vehicleData.vehicleUsage,
 			MotorusageId: vehicleData.vehicleUsageID,
@@ -186,7 +187,8 @@ export function PremiumPage() {
 			VehcilemodelId: vehicleData.modelID,
 			VehicleValueType: null,
 			DefenceValue: null,
-			PurchaseDate: null,
+			SourceType: 'Broker',
+			// PurchaseDate: null,
 			Deductibles: null,
 			Inflation: null,
 			ManufactureYear: vehicleData.year + '',
@@ -194,26 +196,32 @@ export function PremiumPage() {
 			NcdYn: 'N',
 			VehicleType: vehicleData.bodyType,
 			VehicleTypeId: vehicleData.bodyTypeID,
-			CarAlarmYn: 'N',
+			// CarAlarmYn: 'N',
 			PolicyStartDate: vehicleData.policyStartDate,
 			PolicyEndDate: vehicleData.policyEndDate,
 			CustomerCode: appData.CustomerCode,
 			BdmCode: appData.CustomerCode,
 			SourceTypeId: appData.userType,
 			SumInsured: vehicleData.sumInsured !== null ? +vehicleData.sumInsured : 0,
-			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			AcccessoriesSumInsured:
+				vehicleData.AcccessoriesSumInsured !== ''
+					? vehicleData.AcccessoriesSumInsured
+					: null,
 			ExchangeRate: vehicleData.exchangeRate,
 			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
-			SearchFromApi: false,
-			SeatingCapacity: 0, //vehicleData.seat
-			CustomerStatus: 'Y',
+			// SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat + '',
+			// CustomerStatus: 'Y',
 			Status: 'Y',
+			Ncb: '0',
+			InflationSumInsured: '350000',
+			PurchaseDate: null,
 			Windscreencoverrequired: null,
 			WindScreenSumInsured: null,
 			Zone: '1',
-			ZoneCirculation: '',
-			Tareweight: null,
+			ZoneCirculation: null,
+			Tareweight: vehicleData.tareweight,
 			TiraCoverNoteNo: null,
 			TppdFreeLimit: null,
 			TppdIncreaeLimit: null,
@@ -226,41 +234,42 @@ export function PremiumPage() {
 			Scenarios: {
 				ExchangeRateScenario: {
 					OldAcccessoriesSumInsured: null,
-					OldCurrency: 'ZMW',
+					OldCurrency: 'MUR',
 					OldExchangeRate: '1.0',
-					OldSumInsured: 0,
+					OldSumInsured: null,
 					OldTppdIncreaeLimit: null,
 					OldWindScreenSumInsured: null
 				}
 			},
+			SearchFromApi: false,
 			RoofRack: null,
 			RadioOrCasseteplayer: null,
 			RegistrationDate: null,
-			Registrationnumber: null,
-			RegistrationYear: null,
+			Registrationnumber: vehicleData.registrationNumber,
+			RegistrationYear: vehicleData.year + '',
 			PromoCode: null,
 			PolicyType: '1',
 			PreviousInsuranceYN: 'N',
-			PreviousLossRatio: '',
-			PolicyRenewalYn: 'N',
+			PreviousLossRatio: null,
+			PolicyRenewalYn: vehicleData.isRenewal ? 'Y' : 'N',
 			NewValue: null,
 			NoOfClaims: null,
 			NoOfClaimYears: null,
 			NoOfPassengers: null,
 			NoOfVehicles: '1',
-			NumberOfAxels: null,
+			NumberOfAxels: '1',
 			NumberOfCards: null,
 			OrginalPolicyNo: null,
 			OwnerCategory: '1',
-			PaCoverId: '0',
-			periodOfInsurance: 367,
+			PaCoverId: null,
+			periodOfInsurance: null,
 			MunicipalityTraffic: null,
-			Ncb: '0',
+			// Ncb: '0',
 			ModelNumber: null,
-			MotorCategory: '1',
+			MotorCategory: null,
 			MarketValue: null,
 			Mileage: null,
-			InsurancetypeDesc: 'MOTOR private vehicle',
+			InsurancetypeDesc: 'Comprehensive',
 			InsurerSettlement: '',
 			InterestedCompanyDetails: '',
 			IsFinanceEndt: null,
@@ -268,16 +277,57 @@ export function PremiumPage() {
 			LoanEndDate: null,
 			LoanStartDate: null,
 			InsuranceClassDesc: 'Comprehensive',
-			InflationSumInsured: '0',
+			VehicleClass: null,
+			// InflationSumInsured: '0',
 			HoldInsurancePolicy: 'N',
 			HorsePower: '0',
-			Idnumber: null,
-			Grossweight: null,
+			Idnumber: '',
+			Grossweight: vehicleData.grossweight,
 			FirstLossPayee: null,
 			FleetOwnerYn: 'N',
-			FuelType: null,
+			FuelType: vehicleData.fuelType,
 			DrivenByDesc: 'D',
-			DriverDetails: null,
+			DriverDetails: {
+				CityId: '1',
+				CountryId: appData.countryCode,
+				CreatedBy: appData.loginId,
+				Deductibles: null,
+				DefenceValue: '',
+				DriverDob: customerData.dob,
+				DriverExperience: +customerData.driverExperience,
+				DriverName: customerData.name,
+				DriverType: '1',
+				EndorsementDate: null,
+				EndorsementEffectiveDate: null,
+				EndorsementRemarks: null,
+				EndorsementType: null,
+				EndorsementTypeDesc: null,
+				EndorsementYn: 'N',
+				EndtCategoryDesc: null,
+				EndtCount: null,
+				EndtPrevPolicyNo: null,
+				EndtPrevQuoteNo: null,
+				EndtStatus: null,
+				ExcessLimit: null,
+				Gender: customerData.gender,
+				Inflation: '',
+				InsuranceId: appData.insuranceID,
+				IsFinanceEndt: null,
+				LicenseNo: '99999',
+				MaritalStatus: '1',
+				Mileage: null,
+				Ncb: '0',
+				NoOfClaimYears: '2',
+				NoOfPassengers: null,
+				OrginalPolicyNo: null,
+				QuoteNo: null,
+				RegistrationDate: null,
+				RequestReferenceNo: null,
+				RiskId: 1,
+				StateId: '1',
+				SuburbId: '2',
+				VehicleValueType: ''
+			},
 			EndorsementDate: null,
 			EndorsementEffectiveDate: null,
 			EndorsementRemarks: null,
@@ -289,12 +339,12 @@ export function PremiumPage() {
 			EndtPrevPolicyNo: null,
 			EndtPrevQuoteNo: null,
 			EndtStatus: null,
-			EngineNumber: null,
-			ExcessLimit: null,
+			EngineNumber: vehicleData.engineNumber,
+			// ExcessLimit: null,
 			DateOfCirculation: null,
 			CubicCapacity: null,
-			CollateralCompanyAddress: '',
-			CollateralCompanyName: '',
+			CollateralCompanyAddress: null,
+			CollateralCompanyName: null,
 			CollateralName: null,
 			CollateralYn: 'N',
 			Color: null,
@@ -303,13 +353,17 @@ export function PremiumPage() {
 			CityLimit: null,
 			BrokerCode: appData.agencyCode,
 			BorrowerType: null,
-			AxelDistance: 4,
+			AxelDistance: '4',
 			BankingDelegation: '',
-			AggregatedValue: '',
-			AccessoriesInformation: '',
+			AggregatedValue: null,
+			AccessoriesInformation: null,
 			accident: null,
 			AcExecutiveId: null,
-			AdditionalCircumstances: ''
+			AdditionalCircumstances: null,
+			ExcessLimit: null,
+			ClaimRatio: null,
+			Class: null,
+			NoOfComprehensives: null
 		}
 		const res = saveMotor(req)
 		res.then((value) => {
@@ -360,7 +414,7 @@ export function PremiumPage() {
 					BranchCode: appData.branchCode,
 					AgencyCode: appData.agencyCode,
 					SectionId: vehicleData.classID,
-					ProductId: appData.productId,
+					ProductId: motorData.ProductId,
 					MSRefNo: motorData.MSRefNo,
 					VehicleId: motorData.VehicleId,
 					CdRefNo: motorData.CdRefNo,
@@ -371,7 +425,8 @@ export function PremiumPage() {
 					RequestReferenceNo: motorData.RequestReferenceNo,
 					EffectiveDate: vehicleData.policyStartDate,
 					PolicyEndDate: vehicleData.policyEndDate,
-					CoverModification: 'N'
+					CoverModification: 'N',
+					LocationId: '1'
 				}
 				setIsLoading(true)
 				const res = premiumCalculator(req)
@@ -396,7 +451,8 @@ export function PremiumPage() {
 						RequestReferenceNo: cover.RequestReferenceNo,
 						EffectiveDate: vehicleData.policyStartDate,
 						PolicyEndDate: vehicleData.policyEndDate,
-						CoverModification: 'N'
+						CoverModification: 'N',
+						LocationId: '1'
 					}
 					setIsLoading(true)
 					return premiumCalculator(req)
@@ -542,12 +598,20 @@ export function PremiumPage() {
 	return (
 		<>
 			{needUpdatedData ? (
-				<div className='flex h-full w-full items-center justify-center'>
+				<div className='flex h-full w-full flex-col items-center justify-center gap-5'>
+					<ClipLoader color='#000000' />
 					<Button
 						variant='greenbtn'
 						onClick={doSaveMotorDetails}>
 						{isMotorLoading ? 'Loading...' : 'Refresh'}
 					</Button>
+					{/* <Button
+						variant='greenbtn'
+						onClick={() => {
+							route.push('/car-insurance/details/customer-details')
+						}}>
+						Next Page
+					</Button> */}
 				</div>
 			) : (
 				<section className='flex w-full flex-col items-start gap-3 p-4 lg:flex-row'>

@@ -73,6 +73,8 @@ export function OtpForm() {
 		}
 		const res = verifyOTP(request)
 		res.then((value) => {
+			route.push('/car-insurance/details/customer-details')
+
 			if (value.data && value.data.type === 'success' && value.data?.data !== undefined) {
 				if (
 					!value.data.data.isError &&
@@ -101,7 +103,11 @@ export function OtpForm() {
 									.ProductId,
 							subUserType: value.data.data.LoginResponse.Result.SubUserType,
 							token: value.data.data.LoginResponse.Result.Token,
-							userType: value.data.data.LoginResponse.Result.UserType
+							userType: value.data.data.LoginResponse.Result.UserType,
+							countryCode:
+								value.data.data.LoginResponse.Result.CountryId !== null
+									? value.data.data.LoginResponse.Result.CountryId
+									: ''
 						})
 					)
 					route.push('/car-insurance/details/customer-details')

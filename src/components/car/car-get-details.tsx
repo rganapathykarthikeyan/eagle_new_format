@@ -75,7 +75,8 @@ export function CarGetDetails() {
 					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
 					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
 					CustomerCode: value.data.data.Result.CustomerCode,
-					agencyCode: value.data.data.Result.OaCode
+					agencyCode: value.data.data.Result.OaCode,
+					countryCode: value.data.data.Result.CountryId
 				}
 				dispatch(setGuestLoginDetails(details))
 				setToken(value.data.data.Result.Token)
@@ -195,7 +196,7 @@ export function CarGetDetails() {
 				{token !== '' && (
 					<>
 						<div className='flex w-1/4 flex-col items-start gap-10'>
-							<h1 className='font-manrope usageSelectTitle text-center text-3xl font-semibold'>
+							<h1 className='usageSelectTitle text-center font-manrope text-3xl font-semibold'>
 								What is the usage of the vehicle you like to insure?
 							</h1>
 							<div className='usageList flex w-full'>
@@ -257,7 +258,7 @@ export function CarGetDetails() {
 						</div>
 						{value !== '' && (
 							<div className='flex w-1/4 flex-col items-start gap-10'>
-								<h1 className='font-manrope makeTitle text-center text-3xl font-semibold'>
+								<h1 className='makeTitle text-center font-manrope text-3xl font-semibold'>
 									What is the brand of the vehicle you like to insure?
 								</h1>
 								<div className='makeList flex w-full'>

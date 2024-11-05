@@ -43,7 +43,10 @@ export function DetailsPage() {
 	// }
 
 	useEffect(() => {
-		if (vehicleData.mark !== '') {
+		if (
+			(vehicleData.mark !== '' && vehicleData.model !== '' && vehicleData.color !== '',
+			vehicleData.seat !== 0)
+		) {
 			scrollToBottom()
 		}
 	}, [vehicleData, customerName, customerNumber])
@@ -90,7 +93,8 @@ export function DetailsPage() {
 					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
 					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
 					CustomerCode: value.data.data.Result.CustomerCode,
-					agencyCode: value.data.data.Result.OaCode
+					agencyCode: value.data.data.Result.OaCode,
+					countryCode: value.data.data.Result.CountryId
 				}
 				dispatch(setGuestLoginDetails(details))
 				setToken(value.data.data.Result.Token)

@@ -76,7 +76,8 @@ export function SelectLocation() {
 					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
 					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
 					CustomerCode: value.data.data.Result.CustomerCode,
-					agencyCode: value.data.data.Result.OaCode
+					agencyCode: value.data.data.Result.OaCode,
+					countryCode: value.data.data.Result.CountryId
 				}
 
 				dispatch(setGuestLoginDetails(details))

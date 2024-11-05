@@ -41,7 +41,9 @@ const initialState: CarDetails = {
 	fuelType: '',
 	fuelTypeID: '',
 	horsepower: '',
-	tonnage: ''
+	tonnage: '',
+	tareweight: '',
+	grossweight: ''
 }
 
 export type CarDetails = {
@@ -85,6 +87,8 @@ export type CarDetails = {
 	fuelTypeID: string
 	horsepower: string
 	tonnage: string
+	tareweight: string
+	grossweight: string
 }
 
 export const carInsuranceSlice = createSlice({
@@ -270,11 +274,31 @@ export const carInsuranceSlice = createSlice({
 				suminsured: string
 				isRenewal: boolean
 				manufactureyear: string
+				registrationNumber: string
+				chassisNumber: string
+				engineNumber: string
+				engineCapacity: string
+				color: string
+				tareweight: string
+				grossweight: string
+				seat: string
+				fueltype: string
+				classId: string
 			}>
 		) {
 			state.sumInsured = action.payload.suminsured
 			state.isRenewal = action.payload.isRenewal
 			state.year = +action.payload.manufactureyear
+			state.registrationNumber = action.payload.registrationNumber
+			state.chassisNumber = action.payload.chassisNumber
+			state.engineNumber = action.payload.engineNumber
+			state.engineCapacity = action.payload.engineCapacity
+			state.color = action.payload.color
+			state.tareweight = action.payload.tareweight
+			state.grossweight = action.payload.grossweight
+			state.seat = +action.payload.seat
+			state.fuelType = action.payload.fueltype
+			state.classID = action.payload.classId
 		},
 		updateVehicleValues(
 			state: CarDetails,

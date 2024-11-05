@@ -14,7 +14,8 @@ const initialState: AppDetails = {
 	subUserType: '',
 	agencyCode: '',
 	covers: [],
-	selectedCovers: []
+	selectedCovers: [],
+	countryCode: ''
 }
 
 export type AppDetails = {
@@ -30,6 +31,7 @@ export type AppDetails = {
 	userType: string
 	subUserType: string
 	agencyCode: string
+	countryCode: string
 	covers: {
 		CoverId: string
 		SubCoverId: string | null
@@ -62,6 +64,7 @@ export const appSlice = createSlice({
 				userType: string
 				subUserType: string
 				agencyCode: string
+				countryCode: string
 			}>
 		) {
 			state.token = action.payload.token
@@ -74,6 +77,7 @@ export const appSlice = createSlice({
 			state.userType = action.payload.userType
 			state.subUserType = action.payload.subUserType
 			state.agencyCode = action.payload.agencyCode
+			state.countryCode = action.payload.countryCode
 		},
 		setOTPToken(state: AppDetails, action: PayloadAction<number>) {
 			state.otpToken = action.payload

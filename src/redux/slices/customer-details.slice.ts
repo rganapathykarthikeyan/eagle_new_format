@@ -24,7 +24,8 @@ const initialState: CustomerDetails = {
 	isResident: true,
 	idType: 1,
 	country: '',
-	district: ''
+	district: '',
+	driverExperience: ''
 }
 
 export type CustomerDetails = {
@@ -52,6 +53,7 @@ export type CustomerDetails = {
 	idType: number
 	country: string
 	district: string
+	driverExperience: string
 }
 
 export const customerDetailsSlice = createSlice({
@@ -75,10 +77,19 @@ export const customerDetailsSlice = createSlice({
 		},
 		updateCustomerDetails(
 			state: CustomerDetails,
-			action: PayloadAction<{ name: string; mobile: string }>
+			action: PayloadAction<{
+				name: string
+				mobile: string
+				dob: string
+				gender: string
+				driverExperience: string
+			}>
 		) {
 			state.name = action.payload.name
 			state.mobile = action.payload.mobile
+			state.dob = action.payload.dob
+			state.gender = action.payload.gender
+			state.driverExperience = action.payload.driverExperience
 		},
 		updatePersonalDetails(
 			state: CustomerDetails,

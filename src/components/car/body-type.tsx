@@ -11,13 +11,22 @@ import { type UseFormReturn } from 'react-hook-form'
 type bodyTypeProps = {
 	form: UseFormReturn<
 		{
-			motorUsage: string
-			bodyType: string
-			make: string
 			model: string
+			bodyType: string
+			engineCapacity: string
+			isRenewal: boolean
+			fuelType: string
+			regNo: string
+			chassisNo: string
+			engineNo: string
+			tareweight: string
+			motorUsage: string
+			make: string
 			manufactureyear: string
 			suminsured: string
-			isRenewal: boolean
+			grossweight: string
+			color: string
+			seats: string
 		},
 		unknown,
 		undefined

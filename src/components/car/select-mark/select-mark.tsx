@@ -18,6 +18,15 @@ type selectMarkProps = {
 			manufactureyear: string
 			suminsured: string
 			isRenewal: boolean
+			regNo: string
+			chassisNo: string
+			engineNo: string
+			engineCapacity: string
+			color: string
+			fuelType: string
+			tareweight: string
+			grossweight: string
+			seats: string
 		},
 		unknown,
 		undefined

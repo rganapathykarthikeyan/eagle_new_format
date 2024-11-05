@@ -4,7 +4,18 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
-import { Button, Input } from '../ui'
+import {
+	Button,
+	Input,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from '../ui'
 // import { OtherOptions } from './other-options'
 
 import ClipLoader from 'react-spinners/ClipLoader'
@@ -25,10 +36,17 @@ import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { cn, formatDateDDMMYYYY } from '@/lib'
+import { CalendarDays } from 'lucide-react'
+import { Calendar } from '../ui/calendar'
+import { format } from 'date-fns'
 
 const customerInfoSchema = z.object({
 	name: z.string().min(3, { message: 'name should be atleast 3 characters' }).max(50),
-	mobile: z.string().min(9, { message: 'Enter valid number' })
+	mobile: z.string().min(9, { message: 'Enter valid number' }),
+	gender: z.string().min(1, { message: 'Required' }),
+	dob: z.date(),
+	driverExperience: z.string()
 })
 
 type CustomerInfoProps = {
@@ -47,6 +65,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 
 	const { toast } = useToast()
 
+	const years18 = new Date()
+
+	years18.setFullYear(years18.getFullYear() - 18)
+
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5 })
 		// gsap.to('.CustomerInfotitle', { duration: 0.5, text: 'Personal Details' })
@@ -63,12 +85,22 @@ export function CustomerInfo(props: CustomerInfoProps) {
 		resolver: zodResolver(customerInfoSchema),
 		defaultValues: {
 			name: customerData.name,
-			mobile: customerData.mobile
+			mobile: customerData.mobile,
+			driverExperience: customerData.driverExperience,
+			gender: customerData.gender
 		}
 	})
 
 	function onSubmit(values: z.infer<typeof customerInfoSchema>) {
-		dispatch(updateCustomerDetails({ name: values.name, mobile: values.mobile + '' }))
+		dispatch(
+			updateCustomerDetails({
+				name: values.name,
+				mobile: values.mobile + '',
+				dob: formatDateDDMMYYYY(values.dob),
+				driverExperience: values.driverExperience,
+				gender: values.gender
+			})
+		)
 		setIsSubmitted(true)
 		goToConfirm(values)
 		props.goNext()
@@ -86,23 +118,23 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			SubUserType: appData.subUserType,
 			UserType: appData.userType,
 			ApplicationId: '1', //
-			CustomerReferenceNo: null,
+			CustomerReferenceNo: '',
 			RequestReferenceNo: null,
 			VehicleId: '1',
 			CreatedBy: appData.loginId,
 			InsuranceId: appData.insuranceID,
 			BranchCode: appData.branchCode,
 			BrokerBranchCode: appData.brokerCode,
-			SectionId: ['104', '103'],
+			SectionId: ['103'],
 			AgencyCode: appData.agencyCode,
-			ProductId: appData.productId,
+			ProductId: '5',
 			SavedFrom: 'SQ',
 			MobileCode: customerData.code,
 			MobileNumber: values.mobile,
-			Chassisnumber: '',
-			Insurancetype: '104',
-			ClaimType: '11',
-			InsuranceClass: '1',
+			Chassisnumber: vehicleData.chassisNumber,
+			Insurancetype: '103',
+			ClaimType: '0',
+			InsuranceClass: '103',
 			LocationId: '1',
 			Motorusage: vehicleData.vehicleUsage,
 			MotorusageId: vehicleData.vehicleUsageID,
@@ -112,7 +144,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			VehcilemodelId: vehicleData.modelID,
 			VehicleValueType: null,
 			DefenceValue: null,
-			PurchaseDate: null,
+			SourceType: 'Broker',
+			// PurchaseDate: null,
 			Deductibles: null,
 			Inflation: null,
 			ManufactureYear: vehicleData.year + '',
@@ -120,26 +153,32 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			NcdYn: 'N',
 			VehicleType: vehicleData.bodyType,
 			VehicleTypeId: vehicleData.bodyTypeID,
-			CarAlarmYn: 'N',
+			// CarAlarmYn: 'N',
 			PolicyStartDate: vehicleData.policyStartDate,
 			PolicyEndDate: vehicleData.policyEndDate,
 			CustomerCode: appData.CustomerCode,
 			BdmCode: appData.CustomerCode,
 			SourceTypeId: appData.userType,
 			SumInsured: vehicleData.sumInsured !== null ? +vehicleData.sumInsured : 0,
-			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			AcccessoriesSumInsured:
+				vehicleData.AcccessoriesSumInsured !== ''
+					? vehicleData.AcccessoriesSumInsured
+					: null,
 			ExchangeRate: vehicleData.exchangeRate,
 			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
-			SearchFromApi: false,
-			SeatingCapacity: 0, //vehicleData.seat
-			CustomerStatus: 'Y',
+			// SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat + '',
+			// CustomerStatus: 'Y',
 			Status: 'Y',
+			Ncb: '0',
+			InflationSumInsured: '350000',
+			PurchaseDate: null,
 			Windscreencoverrequired: null,
 			WindScreenSumInsured: null,
 			Zone: '1',
-			ZoneCirculation: '',
-			Tareweight: null,
+			ZoneCirculation: null,
+			Tareweight: vehicleData.tareweight,
 			TiraCoverNoteNo: null,
 			TppdFreeLimit: null,
 			TppdIncreaeLimit: null,
@@ -152,41 +191,42 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			Scenarios: {
 				ExchangeRateScenario: {
 					OldAcccessoriesSumInsured: null,
-					OldCurrency: 'ZMW',
+					OldCurrency: 'MUR',
 					OldExchangeRate: '1.0',
-					OldSumInsured: 0,
+					OldSumInsured: null,
 					OldTppdIncreaeLimit: null,
 					OldWindScreenSumInsured: null
 				}
 			},
+			SearchFromApi: false,
 			RoofRack: null,
 			RadioOrCasseteplayer: null,
 			RegistrationDate: null,
-			Registrationnumber: null,
-			RegistrationYear: null,
+			Registrationnumber: vehicleData.registrationNumber,
+			RegistrationYear: vehicleData.year + '',
 			PromoCode: null,
 			PolicyType: '1',
 			PreviousInsuranceYN: 'N',
-			PreviousLossRatio: '',
-			PolicyRenewalYn: 'N',
+			PreviousLossRatio: null,
+			PolicyRenewalYn: vehicleData.isRenewal ? 'Y' : 'N',
 			NewValue: null,
 			NoOfClaims: null,
 			NoOfClaimYears: null,
 			NoOfPassengers: null,
 			NoOfVehicles: '1',
-			NumberOfAxels: null,
+			NumberOfAxels: '1',
 			NumberOfCards: null,
 			OrginalPolicyNo: null,
 			OwnerCategory: '1',
-			PaCoverId: '0',
-			periodOfInsurance: 367,
+			PaCoverId: null,
+			periodOfInsurance: null,
 			MunicipalityTraffic: null,
-			Ncb: '0',
+			// Ncb: '0',
 			ModelNumber: null,
-			MotorCategory: '1',
+			MotorCategory: null,
 			MarketValue: null,
 			Mileage: null,
-			InsurancetypeDesc: 'MOTOR private vehicle',
+			InsurancetypeDesc: 'Comprehensive',
 			InsurerSettlement: '',
 			InterestedCompanyDetails: '',
 			IsFinanceEndt: null,
@@ -194,16 +234,57 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			LoanEndDate: null,
 			LoanStartDate: null,
 			InsuranceClassDesc: 'Comprehensive',
-			InflationSumInsured: '0',
+			VehicleClass: null,
+			// InflationSumInsured: '0',
 			HoldInsurancePolicy: 'N',
 			HorsePower: '0',
-			Idnumber: null,
-			Grossweight: null,
+			Idnumber: '',
+			Grossweight: vehicleData.grossweight,
 			FirstLossPayee: null,
 			FleetOwnerYn: 'N',
-			FuelType: null,
+			FuelType: vehicleData.fuelType,
 			DrivenByDesc: 'D',
-			DriverDetails: null,
+			DriverDetails: {
+				CityId: '1',
+				CountryId: appData.countryCode,
+				CreatedBy: appData.loginId,
+				Deductibles: null,
+				DefenceValue: '',
+				DriverDob: formatDateDDMMYYYY(values.dob),
+				DriverExperience: +values.driverExperience,
+				DriverName: values.name,
+				DriverType: '1',
+				EndorsementDate: null,
+				EndorsementEffectiveDate: null,
+				EndorsementRemarks: null,
+				EndorsementType: null,
+				EndorsementTypeDesc: null,
+				EndorsementYn: 'N',
+				EndtCategoryDesc: null,
+				EndtCount: null,
+				EndtPrevPolicyNo: null,
+				EndtPrevQuoteNo: null,
+				EndtStatus: null,
+				ExcessLimit: null,
+				Gender: values.gender,
+				Inflation: '',
+				InsuranceId: appData.insuranceID,
+				IsFinanceEndt: null,
+				LicenseNo: '99999',
+				MaritalStatus: '1',
+				Mileage: null,
+				Ncb: '0',
+				NoOfClaimYears: '2',
+				NoOfPassengers: null,
+				OrginalPolicyNo: null,
+				QuoteNo: null,
+				RegistrationDate: null,
+				RequestReferenceNo: null,
+				RiskId: 1,
+				StateId: '1',
+				SuburbId: '2',
+				VehicleValueType: ''
+			},
 			EndorsementDate: null,
 			EndorsementEffectiveDate: null,
 			EndorsementRemarks: null,
@@ -215,12 +296,12 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			EndtPrevPolicyNo: null,
 			EndtPrevQuoteNo: null,
 			EndtStatus: null,
-			EngineNumber: null,
-			ExcessLimit: null,
+			EngineNumber: vehicleData.engineNumber,
+			// ExcessLimit: null,
 			DateOfCirculation: null,
-			CubicCapacity: null,
-			CollateralCompanyAddress: '',
-			CollateralCompanyName: '',
+			CubicCapacity: vehicleData.engineCapacity,
+			CollateralCompanyAddress: null,
+			CollateralCompanyName: null,
 			CollateralName: null,
 			CollateralYn: 'N',
 			Color: null,
@@ -229,13 +310,17 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			CityLimit: null,
 			BrokerCode: appData.agencyCode,
 			BorrowerType: null,
-			AxelDistance: 4,
+			AxelDistance: '4',
 			BankingDelegation: '',
-			AggregatedValue: '',
-			AccessoriesInformation: '',
+			AggregatedValue: null,
+			AccessoriesInformation: null,
 			accident: null,
 			AcExecutiveId: null,
-			AdditionalCircumstances: ''
+			AdditionalCircumstances: null,
+			ExcessLimit: null,
+			ClaimRatio: null,
+			Class: null,
+			NoOfComprehensives: null
 		}
 		const res = saveMotor(req)
 		res.then((value) => {
@@ -273,6 +358,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 					title: 'Uh oh! Something went wrong.',
 					description: 'There was a problem with your request.'
 				})
+				setIsLoading(false)
+				setIsSubmitted(false)
 			}
 		})
 	}
@@ -305,7 +392,9 @@ export function CustomerInfo(props: CustomerInfoProps) {
 								name='name'
 								render={({ field }) => (
 									<FormItem className='w-full'>
-										<FormLabel className='text-blue-825'>Full Name</FormLabel>
+										<FormLabel className='text-blue-825'>
+											Customer Name
+										</FormLabel>
 										<FormControl>
 											<Input
 												{...field}
@@ -376,16 +465,140 @@ export function CustomerInfo(props: CustomerInfoProps) {
 									</FormItem>
 								)}
 							/>
-							{/* <Input
-								placeholder='Mobile Number'
-								type='number'
-								value={customerData.mobile}
-								onChange={(e) => {
-									if (e.target.value.length < 9) {
-										dispatch(updateMobile(e.target.value))
-									}
-								}}
-							/> */}
+						</div>
+						<div className='selectCustomerInfo flex w-full flex-row gap-6'>
+							<FormField
+								control={form.control}
+								name='gender'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Gender<span className='text-red-500'>*</span>
+										</FormLabel>
+										<FormControl>
+											<Select
+												disabled={field.disabled}
+												name={field.name}
+												value={field.value}
+												onValueChange={(e) => {
+													field.onChange(e)
+												}}>
+												<SelectTrigger
+													ref={field.ref}
+													className='border-gray-360 border shadow-inputShadowDrop'>
+													<SelectValue placeholder='Gender' />
+												</SelectTrigger>
+												<SelectContent>
+													<SelectItem
+														key={1}
+														value='M'>
+														Male
+													</SelectItem>
+													<SelectItem
+														key={2}
+														value='F'>
+														Female
+													</SelectItem>
+												</SelectContent>
+											</Select>
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='dob'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Date of Birth
+											<span className='text-red-500'>*</span>
+										</FormLabel>
+										<Popover>
+											<PopoverTrigger
+												asChild
+												className='w-full'>
+												<FormControl>
+													<Button
+														id='start'
+														variant='outline'
+														className={cn(
+															'border-gray-360 w-full border pl-3 text-left font-normal text-black shadow-inputShadowDrop',
+															!field.value && 'text-muted-foreground'
+														)}>
+														{field.value ? (
+															format(field.value, 'PPP')
+														) : (
+															<span>Pick a date</span>
+														)}
+														<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent
+												align='start'
+												className='w-auto p-0'>
+												<>
+													<Calendar
+														initialFocus
+														captionLayout='dropdown-buttons'
+														className='p-0'
+														fromYear={1900}
+														id='DOB'
+														mode='single'
+														selected={field.value}
+														toMonth={years18}
+														toYear={years18.getFullYear()}
+														classNames={{
+															day_hidden: 'invisible',
+															dropdown:
+																'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+															caption_dropdowns: 'flex gap-3',
+															vhidden: 'hidden',
+															caption_label: 'hidden'
+														}}
+														disabled={(date) =>
+															date > years18 ||
+															date < new Date('1900-01-01')
+														}
+														onSelect={(e) => {
+															field.onChange(e)
+														}}
+													/>
+												</>
+											</PopoverContent>
+										</Popover>
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectCustomerInfo flex flex-row gap-6'>
+							<FormField
+								control={form.control}
+								name='driverExperience'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Driver Experience
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='driverExperience'
+												placeholder='Enter Driver Experience'
+												type='number'
+												onChange={(e) => {
+													if (e.target.value.length < 3) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 						</div>
 						<div className='flex w-full items-center justify-center'>
 							{!isSubmitted && (

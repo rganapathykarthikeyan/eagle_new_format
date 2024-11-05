@@ -15,6 +15,8 @@ import { SelectModel } from './select-model'
 import { VehicleUsage } from './vehicle-usage'
 import { TextPlugin } from 'gsap/all'
 import { BodyType } from './body-type'
+import { SelectColor } from './select-color'
+import { SelectFuel } from './select-fuel'
 
 const vehicleBaseSchema = z.object({
 	motorUsage: z.string().min(1, { message: 'Required' }),
@@ -24,7 +26,22 @@ const vehicleBaseSchema = z.object({
 	manufactureyear: z.string().min(4, { message: 'Required' }),
 	suminsured: z.string().min(4, { message: 'Minimum 1000' }),
 	// purchasedYear: z.string().min(4, { message: 'Required' }),
-	isRenewal: z.boolean()
+	isRenewal: z.boolean(),
+	regNo: z.string().min(1, {
+		message: 'Registration Number is Required'
+	}),
+	chassisNo: z.string().min(2, {
+		message: 'Please enter Chassis number'
+	}),
+	engineNo: z.string().min(2, {
+		message: 'Please enter Engine Number'
+	}),
+	engineCapacity: z.string(),
+	color: z.string().min(1, { message: 'Required' }),
+	fuelType: z.string().min(1, { message: 'Required' }),
+	tareweight: z.string().min(1, { message: 'Required' }),
+	grossweight: z.string().min(1, { message: 'Required' }),
+	seats: z.string().min(1, { message: 'Required' })
 })
 gsap.registerPlugin(TextPlugin)
 
@@ -67,7 +84,16 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 			model: vehicleData.modelID,
 			manufactureyear: vehicleData.year === 0 ? '' : vehicleData.year + '',
 			isRenewal: vehicleData.isRenewal,
-			suminsured: vehicleData.sumInsured !== null ? vehicleData.sumInsured : ''
+			suminsured: vehicleData.sumInsured !== null ? vehicleData.sumInsured : '',
+			chassisNo: vehicleData.chassisNumber,
+			color: vehicleData.color,
+			engineCapacity: vehicleData.engineCapacity,
+			engineNo: vehicleData.engineNumber,
+			fuelType: vehicleData.fuelType,
+			grossweight: vehicleData.grossweight,
+			regNo: vehicleData.registrationNumber,
+			seats: vehicleData.seat + '',
+			tareweight: vehicleData.tareweight
 		}
 	})
 
@@ -76,7 +102,17 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 			updateVehicleBasicInfo({
 				suminsured: values.suminsured,
 				isRenewal: values.isRenewal,
-				manufactureyear: values.manufactureyear
+				manufactureyear: values.manufactureyear,
+				chassisNumber: values.chassisNo,
+				color: values.color,
+				engineCapacity: values.engineCapacity,
+				engineNumber: values.engineNo,
+				grossweight: values.grossweight,
+				registrationNumber: values.regNo,
+				seat: values.seats,
+				tareweight: values.tareweight,
+				fueltype: values.fuelType,
+				classId: '103'
 			})
 		)
 		setIsSubmitted(true)
@@ -125,46 +161,6 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
 							/>
-							{/* <FormField
-								control={form.control}
-								name='bodyType'
-								render={({ field }) => (
-									<FormItem className='w-full'>
-										<FormLabel className='text-blue-825'>Body Type</FormLabel>
-										<FormControl>
-											<Select
-												disabled={field.disabled}
-												name={field.name}
-												value={field.value}
-												onValueChange={(e) => {
-													field.onChange(e)
-
-													if (isSubmitted) {
-														setIsSubmitted(false)
-													}
-												}}>
-												<SelectTrigger
-													ref={field.ref}
-													className='border border-gray-360 shadow-inputShadowDrop'>
-													<SelectValue placeholder='Select Body Type' />
-												</SelectTrigger>
-												<SelectContent>
-													{bodyTypes.map((bodyType, index) => {
-														return (
-															<SelectItem
-																key={index}
-																value={bodyType.id}>
-																{bodyType.name}
-															</SelectItem>
-														)
-													})}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/> */}
 						</div>
 
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
@@ -238,6 +234,203 @@ export function VehcileBaseInfo(props: VehcileBaseInfoProps) {
 							/>
 						</div>
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<SelectColor
+								form={form}
+								setSubmittedStatus={setSubmittedStatus}
+							/>
+							<FormField
+								control={form.control}
+								name='regNo'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Registration Number
+											<span className='text-red-500'>*</span>
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='regNo'
+												placeholder='Registration Number'
+												onChange={(e) => {
+													if (e.target.value.length < 20) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<FormField
+								control={form.control}
+								name='chassisNo'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Chassis number
+											<span className='text-red-500'>*</span>
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='chassisNo'
+												placeholder='Enter Chassis number'
+												onChange={(e) => {
+													if (e.target.value.length < 20) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='engineNo'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Engine Number<span className='text-red-500'>*</span>
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='engineNo'
+												placeholder='Enter Engine Number'
+												onChange={(e) => {
+													if (e.target.value.length < 20) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<FormField
+								control={form.control}
+								name='engineCapacity'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Engine Capacity
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='engineCapacity'
+												placeholder='Enter Engine Capacity'
+												type='number'
+												onChange={(e) => {
+													if (e.target.value.length < 6) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='tareweight'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Tare Weight (kg)
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='tareweight'
+												placeholder='Enter Tare Weight (kg)'
+												type='number'
+												onChange={(e) => {
+													if (e.target.value.length < 6) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<FormField
+								control={form.control}
+								name='grossweight'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Gross Weight (kg)
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='grossweight'
+												placeholder='Enter Tare Weight (kg)'
+												type='number'
+												onChange={(e) => {
+													if (e.target.value.length < 6) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='seats'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-825'>
+											Seat Capacity
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='seats'
+												placeholder='Enter Seat Capacity'
+												type='number'
+												onChange={(e) => {
+													if (e.target.value.length < 6) {
+														field.onChange(e)
+													}
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<SelectFuel
+								form={form}
+								setSubmittedStatus={setSubmittedStatus}
+							/>
 							<FormField
 								control={form.control}
 								name='isRenewal'
