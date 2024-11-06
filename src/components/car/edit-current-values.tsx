@@ -31,7 +31,7 @@ export function EditCurrentValues() {
 				</div>
 			</Button>
 			{isEditMode ? (
-				<div className='flex w-full flex-col gap-8 rounded-xl px-4 py-8 shadow-containerShadow1'>
+				<div className='flex max-h-[80svh] w-full flex-col gap-8 overflow-y-scroll rounded-xl px-4 py-8 shadow-containerShadow1'>
 					<EditContents exitEdit={exitEditMode} />
 				</div>
 			) : (

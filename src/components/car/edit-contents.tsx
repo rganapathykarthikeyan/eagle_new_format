@@ -10,6 +10,9 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { updateVehicleBasicInfo } from '@/redux/slices'
+import { SelectFuel } from './select-fuel'
+import { SelectColor } from './select-color'
+import { cn } from '@/lib'
 
 type EditContentsProps = {
 	exitEdit: () => void
@@ -22,12 +25,30 @@ const vehicleBaseSchema = z.object({
 	model: z.string().min(1, { message: 'Required' }),
 	manufactureyear: z.string().min(4, { message: 'Required' }),
 	suminsured: z.string().min(4, { message: 'Minimum 1000' }),
-	isRenewal: z.boolean()
+	// purchasedYear: z.string().min(4, { message: 'Required' }),
+	isRenewal: z.boolean(),
+	regNo: z.string().min(1, {
+		message: 'Registration Number is Required'
+	}),
+	chassisNo: z.string().min(2, {
+		message: 'Please enter Chassis number'
+	}),
+	engineNo: z.string().min(2, {
+		message: 'Please enter Engine Number'
+	}),
+	engineCapacity: z.string(),
+	color: z.string().min(1, { message: 'Required' }),
+	fuelType: z.string().min(1, { message: 'Required' }),
+	tareweight: z.string().min(1, { message: 'Required' }),
+	grossweight: z.string().min(1, { message: 'Required' }),
+	seats: z.string().min(1, { message: 'Required' })
 })
 
 export function EditContents(props: EditContentsProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+
+	const [formattedValue, setFormattedValue] = useState<string>(vehicleData.value.toLocaleString())
 
 	const dispatch = useAppDispatch()
 
@@ -46,9 +67,18 @@ export function EditContents(props: EditContentsProps) {
 			bodyType: vehicleData.bodyTypeID,
 			make: vehicleData.makeID,
 			model: vehicleData.modelID,
-			manufactureyear: vehicleData.year + '',
+			manufactureyear: vehicleData.year === 0 ? '' : vehicleData.year + '',
 			isRenewal: vehicleData.isRenewal,
-			suminsured: vehicleData.sumInsured !== null ? vehicleData.sumInsured : ''
+			suminsured: vehicleData.sumInsured !== null ? vehicleData.sumInsured : '',
+			chassisNo: vehicleData.chassisNumber,
+			color: vehicleData.color,
+			engineCapacity: vehicleData.engineCapacity,
+			engineNo: vehicleData.engineNumber,
+			fuelType: vehicleData.fuelType,
+			grossweight: vehicleData.grossweight,
+			regNo: vehicleData.registrationNumber,
+			seats: vehicleData.seat + '',
+			tareweight: vehicleData.tareweight
 		}
 	})
 
@@ -56,8 +86,18 @@ export function EditContents(props: EditContentsProps) {
 		dispatch(
 			updateVehicleBasicInfo({
 				suminsured: values.suminsured,
-				isRenewal: vehicleData.isRenewal,
-				manufactureyear: values.manufactureyear
+				isRenewal: values.isRenewal,
+				manufactureyear: values.manufactureyear,
+				chassisNumber: values.chassisNo,
+				color: values.color,
+				engineCapacity: values.engineCapacity,
+				engineNumber: values.engineNo,
+				grossweight: values.grossweight,
+				registrationNumber: values.regNo,
+				seat: values.seats,
+				tareweight: values.tareweight,
+				fueltype: values.fuelType,
+				classId: '103'
 			})
 		)
 		setIsSubmitted(true)
@@ -75,7 +115,7 @@ export function EditContents(props: EditContentsProps) {
 			<form
 				className='space-y-8'
 				onSubmit={form.handleSubmit(onSubmit)}>
-				<div className='selectVehicleBaseInfo flex flex-col gap-5'>
+				<section className='flex flex-col gap-2'>
 					<BodyType
 						form={form}
 						setSubmittedStatus={setSubmittedStatus}
@@ -84,8 +124,7 @@ export function EditContents(props: EditContentsProps) {
 						form={form}
 						setSubmittedStatus={setSubmittedStatus}
 					/>
-				</div>
-				<div className='selectVehicleBaseInfo flex flex-col gap-5'>
+
 					<SelectModel
 						form={form}
 						setSubmittedStatus={setSubmittedStatus}
@@ -94,9 +133,7 @@ export function EditContents(props: EditContentsProps) {
 						form={form}
 						setSubmittedStatus={setSubmittedStatus}
 					/>
-				</div>
 
-				<div className='selectVehicleBaseInfo flex flex-col gap-5'>
 					<FormField
 						control={form.control}
 						name='manufactureyear'
@@ -147,10 +184,14 @@ export function EditContents(props: EditContentsProps) {
 									<Input
 										className='border-gray-360 border shadow-inputShadowDrop'
 										placeholder='Sum Insured'
-										type='number'
-										value={field.value}
+										value={formattedValue}
 										onChange={(e) => {
-											field.onChange(e)
+											let inputValue = e.target.value
+											inputValue = inputValue.replace(/[^0-9]/g, '')
+											const numericValue = Number(inputValue)
+											const formattedValue = numericValue.toLocaleString()
+											field.onChange(numericValue + '')
+											setFormattedValue(formattedValue)
 										}}
 									/>
 								</FormControl>
@@ -158,16 +199,252 @@ export function EditContents(props: EditContentsProps) {
 							</FormItem>
 						)}
 					/>
-				</div>
-				<div className='flex w-full items-center justify-center pt-10'>
-					{!isSubmitted && (
-						<Button
-							className='w-full rounded-3xl'
-							variant='greenbtn'>
-							Save & View Premium
-						</Button>
-					)}
-				</div>
+
+					<SelectColor
+						form={form}
+						setSubmittedStatus={setSubmittedStatus}
+					/>
+					<FormField
+						control={form.control}
+						name='regNo'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>
+									Registration Number
+									<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='regNo'
+										placeholder='Registration Number'
+										onChange={(e) => {
+											if (e.target.value.length < 20) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name='chassisNo'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>
+									Chassis number
+									<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='chassisNo'
+										placeholder='Enter Chassis number'
+										onChange={(e) => {
+											if (e.target.value.length < 20) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='engineNo'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>
+									Engine Number<span className='text-red-500'>*</span>
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='engineNo'
+										placeholder='Enter Engine Number'
+										onChange={(e) => {
+											if (e.target.value.length < 20) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name='engineCapacity'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>Engine Capacity</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='engineCapacity'
+										placeholder='Enter Engine Capacity'
+										type='number'
+										onChange={(e) => {
+											if (e.target.value.length < 6) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='tareweight'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>Tare Weight (kg)</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='tareweight'
+										placeholder='Enter Tare Weight (kg)'
+										type='number'
+										onChange={(e) => {
+											if (e.target.value.length < 6) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name='grossweight'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>Gross Weight (kg)</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='grossweight'
+										placeholder='Enter Tare Weight (kg)'
+										type='number'
+										onChange={(e) => {
+											if (e.target.value.length < 6) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='seats'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>Seat Capacity</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className='border-gray-360 border shadow-inputShadowDrop'
+										id='seats'
+										placeholder='Enter Seat Capacity'
+										type='number'
+										onChange={(e) => {
+											if (e.target.value.length < 6) {
+												field.onChange(e)
+											}
+										}}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<SelectFuel
+						form={form}
+						setSubmittedStatus={setSubmittedStatus}
+					/>
+					<FormField
+						control={form.control}
+						name='isRenewal'
+						render={({ field }) => (
+							<FormItem className='w-full'>
+								<FormLabel className='text-blue-825'>
+									Renew your Existing Policy
+								</FormLabel>
+								<FormControl>
+									<div className='selectDriver flex flex-row gap-5'>
+										<div
+											className={cn(
+												'cursor-pointer rounded-3xl border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+												{
+													'border-none bg-green-600 text-white':
+														field.value === true
+												}
+											)}
+											onClick={() => {
+												field.onChange(true)
+
+												if (isSubmitted) {
+													setIsSubmitted(false)
+												}
+											}}>
+											Yes
+										</div>
+										<div
+											className={cn(
+												'cursor-pointer rounded-3xl border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+												{
+													'border-none bg-green-600 text-white':
+														field.value === false
+												}
+											)}
+											onClick={() => {
+												field.onChange(false)
+
+												if (isSubmitted) {
+													setIsSubmitted(false)
+												}
+											}}>
+											No
+										</div>
+									</div>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+
+					<div className='flex w-full items-center justify-center pt-10'>
+						{!isSubmitted && (
+							<Button
+								className='rounded-3xl px-32 py-5'
+								variant='greenbtn'>
+								Continue
+							</Button>
+						)}
+					</div>
+				</section>
 			</form>
 		</Form>
 	)

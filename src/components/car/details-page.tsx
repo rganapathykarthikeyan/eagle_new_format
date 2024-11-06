@@ -83,6 +83,9 @@ export function DetailsPage() {
 		const res = guestLogin()
 		res.then((value) => {
 			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				const pos = value.data.data.Result.BrokerCompanyProducts.findIndex(
+					(item) => item.ProductName === 'Motor '
+				)
 				const details = {
 					token: value.data.data.Result.Token,
 					loginId: value.data.data.Result.LoginId,
@@ -91,7 +94,10 @@ export function DetailsPage() {
 					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
 					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
 					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
-					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
+					productId:
+						pos !== -1
+							? value.data.data.Result.BrokerCompanyProducts[pos].ProductId
+							: '5',
 					CustomerCode: value.data.data.Result.CustomerCode,
 					agencyCode: value.data.data.Result.OaCode,
 					countryCode: value.data.data.Result.CountryId

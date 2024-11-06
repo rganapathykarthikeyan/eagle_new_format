@@ -64,7 +64,8 @@ export function VehicleDetailsForm() {
 			engineNo: vehicleData.engineNumber,
 			engineCapacity: vehicleData.engineCapacity,
 			color: vehicleData.color,
-			seats: vehicleData.seat + ''
+			seats: vehicleData.seat + '',
+			tareweight: vehicleData.tareweight
 		}
 	})
 
@@ -92,7 +93,7 @@ export function VehicleDetailsForm() {
 			Vehcilemodel: vehicleData.model,
 			VehicleType: vehicleData.bodyType,
 			Vehiclemake: vehicleData.mark,
-			FuelUsed: 1
+			FuelType: vehicleData.fuelType
 		}
 		const res = saveCustomerData(req)
 		res.then((value) => {

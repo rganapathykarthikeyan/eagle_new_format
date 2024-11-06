@@ -58,7 +58,7 @@ export function DriverDetailsForm() {
 		defaultValues: {
 			driverName: '',
 			licenseNumber: '',
-			drivingExperience: '',
+			drivingExperience: customerData.driverExperience,
 			driverMaritalStatus: '',
 			claimType: '',
 			driverType: '',
@@ -239,7 +239,7 @@ export function DriverDetailsForm() {
 													{...field}
 													className='border border-gray-375 bg-gray-975'
 													id='idType'
-													placeholder='License Number'
+													placeholder='Driving Experience'
 												/>
 											</FormControl>
 											<FormMessage />

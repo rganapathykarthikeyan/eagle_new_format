@@ -73,8 +73,6 @@ export function OtpForm() {
 		}
 		const res = verifyOTP(request)
 		res.then((value) => {
-			route.push('/car-insurance/details/customer-details')
-
 			if (value.data && value.data.type === 'success' && value.data?.data !== undefined) {
 				if (
 					!value.data.data.isError &&
@@ -85,6 +83,20 @@ export function OtpForm() {
 						value.data.data.LoginResponse.Result.LoginBranchDetails[0].InsuranceId
 					const brokerCode: string | null =
 						value.data.data.LoginResponse.Result.LoginBranchDetails[0].BrokerBranchCode
+					const Allproducts = value.data.data.LoginResponse.Result.BrokerCompanyProducts
+					const pos = Allproducts.findIndex(
+						(item: {
+							ProductId: string
+							OldProductName: string
+							ProductName: string
+							ProductIconId: string
+							ProductIconName: string | null
+							PackageYn: string
+							DisplayOrder: number
+						}) => item.ProductName === 'Motor '
+					)
+					const productId = pos === -1 ? '5' : Allproducts[pos].ProductId
+
 					dispatch(
 						setGuestLoginDetails({
 							agencyCode: value.data.data.LoginResponse.Result.OaCode,
@@ -98,9 +110,7 @@ export function OtpForm() {
 									: '',
 							insuranceID: insuranceId !== null ? insuranceId : '',
 							loginId: value.data.data.LoginResponse.Result.LoginId,
-							productId:
-								value.data.data.LoginResponse.Result.BrokerCompanyProducts[0]
-									.ProductId,
+							productId: productId,
 							subUserType: value.data.data.LoginResponse.Result.SubUserType,
 							token: value.data.data.LoginResponse.Result.Token,
 							userType: value.data.data.LoginResponse.Result.UserType,

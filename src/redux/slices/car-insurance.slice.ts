@@ -106,12 +106,6 @@ export const carInsuranceSlice = createSlice({
 			state.year = 0
 			state.model = ''
 			state.modelID = ''
-			state.value = 0
-			state.vehicleUsage = ''
-			state.vehicleUsageID = ''
-			state.year = 0
-			state.value = 0
-			state.seat = 0
 		},
 		updateVehicleMark(
 			state: CarDetails,

@@ -1,5 +1,3 @@
-import { Minus, Plus } from 'lucide-react'
-import UploadField from '../details/upload-field'
 import { Button } from '../ui'
 
 type HomeDocumentUploadFormProps = {
@@ -23,7 +21,8 @@ export function HomeDocumentUploadForm(props: HomeDocumentUploadFormProps) {
 					<div
 						key={index}
 						className='flex w-full flex-row items-center gap-2 lg:w-1/2'>
-						<UploadField
+						{type.label}
+						{/* <UploadField
 							key={index}
 							// fileDataList={fileDataList}
 							// handleFileChange={handleFileChange}
@@ -50,7 +49,7 @@ export function HomeDocumentUploadForm(props: HomeDocumentUploadFormProps) {
 							// }}
 						>
 							<Minus />
-						</Button>
+						</Button> */}
 					</div>
 				)
 			})}

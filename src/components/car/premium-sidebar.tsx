@@ -71,7 +71,7 @@ export function PremiumSideBar() {
 			BrokerBranchCode: appData.brokerCode,
 			SectionId: ['103'],
 			AgencyCode: appData.agencyCode,
-			ProductId: '5',
+			ProductId: appData.productId,
 			SavedFrom: 'SQ',
 			MobileCode: customerData.code,
 			MobileNumber: customerData.mobile,

@@ -68,7 +68,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 		const request = {
 			InsuranceId: insuranceID,
 			BranchCode: branchCode,
-			ProductId: '',
+			ProductId: '5',
 			TitleType: ''
 		}
 		const tempArr: { value: string; label: string }[] = []

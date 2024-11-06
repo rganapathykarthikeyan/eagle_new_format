@@ -107,7 +107,7 @@ export function HomeCustomerInfo(props: HomeCustomerInfoProps) {
 			TelephoneNo2: null,
 			TelephoneNo3: null,
 			VrTinNo: null,
-			Title: '5',
+			Title: appData.productId,
 			Address1: values.city,
 			SaveOrSubmit: 'Save',
 			Zone: '1'
